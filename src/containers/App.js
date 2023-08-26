@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import store from '../config/store';
 import { NativeBaseProvider } from 'native-base';
 import { createStackNavigator } from '@react-navigation/stack';
-import Login from '../components/loginScreen/loginScreen';
 
 
 const AuthNavigation = createStackNavigator()
