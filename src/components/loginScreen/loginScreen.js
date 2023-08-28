@@ -14,8 +14,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Base64 } from '../../config/base64';
 import { API_URL, App_Token } from '../../config/config';
 import { setUserObject, setSessionToken } from '../../redux/actions';
-import store from '../../config/store';
-import MyStack from '../../containers/navigations/stackNavigation';
 
 class Login extends React.Component {
   constructor(props) {
