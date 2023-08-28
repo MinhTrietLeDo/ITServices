@@ -19,10 +19,10 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: 'glpi',
-      password: 'glpi',
-      // username: 'admin_dccs',
-      // password: '@ntiLockbit4TDTU',
+      // username: 'glpi',
+      // password: 'glpi',
+      username: 'admin_dccs',
+      password: '@ntiLockbit4TDTU',
       loading: false,
     };
   }
