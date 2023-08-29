@@ -6,6 +6,7 @@ import { NativeBaseProvider, StatusBar } from 'native-base';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MyDrawer } from './navigations/drawerNavigation';
 import LoginScreen from '../components/loginScreen/loginScreen';
+import theme from '../assets/theme';
 
 const Stack = createStackNavigator()
 
@@ -42,7 +43,7 @@ const RootStack = () => {
 
 const App = () => {
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider theme={theme}>
       <Provider store={store}>
         <RootStack />
       </Provider>

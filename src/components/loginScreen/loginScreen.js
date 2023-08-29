@@ -8,7 +8,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Base64 } from '../../config/base64';
 import { API_URL, App_Token } from '../../config/config';
 import { setUserObject, setSessionToken } from '../../redux/actions';
-import { Input, Icon, Stack, Pressable, Center, Box, Button, Container, FormControl, } from 'native-base';
+import {
+  Input, Icon, Stack, Pressable, Center,
+  Box, Button, Container, FormControl, View,
+  Text, Divider, Image, Heading,
+} from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 class Login extends React.Component {
@@ -183,12 +187,21 @@ class Login extends React.Component {
   render() {
     return (
       <Center>
-        <Container>
-          <Box>
-            <FormControl isRequired style={styles.container}>
+        <Container style={styles.container}>
+          <Box alignItems="center" w="100%">
+            <Image
+              style={{ resizeMode: 'stretch', width: 250, height: 150, marginBottom: '10%', }}
+              isRequired
+              source={require('../../assets/img/TDT_logo.png')} alt="Logo"
+              borderRadius={20}
+            />
+            <Text style={styles.Headers}>IT SUPPORT SERVICES</Text>
+            <FormControl isRequired  >
               <Stack space={4} w="100%" alignItems="center">
                 {/* USERNAME INPUT */}
                 <Input
+                  fontFamily="body" fontWeight="600"
+                  isRequired
                   value={this.state.username}
                   onChangeText={username => this.setState({ username })}
                   InputLeftElement={
@@ -202,6 +215,8 @@ class Login extends React.Component {
                 />
                 {/* PASSWORD INPUT */}
                 <Input
+                  fontFamily="body" fontWeight="600"
+                  isRequired
                   value={this.state.password}
                   onChangeText={password => this.setState({ password })}
                   type={this.state.show ? "text" : "password"}
@@ -224,17 +239,22 @@ class Login extends React.Component {
                 />
 
               </Stack>
-              <Button
-                onPress={this.authenticateUser}
-                isLoading={this.state.loading}
-                spinnerPlacement="end"
-                isLoadingText="Please wait"
-              >
-                Login
-              </Button>
-
+              <Box space={4} mt="4" >
+                <Button
+                  onPress={this.authenticateUser}
+                  isLoading={this.state.loading}
+                  spinnerPlacement="end"
+                  isLoadingText="Please wait"
+                //fontFamily="body" fontWeight="600"
+                >
+                  Login
+                </Button>
+              </Box>
             </FormControl>
-
+          </Box>
+          <Box flexBox='bottom' alignItems='center' style={styles.copyrightBox} >
+            <Text style={styles.copyright} note>Copyright © {new Date().getFullYear()}, DCCS</Text>
+            <Text style={styles.copyright} note>Ton Duc Thang University</Text>
           </Box>
         </Container>
       </Center>
@@ -244,14 +264,37 @@ class Login extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 'auto',
+    paddingVertical: '15%',
+    height: '100%',
+    //backgroundColor: 'black'
+  },
+  copyrightBox: {
+    alignItems: 'center',
+    alignSelf: 'center',
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
+    //backgroundColor: 'black'
   },
   horizontal: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: 10,
   },
+  copyright: {
+    //marginTop: 40,
+    color: '#D3D3D3',
+    fontFamily: 'WorkSans-Medium',
+  },
+  Headers: {
+    fontFamily: 'WorkSans-Bold',
+    fontSize: 26,
+    padding: '3%',
+    flexDirection: 'row',
+    //backgroundColor: 'black',
+    width: '100%'
+  }
+
 });
 
 /** listen state */
