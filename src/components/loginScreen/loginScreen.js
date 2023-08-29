@@ -1,29 +1,26 @@
 import React from 'react';
 import {
-  View,
-  Button,
-  TextInput,
-  ActivityIndicator,
   Alert,
   StyleSheet,
-  BackHandler,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Base64 } from '../../config/base64';
 import { API_URL, App_Token } from '../../config/config';
 import { setUserObject, setSessionToken } from '../../redux/actions';
+import { Input, Icon, Stack, Pressable, Center, Box, Button, Container, FormControl, } from 'native-base';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // username: 'glpi',
-      // password: 'glpi',
-      username: 'admin_dccs',
-      password: '@ntiLockbit4TDTU',
+      username: 'glpi',
+      password: 'glpi',
+      // username: 'admin_dccs',
+      // password: '@ntiLockbit4TDTU',
       loading: false,
+      show: false
     };
   }
 
@@ -41,30 +38,6 @@ class Login extends React.Component {
       console.log('bruh');
     }
   }
-
-  // handleBackPress() {
-  //   Alert.alert(
-  //     'Exit App',
-  //     'Exit Application',
-  //     [
-  //       {
-  //         text: 'Cancel',
-  //         onPress: () => console.log('Cancel Pressed'),
-  //         style: 'cancel',
-  //       },
-  //       {text: 'OK', onPress: () => BackHandler.exitApp()},
-  //       //{text: 'OK', onPress: () => console.log('BackHandler.exitApp')},
-  //     ],
-  //     {
-  //       cancelable: false,
-  //     },
-  //   );
-  //   return true;
-  // }
-
-  // componentDidMount() {
-  //   BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-  // }
 
   genBase64 = () => {
     return Base64.encode(this.state.username + ':' + this.state.password);
@@ -208,32 +181,64 @@ class Login extends React.Component {
   };
 
   render() {
-    if (this.state.loading === true) {
-      return (
-        <View style={[styles.container, styles.horizontal]}>
-          <ActivityIndicator size="large" />
-        </View>
-      );
-    } else {
-      return (
-        <SafeAreaView>
-          <View>
-            <TextInput
-              placeholder="Enter username"
-              value={this.state.username}
-              onChangeText={username => this.setState({ username })}
-            />
-            <TextInput
-              placeholder="Enter password"
-              secureTextEntry={true}
-              value={this.state.password}
-              onChangeText={password => this.setState({ password })}
-            />
-            <Button title="Sign In" onPress={this.authenticateUser} />
-          </View>
-        </SafeAreaView>
-      );
-    }
+    return (
+      <Center>
+        <Container>
+          <Box>
+            <FormControl isRequired style={styles.container}>
+              <Stack space={4} w="100%" alignItems="center">
+                {/* USERNAME INPUT */}
+                <Input
+                  value={this.state.username}
+                  onChangeText={username => this.setState({ username })}
+                  InputLeftElement={
+                    <Icon as={
+                      <MaterialIcons
+                        name="person"
+                      />}
+                      size={5} ml="2" color="muted.400"
+                    />}
+                  placeholder="Name"
+                />
+                {/* PASSWORD INPUT */}
+                <Input
+                  value={this.state.password}
+                  onChangeText={password => this.setState({ password })}
+                  type={this.state.show ? "text" : "password"}
+                  InputRightElement={
+                    <Pressable onPress={show => this.setState({ show })}>
+                      <Icon as={
+                        <MaterialIcons
+                          name={this.state.show ? "visibility" : "visibility-off"}
+                        />} size={5} mr="2" color="muted.400" />
+                    </Pressable>
+                  }
+                  InputLeftElement={
+                    <Icon as={
+                      <MaterialIcons
+                        name="lock"
+                      />}
+                      size={5} ml="2" color="muted.400"
+                    />}
+                  placeholder="Password"
+                />
+
+              </Stack>
+              <Button
+                onPress={this.authenticateUser}
+                isLoading={this.state.loading}
+                spinnerPlacement="end"
+                isLoadingText="Please wait"
+              >
+                Login
+              </Button>
+
+            </FormControl>
+
+          </Box>
+        </Container>
+      </Center>
+    );
   }
 }
 

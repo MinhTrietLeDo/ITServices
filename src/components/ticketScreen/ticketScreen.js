@@ -13,7 +13,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Text,
   Center,
-  Container
+  Container,
+  List,
 } from 'native-base';
 
 class TicketScreen extends Component {
@@ -111,8 +112,44 @@ class TicketScreen extends Component {
       }
       return (
         <View>
-          <Text>123</Text>
+          <Text>User Login: {llfdata}</Text>
+
+          <View>
+            <List>
+              {this.state.tickets_open.map(el => {
+                let fmtData = el["15"].split(' ');
+                let data = fmtData[0].split('-').reverse().toString().replace(/,/g, '-').concat(' ' + fmtData[1]);
+                return (
+                  // <ListItem style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                  <View style={{ flexDirection: 'row' }} >
+                    <View style={{ flex: 1, flexDirection: 'column' }}>
+                      <View style={{ flexDirection: 'row' }}>
+                        <FontAwesome name='calendar' size={16} style={{ marginRight: 5 }}></FontAwesome>
+                        <Text style={{ alignSelf: 'flex-start', }} note>Lastest Request: {data}</Text>
+                      </View>
+                      <Text style={{ alignSelf: 'flex-start', textAlign: 'left', fontWeight: 'bold' }}>{el["1"]}</Text>
+                    </View>
+                    <FontAwesome
+                      onPress={() => {
+                        if (this.state.showId == el["2"])
+                          this.setState({ showId: null })
+                        else
+                          this.setState({ showId: el["2"] })
+                      }}
+                      name={this.state.showId == el["2"] ? 'angle-up' : 'angle-down'} size={32} color={'rgb(56,126,220)'} ></FontAwesome>
+                  </View>
+                  // <View style={{ height: this.state.showId == el["2"] ? null : 0, opacity: this.state.showId == el["2"] ? 1 : 0 }}>
+                  //   <Text note>{el["21"]}</Text>
+                  //   {/* <RoundedBadge id={el["12"]}></RoundedBadge> */}
+                  // </View>
+                  // </ListItem>
+
+                )
+              })}
+            </List>
+          </View>
         </View>
+
       );
     }
   };
