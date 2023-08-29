@@ -200,7 +200,7 @@ class Login extends React.Component {
               <Stack space={4} w="100%" alignItems="center">
                 {/* USERNAME INPUT */}
                 <Input
-                  fontFamily="body" fontWeight="600" fontSize={15}
+                  fontFamily="body" fontWeight="600" fontSize={16}
                   isRequired
                   value={this.state.username}
                   onChangeText={username => this.setState({ username })}
@@ -215,7 +215,7 @@ class Login extends React.Component {
                 />
                 {/* PASSWORD INPUT */}
                 <Input
-                  fontFamily="body" fontWeight="600" fontSize={15}
+                  fontFamily="body" fontWeight="600" fontSize={16}
                   isRequired
                   value={this.state.password}
                   onChangeText={password => this.setState({ password })}
