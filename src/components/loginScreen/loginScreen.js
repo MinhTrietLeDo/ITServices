@@ -24,7 +24,7 @@ class Login extends React.Component {
       // username: 'admin_dccs',
       // password: '@ntiLockbit4TDTU',
       loading: false,
-      show: false
+      showPassword: false
     };
   }
 
@@ -200,7 +200,7 @@ class Login extends React.Component {
               <Stack space={4} w="100%" alignItems="center">
                 {/* USERNAME INPUT */}
                 <Input
-                  fontFamily="body" fontWeight="600"
+                  fontFamily="body" fontWeight="600" fontSize={15}
                   isRequired
                   value={this.state.username}
                   onChangeText={username => this.setState({ username })}
@@ -209,23 +209,23 @@ class Login extends React.Component {
                       <MaterialIcons
                         name="person"
                       />}
-                      size={5} ml="2" color="muted.400"
+                      size={6} ml="2" color="muted.400"
                     />}
                   placeholder="Name"
                 />
                 {/* PASSWORD INPUT */}
                 <Input
-                  fontFamily="body" fontWeight="600"
+                  fontFamily="body" fontWeight="600" fontSize={15}
                   isRequired
                   value={this.state.password}
                   onChangeText={password => this.setState({ password })}
-                  type={this.state.show ? "text" : "password"}
+                  type={this.state.showPassword ? "text" : "password"}
                   InputRightElement={
-                    <Pressable onPress={show => this.setState({ show })}>
+                    <Pressable onPress={showPassword => this.setState({ showPassword })}>
                       <Icon as={
                         <MaterialIcons
-                          name={this.state.show ? "visibility" : "visibility-off"}
-                        />} size={5} mr="2" color="muted.400" />
+                          name={this.state.showPassword ? "visibility" : "visibility-off"}
+                        />} size={6} mr="2" color="muted.400" />
                     </Pressable>
                   }
                   InputLeftElement={
@@ -233,7 +233,7 @@ class Login extends React.Component {
                       <MaterialIcons
                         name="lock"
                       />}
-                      size={5} ml="2" color="muted.400"
+                      size={6} ml="2" color="muted.400"
                     />}
                   placeholder="Password"
                 />
@@ -245,7 +245,12 @@ class Login extends React.Component {
                   isLoading={this.state.loading}
                   spinnerPlacement="end"
                   isLoadingText="Please wait"
-                //fontFamily="body" fontWeight="600"
+                  colorScheme='darkBlue'
+                  _text={{
+                    fontFamily: 'body',
+                    fontSize: 18,
+                    fontWeight: 500
+                  }}
                 >
                   Login
                 </Button>
@@ -256,8 +261,8 @@ class Login extends React.Component {
             <Text style={styles.copyright} note>Copyright © {new Date().getFullYear()}, DCCS</Text>
             <Text style={styles.copyright} note>Ton Duc Thang University</Text>
           </Box>
-        </Container>
-      </Center>
+        </Container >
+      </Center >
     );
   }
 }
@@ -291,10 +296,11 @@ const styles = StyleSheet.create({
     fontSize: 26,
     padding: '3%',
     flexDirection: 'row',
-    //backgroundColor: 'black',
-    width: '100%'
+    color: '#0352A5',
+    width: '100%',
+    justifyContent: 'center',
+    marginBottom: '10%',
   }
-
 });
 
 /** listen state */

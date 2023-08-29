@@ -11,18 +11,18 @@ export default theme = extendTheme({
                 normal: "WorkSans-Light",
                 italic: "workSans-LightItalic"
             },
-            300:{
+            300: {
                 normal: "WorkSans-Light",
                 italic: "workSans-LightItalic"
             },
-            400:{
+            400: {
                 normal: "WorkSans-Regular",
                 italic: "workSans-Italic"
             },
-            500:{
+            500: {
                 normal: "WorkSans-Medium",
             },
-            600:{
+            600: {
                 normal: "WorkSans-Medium",
                 italic: "WorkSans-MediumItalic"
             }
@@ -32,5 +32,5 @@ export default theme = extendTheme({
         heading: "WorkSans",
         body: "WorkSans",
         mono: "WorkSans"
-    }
+    },
 })
