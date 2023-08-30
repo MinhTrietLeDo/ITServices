@@ -4,6 +4,9 @@ const sizeDefautft = {
      width: 692,
      height: 1451,
 }
+export const windowWidth = Dimensions.get('window').width;
+export const windowHeight = Dimensions.get('window').height;
+
 const scaleVer = (sizeWindow.height / sizeDefautft.height)
 const scaleHoz = (sizeWindow.width / sizeDefautft.width)
 const scaleValue = (

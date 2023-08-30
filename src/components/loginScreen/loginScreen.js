@@ -276,7 +276,7 @@ class Login extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: '10%',
+    paddingVertical: windowHeight*0.05,
     alignItems: 'center',
     alignSelf: 'center',
   },
