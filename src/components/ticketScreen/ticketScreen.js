@@ -11,12 +11,8 @@ import { connect } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import {
-  Text,
-  Center,
-  Container,
-  List,
-  FlatList,
-  Heading,
+  Text, Center, Container, List, FlatList, HStack, VStack,
+  Heading, ScrollView, Box, Avatar, Spacer
 } from 'native-base';
 
 class TicketScreen extends Component {
@@ -94,6 +90,10 @@ class TicketScreen extends Component {
 
   }
 
+  listItem = async () => {
+
+  }
+
 
   render() {
     if (this.state.loading) {
@@ -116,10 +116,10 @@ class TicketScreen extends Component {
         <Container style={styles.container}>
           <View style={{ flex: 0, flexDirection: 'row' }}>
             <View style={{ flex: 0, padding: '10%' }} >
-              <Image
+              <Avatar
                 style={{ height: 100, borderRadius: 50, width: 100, resizeMode: 'cover' }}
-                source={{ uri: !!this.props.userProfile.picture ? 'http://172.16.18.45/front/document.send.php?file=_pictures/' + this.props.userProfile.picture : 'https://cdn.cwsplatform.com/assets/no-photo-available.png' }}>
-              </Image>
+                source={{ uri: !!this.props.userProfile.picture ? 'http://172.16.18.45/front/document.send.php?file=_pictures/' + this.props.userProfile.picture : 'https://cdn.cwsplatform.com/assets/no-photo-available.png' }}
+              />
             </View>
             <View style={{ flex: 1, justifyContent: 'center', padding: 10, alignItems: 'center', }}>
               <Heading fontSize={30} bold>{this.props.userObj.glpifirstname + ' ' + this.props.userObj.glpirealname}</Heading>
@@ -134,31 +134,67 @@ class TicketScreen extends Component {
                 return (
                   // <ListItem >
                   // <FlatList style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                  <View style={{ backgroundColor: 'back',
-                    flexDirection: 'row', alignContent: 'center', justifyContent: 'center', alignSelf: 'center', width: '100%' }} >
-                    <View style={{ flexDirection: 'column' }}>
-                      <View style={{ flexDirection: 'row' }}>
-                        <FontAwesome name='calendar' size={16} style={{ marginRight: 5 }}></FontAwesome>
-                        <Text style={{ alignSelf: 'flex-start', }} note>Lastest Request: {data}</Text>
-                      </View>
-                      <View style={{ flexDirection: 'row' }}>
-                        <MaterialIcons name="title" size={16} style={{ marginRight: 5 }}/>
-                        <Text style={{ alignSelf: 'flex-start', textAlign: 'left', fontWeight: 'bold' }}>Title: {el["1"]}</Text>
-                      </View>            
-                    </View>
-                    <FontAwesome
-                      onPress={() => {
-                        if (this.state.showId == el["2"])
-                          this.setState({ showId: null })
-                        else
-                          this.setState({ showId: el["2"] })
-                      }}
-                      name={this.state.showId == el["2"] ? 'angle-up' : 'angle-down'} size={32} color={'rgb(56,126,220)'} ></FontAwesome>
-                  </View>
-                //    <View style={{ height: this.state.showId == el["2"] ? null : 0 , opacity: this.state.showId == el["2"] ? 1 : 0 }}>
-                //    <Text note>{el["21"]}</Text>
-                //    {/* <RoundedBadge id={el["12"]}></RoundedBadge> */}
-                //  </View>
+                  // <View style={{
+                  //   backgroundColor: 'back',
+                  //   flexDirection: 'row', alignContent: 'center', justifyContent: 'center', alignSelf: 'center', width: '100%'
+                  // }} >
+                  //   <View style={{ flexDirection: 'column' }}>
+                  //     <View style={{ flexDirection: 'row' }}>
+                  //       <FontAwesome name='calendar' size={16} style={{ marginRight: 5 }}></FontAwesome>
+                  //       <Text style={{ alignSelf: 'flex-start', }} note>Lastest Request: {data}</Text>
+                  //     </View>
+                  //     <View style={{ flexDirection: 'row' }}>
+                  //       <MaterialIcons name="title" size={16} style={{ marginRight: 5 }} />
+                  //       <Text style={{ alignSelf: 'flex-start', textAlign: 'left', fontWeight: 'bold' }}>Title: {el["1"]}</Text>
+                  //     </View>
+                  //   </View>
+                  //   <FontAwesome
+                  //     onPress={() => {
+                  //       if (this.state.showId == el["2"])
+                  //         this.setState({ showId: null })
+                  //       else
+                  //         this.setState({ showId: el["2"] })
+                  //     }}
+                  //     name={this.state.showId == el["2"] ? 'angle-up' : 'angle-down'} size={32} color={'rgb(56,126,220)'} ></FontAwesome>
+                  // </View>
+                  // //    <View style={{ height: this.state.showId == el["2"] ? null : 0 , opacity: this.state.showId == el["2"] ? 1 : 0 }}>
+                  // //    <Text note>{el["21"]}</Text>
+                  // //    {/* <RoundedBadge id={el["12"]}></RoundedBadge> */}
+                  // //  </View>
+                  <Box>
+                    {/* <Heading fontSize="xl" p="4" pb="3">
+                      Ticket
+                    </Heading>
+                    <FlatList data={data} renderItem={({
+                      item
+                    }) => <Box borderBottomWidth="1" _dark={{
+                      borderColor: "muted.50"
+                    }} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
+                        <HStack space={[2, 3]} justifyContent="space-between">
+                          <Avatar size="48px" source={{
+                            uri: item.avatarUrl
+                          }} />
+                          <VStack>
+                            <Text _dark={{
+                              color: "warmGray.50"
+                            }} color="coolGray.800" bold>
+                              {item.fullName}
+                            </Text>
+                            <Text color="coolGray.600" _dark={{
+                              color: "warmGray.200"
+                            }}>
+                              {item.recentText}
+                            </Text>
+                          </VStack>
+                          <Spacer />
+                          <Text fontSize="xs" _dark={{
+                            color: "warmGray.50"
+                          }} color="coolGray.800" alignSelf="flex-start">
+                            {item.timeStamp}
+                          </Text>
+                        </HStack>
+                      </Box>} keyExtractor={item => item.id} /> */}
+                  </Box>
                 )
               })}
             </List>
