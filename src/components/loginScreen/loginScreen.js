@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Alert,
-  StyleSheet,
+  StyleSheet, Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,6 +15,9 @@ import {
 } from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -26,6 +29,7 @@ class Login extends React.Component {
       loading: false,
       showPassword: false
     };
+
   }
 
   async UNSAFE_componentWillMount() {
@@ -186,21 +190,24 @@ class Login extends React.Component {
 
   render() {
     return (
-      <Center>
-        <Container style={styles.container}>
-          <Box alignItems="center" w="100%">
-            <Image
-              style={{ resizeMode: 'stretch', width: 250, height: 150, marginBottom: '10%', }}
-              isRequired
-              source={require('../../assets/img/TDT_logo.png')} alt="Logo"
-              borderRadius={20}
-            />
-            <Text style={styles.Headers}>IT SUPPORT SERVICES</Text>
+
+      <Container style={styles.container}>
+        <Center>
+          <Box alignItems="center" w='100%'>
+            <View style={styles.LogoandHeaders}>
+              <Image
+                style={{ width: 0.9 * windowWidth, height: 0.22 * windowHeight }}
+                isRequired
+                source={require('../../assets/img/TDT_logo.png')} alt="Logo"
+              />
+              <Text style={styles.Headers}>IT SUPPORT SERVICES</Text>
+            </View>
+
             <FormControl isRequired  >
               <Stack space={4} w="100%" alignItems="center">
                 {/* USERNAME INPUT */}
                 <Input
-                  fontFamily="body" fontWeight="600" fontSize={16}
+                  fontFamily="body" fontWeight="600" fontSize={0.045 * windowWidth}
                   isRequired
                   value={this.state.username}
                   onChangeText={username => this.setState({ username })}
@@ -209,13 +216,13 @@ class Login extends React.Component {
                       <MaterialIcons
                         name="person"
                       />}
-                      size={6} ml="2" color="muted.400"
+                      size={0.06 * windowWidth} ml="2" color="muted.400"
                     />}
                   placeholder="Name"
                 />
                 {/* PASSWORD INPUT */}
                 <Input
-                  fontFamily="body" fontWeight="600" fontSize={16}
+                  fontFamily="body" fontWeight="600" fontSize={0.045 * windowWidth}
                   isRequired
                   value={this.state.password}
                   onChangeText={password => this.setState({ password })}
@@ -225,7 +232,7 @@ class Login extends React.Component {
                       <Icon as={
                         <MaterialIcons
                           name={this.state.showPassword ? "visibility" : "visibility-off"}
-                        />} size={6} mr="2" color="muted.400" />
+                        />} size={0.06 * windowWidth} mr="2" color="muted.400" />
                     </Pressable>
                   }
                   InputLeftElement={
@@ -233,7 +240,7 @@ class Login extends React.Component {
                       <MaterialIcons
                         name="lock"
                       />}
-                      size={6} ml="2" color="muted.400"
+                      size={0.06 * windowWidth} ml="2" color="muted.400"
                     />}
                   placeholder="Password"
                 />
@@ -248,7 +255,7 @@ class Login extends React.Component {
                   colorScheme='darkBlue'
                   _text={{
                     fontFamily: 'body',
-                    fontSize: 18,
+                    fontSize: 0.045 * windowWidth,
                     fontWeight: 500
                   }}
                 >
@@ -261,18 +268,17 @@ class Login extends React.Component {
             <Text style={styles.copyright} note>Copyright © {new Date().getFullYear()}, DCCS</Text>
             <Text style={styles.copyright} note>Ton Duc Thang University</Text>
           </Box>
-        </Container >
-      </Center >
+        </Center>
+      </Container >
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 'auto',
-    paddingVertical: '15%',
-    height: '100%',
-    //backgroundColor: 'black'
+    paddingVertical: '10%',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   copyrightBox: {
     alignItems: 'center',
@@ -290,16 +296,25 @@ const styles = StyleSheet.create({
     //marginTop: 40,
     color: '#D3D3D3',
     fontFamily: 'WorkSans-Medium',
+    fontSize: 0.035 * windowWidth
   },
   Headers: {
     fontFamily: 'WorkSans-Bold',
-    fontSize: 26,
-    padding: '3%',
-    flexDirection: 'row',
+    fontSize: 0.068 * windowWidth,
+    padding: 0.02 * windowWidth,
     color: '#0352A5',
-    width: '100%',
-    justifyContent: 'center',
-    marginBottom: '10%',
+    textAlign: 'center',
+    width: '100%'
+  },
+  LogoandHeaders: {
+    alignItems: "center",
+    // backgroundColor: 'black',
+    flexDirection: 'column',
+    height: '55%',
+    alignContent: 'center',
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    justifyContent: 'space-evenly'
   }
 });
 
