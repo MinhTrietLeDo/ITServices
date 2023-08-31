@@ -4,8 +4,6 @@ import {
   View,
   StyleSheet,
   Alert,
-  Image,
-  Dimensions
 } from 'react-native';
 import { API_URL, App_Token } from '../../config/config';
 import { connect } from 'react-redux';
@@ -13,7 +11,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import {
   Text, Center, Container, List, FlatList, HStack, VStack,
-  Heading, ScrollView, Box, Avatar, Spacer
+  Heading, ScrollView, Box, Avatar, Divider, Button
 } from 'native-base';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 
@@ -37,11 +35,7 @@ class TicketScreen extends Component {
   }
 
   GetTickets = async () => {
-
-    const userId = this.props.userObj.glpiID;
-    // const criteria_open = `/search/Ticket/?order=DESC&criteria[0][itemtype]=Ticket&criteria[0][field]=12&criteria[0][searchtype]=contains&criteria[0][value]=1&criteria[2][link]=OR&criteria[2][itemtype]=Ticket&criteria[2][field]=12&criteria[2][searchtype]=contains&criteria[2][value]=2&criteria[3][link]=OR&criteria[3][itemtype]=Ticket&criteria[3][field]=12&criteria[3][searchtype]=contains&criteria[3][value]=3&criteria[4][link]=OR&criteria[4][itemtype]=Ticket&criteria[4][field]=12&criteria[4][searchtype]=contains&criteria[4][value]=4&criteria[1][link]=AND&criteria[1][itemtype]=Ticket&criteria[1][field]=4&criteria[1][searchtype]=equals&criteria[1][value]=${userId}&forcedisplay[0]=12&forcedisplay[0]=21&forcedisplay[2]=15`;
-    // const criteria_closed = `/search/Ticket/?order=DESC&criteria[0][itemtype]=Ticket&criteria[0][field]=12&criteria[0][searchtype]=contains&criteria[0][value]=5&criteria[2][link]=OR&criteria[2][itemtype]=Ticket&criteria[2][field]=12&criteria[2][searchtype]=contains&criteria[2][value]=6&criteria[1][itemtype]=Ticket&criteria[1][link]=AND&criteria[1][field]=4&criteria[1][searchtype]=equals&criteria[1][value]=${userId}&forcedisplay[0]=12&forcedisplay[0]=21&forcedisplay[2]=15`;
-    const ticket = '/search/Ticket/?expand_dropdowns=true'
+    const ticket = '/search/Ticket/?order=DESC&expand_dropdowns=true&sort=2'
 
     let objHeader = {
       Accept: 'application/json',
@@ -50,15 +44,6 @@ class TicketScreen extends Component {
     };
 
     let request = await Promise.all([
-      // fetch ticket
-      // await fetch(
-      //   API_URL + criteria_open + '&session_token=' + this.props.token,
-      //   {
-      //     headers: objHeader,
-      //   })
-      //   .then(el => el.json()),
-
-      // fetch ticket
       await fetch(
         //API_URL + criteria_closed + '&session_token=' + this.props.token,
         API_URL + ticket + '&session_token=' + this.props.token,
@@ -70,10 +55,7 @@ class TicketScreen extends Component {
 
 
     if (typeof request[0].data !== 'undefined') {
-
       this.setState({
-        // tickets_open: request[0].data,
-        // tickets_closed: request[1].data,
         tickets: request[0].data,
         loading: false
       });
@@ -96,11 +78,6 @@ class TicketScreen extends Component {
 
   }
 
-  listItem = async () => {
-
-  }
-
-
   render() {
     if (this.state.loading) {
       return (
@@ -113,7 +90,7 @@ class TicketScreen extends Component {
       try {
         let llData = this.props.userProfile.last_login.split(' ');
         llfdata = llData[0].split('-').reverse().toString().replace(/,/g, '-').concat(' ' + llData[1]);
-        console.log(llData)
+        // console.log(llData)
       } catch (error) {
         llfdata = '-';
         console.error(error, llfdata)
@@ -135,63 +112,39 @@ class TicketScreen extends Component {
           </View>
 
           <View style={styles.TicketList}>
-            {this.state.tickets.map(el => {
-              let rawDate = el["15"].split(' ')
-              let ticketDate = rawDate[0].split('-').reverse().toString().replace(/,/g, '-').concat(' ' + rawDate[1]);
-              let ticketTitle = el["1"]
-              let lastUpdate = el["19"]
-              console.log('Ticket Date:', ticketDate, 'Ticket Name:', ticketTitle, 'Last update:', lastUpdate)
-              return (
-                <Box>
-
-                </Box>
-              )
-            })}
-            {/* {this.state.tickets_open.map(el => {
-              let fmtData = el["15"].split(' ');
-              let data = fmtData[0].split('-').reverse().toString().replace(/,/g, '-').concat(' ' + fmtData[1]);
-              return (
-                <Box style={{
-                  flexDirection: 'row',
-                  alignContent: 'center',
-                  justifyContent: 'center',
-                  alignSelf: 'center',
-                  width: '100%'
-                }}>
-                  <FlatList data={data} renderItem={({
-                    item
-                  }) => <Box borderBottomWidth="1" _dark={{
-                    borderColor: "muted.50"
-                  }} borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
-                      <HStack space={[3, 4]} justifyContent="space-between">
-                        <Avatar size="48px" source={{
-                          uri: item.avatarUrl
-                        }} />
-                        <VStack>
-                          <Text _dark={{
-                            color: "warmGray.50"
-                          }} color="coolGray.800" bold>
-                            {item.fullName}
-                          </Text>
-                          <Text color="coolGray.600" _dark={{
-                            color: "warmGray.200"
-                          }}>
-                            {item.recentText}
-                          </Text>
-                        </VStack>
-                        <Spacer />
-                        <Text fontSize="xs" _dark={{
-                          color: "warmGray.50"
-                        }} color="coolGray.800" alignSelf="flex-start">
-                          {item.timeStamp}
-                        </Text>
-                      </HStack>
-                    </Box>} keyExtractor={item => item.id} />
-                </Box>
-              )
-            })} */}
+            <ScrollView style={styles.ListStyle}>
+              {this.state.tickets.map(el => {
+                let rawDate = el["15"].split(' ')
+                let ticketDate = rawDate[0].split('-').reverse().toString().replace(/,/g, '-').concat(' ' + rawDate[1]);
+                let ticketTitle = el["1"]
+                let lastUpdate = el["19"]
+                let ticketID = el["2"]
+                console.log(
+                  'Ticket ID:', ticketID,
+                  'Ticket Date:', ticketDate,
+                  'Ticket Name:', ticketTitle,
+                  'Last update:', lastUpdate)
+                return (
+                  <Center>
+                    <VStack
+                      space={100}
+                      divider={<Divider my="2" />}
+                      w={windowWidth * 0.9}
+                    >
+                      <View style={{ padding: windowWidth * 0.02 }}>
+                        <HStack w={windowWidth * 0.8} >
+                          <Text style={{ fontSize: windowWidth * 0.04 }}>ID: {ticketID}</Text>
+                          <Text style={{ fontSize: windowWidth * 0.04, marginLeft: windowWidth * 0.08 }}>Name: {ticketTitle}</Text>
+                        </HStack>
+                        <Text style={{ fontSize: windowWidth * 0.04 }}>Created: {ticketDate}</Text>
+                      </View>
+                    </VStack>
+                  </Center>
+                )
+              })}
+            </ScrollView>
           </View>
-        </Container>
+        </Container >
       );
     }
   };
@@ -211,7 +164,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(TicketScreen)
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: windowHeight*0.02,
+    paddingVertical: windowHeight * 0.02,
     alignItems: 'center',
     alignSelf: 'center',
   },
@@ -224,7 +177,14 @@ const styles = StyleSheet.create({
     // backgroundColor: 'black'
   },
   TicketList: {
-    width: '100%',
-    height: '80%'
+    width: windowWidth * 0.95,
+    height: windowHeight * 0.7,
+    // backgroundColor: 'white',
+    margin: windowWidth * 0.05,
+    justifyContent: 'space-around',
+  },
+  ListStyle: {
+    // backgroundColor: 'gray',
+    padding: windowWidth * 0.02
   }
 });
