@@ -25,6 +25,10 @@ export default theme = extendTheme({
             600: {
                 normal: "WorkSans-Medium",
                 italic: "WorkSans-MediumItalic"
+            },
+            700: {
+                normal: "WorkSans-Bold",
+                italic: "WorkSans-BoldItalic"
             }
         }
     },

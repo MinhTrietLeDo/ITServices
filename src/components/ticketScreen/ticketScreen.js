@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ActivityIndicator,
   View,
@@ -6,7 +6,6 @@ import {
   Alert,
 } from 'react-native';
 import { API_URL, App_Token } from '../../config/config';
-import { connect } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import {
@@ -14,29 +13,24 @@ import {
   Heading, ScrollView, Box, Avatar, Divider, Button
 } from 'native-base';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
+import { useSelector } from 'react-redux';
 
-class TicketScreen extends Component {
-  state = {
-    // tickets_open: [],
-    // tickets_closed: [],
-    tickets: [],
-    loading: true,
-    showId: null
-  };
+const TicketScreen = () => {
+  const [ticket, setTicket] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [id, setID] = useState(null)
+  const token = useSelector((state) => state.user.token)
 
-  constructor() {
-    super();
-  }
+  useEffect(() => {
+    GetTickets().catch(console.error)
 
-  componentDidMount() {
-    //console.log(this.props);
-    this.GetTickets();
-    console.log(this.windowWidth)
-  }
+  }, [])
 
-  GetTickets = async () => {
+
+  // const sessionToken = token.split
+
+  const GetTickets = async () => {
     const ticket = '/search/Ticket/?order=DESC&expand_dropdowns=true&sort=2'
-
     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -46,20 +40,21 @@ class TicketScreen extends Component {
     let request = await Promise.all([
       await fetch(
         //API_URL + criteria_closed + '&session_token=' + this.props.token,
-        API_URL + ticket + '&session_token=' + this.props.token,
+        API_URL + ticket + '&session_token=' + token,
         {
           headers: objHeader,
         })
         .then(el => el.json())
     ]);
-
+    console.log(API_URL + ticket + '&session_token=' + token)
 
     if (typeof request[0].data !== 'undefined') {
-      this.setState({
-        tickets: request[0].data,
-        loading: false
-      });
-      console.log('333333333333333333', this.state.tickets)
+      // this.setState({
+      //   tickets: request[0].data,
+      //   loading: false
+      // });
+      setTicket(request[0].data)
+      console.log('333333333333333333', ticket)
     } else {
 
       Alert.alert('Error', 'Please try again later', [
@@ -71,96 +66,83 @@ class TicketScreen extends Component {
         { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]);
 
-      this.setState({
-        loading: false
-      });
+      // this.setState({
+      //   loading: false
+      // });
+      setLoading(false)
     }
 
   }
 
-  render() {
-    if (this.state.loading) {
-      return (
-        <View style={[styles.container, styles.horizontal]}>
-          <ActivityIndicator size="large" />
+  if (loading) {
+    return (
+      <View style={[styles.container, styles.horizontal]}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  } else {
+    // let llfdata = null;
+    // try {
+    //   let llData = this.props.userProfile.last_login.split(' ');
+    //   llfdata = llData[0].split('-').reverse().toString().replace(/,/g, '-').concat(' ' + llData[1]);
+    //   // console.log(llData)
+    // } catch (error) {
+    //   llfdata = '-';
+    //   console.error(error, llfdata)
+    // }
+    return (
+      <Container style={styles.container}>
+        <View style={styles.TicketList}>
+          <ScrollView>
+            {ticket.map(el => {
+              let rawDate = el["15"].split(' ')
+              let ticketDate = rawDate[0].split('-').reverse().toString().replace(/,/g, '-').concat(' ' + rawDate[1]);
+              let ticketTitle = el["1"]
+              let lastUpdate = el["19"]
+              let ticketID = el["2"]
+              console.log(
+                'Ticket ID:', ticketID,
+                'Ticket Date:', ticketDate,
+                'Ticket Name:', ticketTitle,
+                'Last update:', lastUpdate)
+              return (
+                <Center>
+                  <VStack
+                    divider={<Divider my="2" />}
+                    w={windowWidth * 0.9}
+                    style={{
+                      borderWidth: windowWidth * 0.0015,
+                      borderRadius: windowWidth * 0.015,
+                      margin: windowWidth * 0.01,
+                      height: windowHeight * 0.15,
+                      // backgroundColor:'white'
+                    }}
+                  >
+                    <View style={{ padding: windowWidth * 0.02 }}>
+                      <Text style={{ fontSize: windowWidth * 0.05, fontWeight: 700 }}>{ticketTitle} #{ticketID}</Text>
+                      <Text style={{ fontSize: windowWidth * 0.04 }}>Created: {ticketDate}</Text>
+                    </View>
+                  </VStack>
+                </Center>
+              )
+            })}
+          </ScrollView>
         </View>
-      );
-    } else {
-      let llfdata = null;
-      try {
-        let llData = this.props.userProfile.last_login.split(' ');
-        llfdata = llData[0].split('-').reverse().toString().replace(/,/g, '-').concat(' ' + llData[1]);
-        // console.log(llData)
-      } catch (error) {
-        llfdata = '-';
-        console.error(error, llfdata)
-      }
-      return (
-        <Container style={styles.container}>
-          <View style={styles.UserProfile}>
-            <View>
-              <Avatar
-                style={{ height: 100, borderRadius: 50, width: 100, resizeMode: 'cover' }}
-                // source={{ uri: !!this.props.userProfile.picture ? 'http://172.16.18.45/front/document.send.php?file=_pictures/' + this.props.userProfile.picture : 'https://cdn.cwsplatform.com/assets/no-photo-available.png' }}
-                source={{ uri: 'https://cdn.cwsplatform.com/assets/no-photo-available.png' }}
-              />
-            </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginLeft: '10%' }}>
-              <Heading fontSize={30} bold>{this.props.userObj.glpifirstname + ' ' + this.props.userObj.glpirealname}</Heading>
-              <Text note>Last login in: {llfdata}</Text>
-            </View>
-          </View>
-
-          <View style={styles.TicketList}>
-            <ScrollView style={styles.ListStyle}>
-              {this.state.tickets.map(el => {
-                let rawDate = el["15"].split(' ')
-                let ticketDate = rawDate[0].split('-').reverse().toString().replace(/,/g, '-').concat(' ' + rawDate[1]);
-                let ticketTitle = el["1"]
-                let lastUpdate = el["19"]
-                let ticketID = el["2"]
-                console.log(
-                  'Ticket ID:', ticketID,
-                  'Ticket Date:', ticketDate,
-                  'Ticket Name:', ticketTitle,
-                  'Last update:', lastUpdate)
-                return (
-                  <Center>
-                    <VStack
-                      space={100}
-                      divider={<Divider my="2" />}
-                      w={windowWidth * 0.9}
-                    >
-                      <View style={{ padding: windowWidth * 0.02 }}>
-                        <HStack w={windowWidth * 0.8} >
-                          <Text style={{ fontSize: windowWidth * 0.04 }}>ID: {ticketID}</Text>
-                          <Text style={{ fontSize: windowWidth * 0.04, marginLeft: windowWidth * 0.08 }}>Name: {ticketTitle}</Text>
-                        </HStack>
-                        <Text style={{ fontSize: windowWidth * 0.04 }}>Created: {ticketDate}</Text>
-                      </View>
-                    </VStack>
-                  </Center>
-                )
-              })}
-            </ScrollView>
-          </View>
-        </Container >
-      );
-    }
-  };
+      </Container >
+    );
+  }
 }
-const mapStateToProps = (state) => ({
-  userConfig: state.user,
-  userObj: state.user.userObj,
-  userProfile: state.user.userProfile,
-  token: state.user.token
-});
+// const mapStateToProps = (state) => ({
 
-/** dispatch actions */
-const mapDispatchToProps = dispatch => ({
-});
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketScreen)
+// /** dispatch actions */
+// const mapDispatchToProps = dispatch => ({
+// });
+
+// export default connect(mapStateToProps, mapDispatchToProps)(TicketScreen)
+
+export default TicketScreen
 
 const styles = StyleSheet.create({
   container: {
@@ -172,18 +154,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 80,
   },
-  UserProfile: {
-    flexDirection: 'row',
-    // backgroundColor: 'black'
-  },
   TicketList: {
     width: windowWidth * 0.95,
-    height: windowHeight * 0.7,
-    // backgroundColor: 'white',
+    height: windowHeight * 0.8,
     margin: windowWidth * 0.05,
-    justifyContent: 'space-around',
+    justifyContent: 'center',
   },
-  ListStyle: {
+  StackStyle: {
     // backgroundColor: 'gray',
     padding: windowWidth * 0.02
   }

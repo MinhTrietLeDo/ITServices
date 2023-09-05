@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { MyDrawer } from './navigations/drawerNavigation';
 import LoginScreen from '../components/loginScreen/loginScreen';
 import theme from '../assets/res/theme';
+import loginHook from '../components/loginScreen/loginHook';
 
 const Stack = createStackNavigator()
 
@@ -20,7 +21,7 @@ const RootStack = () => {
           // Check Login Stack
           <Stack.Screen
             name='Login'
-            component={LoginScreen}
+            component={loginHook}
             options={{
               headerBackVisible: false,
               headerShown: false,

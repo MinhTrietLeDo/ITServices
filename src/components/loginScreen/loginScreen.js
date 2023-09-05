@@ -196,7 +196,7 @@ class Login extends React.Component {
           <Box alignItems="center" w='100%'>
             <View style={styles.LogoandHeaders}>
               <Image
-                style={{ width: 0.9 * windowWidth, height: 0.22 * windowHeight }}
+                style={{ width: 0.72 * windowWidth, height: 0.22 * windowHeight }}
                 isRequired
                 source={require('../../assets/img/TDT_logo.png')} alt="Logo"
               />
@@ -276,7 +276,7 @@ class Login extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: windowHeight*0.05,
+    paddingVertical: windowHeight * 0.05,
     alignItems: 'center',
     alignSelf: 'center',
   },
