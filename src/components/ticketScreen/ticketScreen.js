@@ -19,15 +19,12 @@ const TicketScreen = () => {
   const [ticket, setTicket] = useState([])
   const [loading, setLoading] = useState(true)
   const [id, setID] = useState(null)
-  const token = useSelector((state) => state.user.token)
-  const sessionToken = token.session_token
+  const token = useSelector((state) => state.user.token.session_token)
 
   useEffect(() => {
     GetTickets().catch(console.error)
+    console.log('Catch user token:',token)
   }, [])
-
-
-
 
   const GetTickets = async () => {
     const ticket = '/search/Ticket/?order=DESC&expand_dropdowns=true&sort=2'
@@ -39,13 +36,13 @@ const TicketScreen = () => {
 
     let request = await Promise.all([
       await fetch(
-        API_URL + ticket + '&session_token=' + sessionToken,
+        API_URL + ticket + '&session_token=' + token,
         {
           headers: objHeader,
         })
         .then(el => el.json())
     ]);
-    console.log(API_URL + ticket + '&session_token=' + sessionToken)
+    console.log(API_URL + ticket + '&session_token=' + token)
 
     if (typeof request[0].data !== 'undefined') {
       setTicket(request[0].data)
