@@ -5,7 +5,6 @@ import store from '../config/store';
 import { NativeBaseProvider, StatusBar } from 'native-base';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MyDrawer } from './navigations/drawerNavigation';
-import LoginScreen from '../components/loginScreen/loginScreen';
 import theme from '../assets/res/theme';
 import loginHook from '../components/loginScreen/loginHook';
 

@@ -20,14 +20,14 @@ const TicketScreen = () => {
   const [loading, setLoading] = useState(true)
   const [id, setID] = useState(null)
   const token = useSelector((state) => state.user.token)
+  const sessionToken = token.session_token
 
   useEffect(() => {
     GetTickets().catch(console.error)
-
   }, [])
 
 
-  // const sessionToken = token.split
+
 
   const GetTickets = async () => {
     const ticket = '/search/Ticket/?order=DESC&expand_dropdowns=true&sort=2'
@@ -39,22 +39,17 @@ const TicketScreen = () => {
 
     let request = await Promise.all([
       await fetch(
-        //API_URL + criteria_closed + '&session_token=' + this.props.token,
-        API_URL + ticket + '&session_token=' + token,
+        API_URL + ticket + '&session_token=' + sessionToken,
         {
           headers: objHeader,
         })
         .then(el => el.json())
     ]);
-    console.log(API_URL + ticket + '&session_token=' + token)
+    console.log(API_URL + ticket + '&session_token=' + sessionToken)
 
     if (typeof request[0].data !== 'undefined') {
-      // this.setState({
-      //   tickets: request[0].data,
-      //   loading: false
-      // });
       setTicket(request[0].data)
-      console.log('333333333333333333', ticket)
+      setLoading(false)
     } else {
 
       Alert.alert('Error', 'Please try again later', [
@@ -65,10 +60,6 @@ const TicketScreen = () => {
         },
         { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]);
-
-      // this.setState({
-      //   loading: false
-      // });
       setLoading(false)
     }
 
@@ -81,15 +72,6 @@ const TicketScreen = () => {
       </View>
     );
   } else {
-    // let llfdata = null;
-    // try {
-    //   let llData = this.props.userProfile.last_login.split(' ');
-    //   llfdata = llData[0].split('-').reverse().toString().replace(/,/g, '-').concat(' ' + llData[1]);
-    //   // console.log(llData)
-    // } catch (error) {
-    //   llfdata = '-';
-    //   console.error(error, llfdata)
-    // }
     return (
       <Container style={styles.container}>
         <View style={styles.TicketList}>
@@ -132,15 +114,6 @@ const TicketScreen = () => {
     );
   }
 }
-// const mapStateToProps = (state) => ({
-
-// });
-
-// /** dispatch actions */
-// const mapDispatchToProps = dispatch => ({
-// });
-
-// export default connect(mapStateToProps, mapDispatchToProps)(TicketScreen)
 
 export default TicketScreen
 
