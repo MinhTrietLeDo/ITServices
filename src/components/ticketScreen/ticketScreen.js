@@ -79,11 +79,15 @@ const TicketScreen = () => {
               let ticketTitle = el["1"]
               let lastUpdate = el["19"]
               let ticketID = el["2"]
+              let urgency = el["3"]
+              let watchers = el["12"]
               console.log(
                 'Ticket ID:', ticketID,
                 'Ticket Date:', ticketDate,
                 'Ticket Name:', ticketTitle,
-                'Last update:', lastUpdate)
+                'Last update:', lastUpdate,
+                'Urgency:', urgency
+                )
               return (
                 <Center>
                   <VStack
