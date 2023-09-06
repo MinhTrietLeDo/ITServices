@@ -1,6 +1,13 @@
-12: watchers?
+12: status(
+    New: 1;
+    Processing (assigned): 2;
+    Processing (planned):3; 
+    Pending: 4; 
+    Solved: 5; 
+    Closed: 6
+)
 3: Total Impact? (Major: 6; Very High: 5; Medium: 4; Low: 3; Very Low: 2)
-4:
-5:
-7:
+4: requester 
+5: asigned to
+7: category
 18:

@@ -15,7 +15,7 @@ import {
 } from 'native-base';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import { useSelector } from 'react-redux';
-import { HandleUrgency } from '../../config/handle';
+import { HandeStatusColor, HandeUrgencyColor, HandleBadgeStatus, HandleUrgency } from '../../config/handle';
 
 const TicketScreen = () => {
   const [ticket, setTicket] = useState([])
@@ -23,6 +23,7 @@ const TicketScreen = () => {
   const [id, setID] = useState(null)
   const token = useSelector((state) => state.user.token.session_token)
   const [refreshing, setRefreshing] = useState(false);
+  const [defaultSort, setDefaultSort] = useState(2)
 
   useEffect(() => {
     GetTickets().catch(console.error)
@@ -39,7 +40,7 @@ const TicketScreen = () => {
   }, []);
 
   const GetTickets = async () => {
-    const ticket = '/search/Ticket/?order=DESC&expand_dropdowns=true&sort=2'
+    const ticket = '/search/Ticket/?order=DESC&expand_dropdowns=true&sort=' + defaultSort
     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -96,13 +97,14 @@ const TicketScreen = () => {
               let lastUpdate = el["19"]
               let ticketID = el["2"]
               let urgency = el["3"]
-              let watchers = el["12"]
+              let status = el["12"]
               console.log(
                 'Ticket ID:', ticketID,
                 'Ticket Date:', ticketDate,
                 'Ticket Name:', ticketTitle,
                 'Last update:', lastUpdate,
-                'Urgency:', urgency
+                'Urgency:', urgency,
+                'Status:', status
               )
               return (
                 <Center key={ticketID}>
@@ -134,7 +136,7 @@ const TicketScreen = () => {
                         <Badge
                           _text={{ fontSize: windowWidth * 0.035 }}
                           variant="solid"
-                          colorScheme={"warning"}
+                          colorScheme={HandeUrgencyColor({urgency})}
                           rounded={windowWidth * 0.01}
                         >
                           {HandleUrgency({ urgency })}
@@ -142,10 +144,10 @@ const TicketScreen = () => {
                         <Badge
                           _text={{ fontSize: windowWidth * 0.035 }}
                           variant="solid"
-                          colorScheme={"info"}
+                          colorScheme={HandeStatusColor({status})}
                           rounded={windowWidth * 0.01}
                         >
-                          {HandleUrgency({ urgency })}
+                          {HandleBadgeStatus({ status })}
                         </Badge>
                       </HStack>
 

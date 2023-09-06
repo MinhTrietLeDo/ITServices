@@ -1,35 +1,75 @@
-export const PriorityState = {
-    5: 'Very High',
-    4: 'Medium',
-    3: 'Low',
-    2: 'Very Low'
-}
-
-export const HandleUrgency = (urgency, colorScheme) => {
-    console.log('state', urgency.urgency)
+//handle mức độ ưu tiên của ticket
+export const HandleUrgency = (urgency) => {
     switch (urgency.urgency) {
         case 6:
-            console.log('Major')
             return 'Major'
         case 5:
-            console.log('Very High')
             return 'Very High'
         case 4:
-            console.log('Medium')
             return 'Medium'
         case 3:
-            console.log('Low')
             return 'Low'
         case 2:
-            console.log('Very Low')
             return 'Very Low'
         case 1:
-            console.log('Minor')
             return 'Minor'
         default: console.log('default case: no')
     }
 }
 
-export const HandleBadgeUrgency = (urgency) => {
+//handle trạng thái của ticket
+export const HandleBadgeStatus = (status) => {
+    switch (status.status) {
+        case 6:
+            return 'Closed'
+        case 5:
+            return 'Solved'
+        case 4:
+            return 'Pending'
+        case 3:
+            return 'Processing (planned)'
+        case 2:
+            return 'Processing (assigned)'
+        case 1:
+            return 'New'
+        default: console.log('default case: no')
+    }
+}
 
+//handle màu sắc trạng thái của ticket
+export const HandeStatusColor = (status) => {
+    switch (status.status) {
+        case 6: //Ticket Closed
+            return "default"
+        case 5://Solved
+            //return 'Solved'
+        case 4: //Pending
+            // return 'Pending'
+        case 3: //Processing (planned)
+            // return 'Processing (planned)'
+        case 2: //Processing (assigned)
+            // return 'Processing (assigned)'
+        case 1: //New
+            return "success"
+        default: 
+    }
+}
+
+//handle màu sắc mức độ ưu tiên của ticket
+export const HandeUrgencyColor = (urgency) => {
+    switch (urgency.urgency) {
+        case 6: //Major
+            return 'error'
+        case 5: //Very High
+            return 'warning'
+        case 4: //Medium
+            return 'info'
+        case 3: //Low
+            return 'info'
+        case 2: //Very Low
+            return 'info'
+        case 1: //Minor 😭
+            //return "success"
+        default: 
+    }
 }
