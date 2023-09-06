@@ -1,30 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   ActivityIndicator,
   View,
   StyleSheet,
   Alert,
+  RefreshControl
 } from 'react-native';
 import { API_URL, App_Token } from '../../config/config';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import {
   Text, Center, Container, List, FlatList, HStack, VStack,
-  Heading, ScrollView, Box, Avatar, Divider, Button
+  Heading, ScrollView, Box, Avatar, Divider, Button, Badge
 } from 'native-base';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import { useSelector } from 'react-redux';
+import { HandleUrgency } from '../../config/handle';
 
 const TicketScreen = () => {
   const [ticket, setTicket] = useState([])
   const [loading, setLoading] = useState(true)
   const [id, setID] = useState(null)
   const token = useSelector((state) => state.user.token.session_token)
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     GetTickets().catch(console.error)
-    console.log('Catch user token:',token)
+    console.log('Catch user token:', token)
   }, [])
+
+  const onRefresh = useCallback(() => {
+    console.log('MMMMMMMMMMHHHHHM, REFRESHING!!')
+    setRefreshing(true);
+    GetTickets().catch(console.error)
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
 
   const GetTickets = async () => {
     const ticket = '/search/Ticket/?order=DESC&expand_dropdowns=true&sort=2'
@@ -72,7 +84,11 @@ const TicketScreen = () => {
     return (
       <Container style={styles.container}>
         <View style={styles.TicketList}>
-          <ScrollView>
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
             {ticket.map(el => {
               let rawDate = el["15"].split(' ')
               let ticketDate = rawDate[0].split('-').reverse().toString().replace(/,/g, '-').concat(' ' + rawDate[1]);
@@ -87,9 +103,9 @@ const TicketScreen = () => {
                 'Ticket Name:', ticketTitle,
                 'Last update:', lastUpdate,
                 'Urgency:', urgency
-                )
+              )
               return (
-                <Center>
+                <Center key={ticketID}>
                   <VStack
                     divider={<Divider my="2" />}
                     w={windowWidth * 0.9}
@@ -102,8 +118,37 @@ const TicketScreen = () => {
                     }}
                   >
                     <View style={{ padding: windowWidth * 0.02 }}>
-                      <Text style={{ fontSize: windowWidth * 0.05, fontWeight: 700 }}>{ticketTitle} #{ticketID}</Text>
+                      <Text
+                        maxWidth={windowWidth * 0.8}
+                        maxH={windowHeight * 0.06}
+                        style={{
+                          fontSize: windowWidth * 0.05,
+                          fontWeight: 700,
+                          // backgroundColor: 'black'
+                        }}
+                      >
+                        {ticketTitle} #{ticketID}
+                      </Text>
                       <Text style={{ fontSize: windowWidth * 0.04 }}>Created: {ticketDate}</Text>
+                      <HStack alignSelf={'center'} space={windowWidth * 0.02} marginTop={windowHeight * 0.01}>
+                        <Badge
+                          _text={{ fontSize: windowWidth * 0.035 }}
+                          variant="solid"
+                          colorScheme={"warning"}
+                          rounded={windowWidth * 0.01}
+                        >
+                          {HandleUrgency({ urgency })}
+                        </Badge>
+                        <Badge
+                          _text={{ fontSize: windowWidth * 0.035 }}
+                          variant="solid"
+                          colorScheme={"info"}
+                          rounded={windowWidth * 0.01}
+                        >
+                          {HandleUrgency({ urgency })}
+                        </Badge>
+                      </HStack>
+
                     </View>
                   </VStack>
                 </Center>

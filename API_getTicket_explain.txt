@@ -1,5 +1,5 @@
 12: watchers?
-3: urgency (Very High: 5; Medium: 4; Low: 3; Very Low: 2)
+3: Total Impact? (Major: 6; Very High: 5; Medium: 4; Low: 3; Very Low: 2)
 4:
 5:
 7:

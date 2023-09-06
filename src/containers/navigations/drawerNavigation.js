@@ -25,8 +25,38 @@ const MyDrawer = () => {
       // useLegacyImplementation
       drawerContent={(props) => <CustomDrawer {...props} />}
     >
-      <Drawer.Screen component={Home} name="Dashboard" />
-      <Drawer.Screen component={TicketScreen} name="Ticket" />
+      <Drawer.Screen
+        component={Home}
+        name="Dashboard"
+        options={{
+          title: 'Home',
+          headerStyle: {
+            // backgroundColor: '#f4511e',
+          },
+          // headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontFamily: 'WorkSans'
+          },
+          headerTitleAlign: 'center'
+        }}
+      />
+      <Drawer.Screen
+        component={TicketScreen}
+        name="Ticket"
+        options={{
+          title: 'Ticket List',
+          // headerStyle: {
+          //   backgroundColor: '#f4511e',
+          // },
+          // headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontFamily: 'WorkSans'
+          },
+          headerTitleAlign: 'center'
+        }}
+      />
     </Drawer.Navigator>
   );
 }
