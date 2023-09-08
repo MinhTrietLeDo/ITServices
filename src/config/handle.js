@@ -50,7 +50,7 @@ export const HandeStatusColor = (status) => {
         case 2: //Processing (assigned)
             return "#FFA500"
         case 1: //New
-            return "#65D03D"
+            return "#32CD32"
         default:
     }
 }
@@ -72,4 +72,9 @@ export const HandeUrgencyColor = (urgency) => {
             return "gray"
         default: return "gray"
     }
+}
+
+
+export const HandleNoti = ({navigation, noti}) => {
+    console.log('AAAAAAAAA')
 }

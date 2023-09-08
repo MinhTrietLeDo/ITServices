@@ -7,6 +7,8 @@ import {
 } from '@react-navigation/drawer';
 import TicketScreen from '../../components/ticketScreen/ticketScreen';
 import Home from '../../components/home/home';
+import { NotiButton } from '../../components/headerBtn/headerBtn';
+import { HandleNoti } from '../../config/handle';
 
 const Drawer = createDrawerNavigator();
 
@@ -30,15 +32,18 @@ const MyDrawer = () => {
         name="Dashboard"
         options={{
           title: 'Home',
-          headerStyle: {
-            // backgroundColor: '#f4511e',
-          },
-          // headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
             fontFamily: 'WorkSans'
           },
-          headerTitleAlign: 'center'
+          headerTitleAlign: 'center',
+          headerRight: () => (
+            <NotiButton
+              // containerStyle={{backgroundColor: 'black'}}
+              // onPress={() => console.log('Pressed')}
+              onPress={() => HandleNoti()}
+            />
+          )
         }}
       />
       <Drawer.Screen
@@ -46,15 +51,17 @@ const MyDrawer = () => {
         name="Ticket"
         options={{
           title: 'Ticket List',
-          // headerStyle: {
-          //   backgroundColor: '#f4511e',
-          // },
-          // headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
             fontFamily: 'WorkSans'
           },
-          headerTitleAlign: 'center'
+          headerTitleAlign: 'center',
+          headerRight: () => (
+            <NotiButton
+              // containerStyle={{backgroundColor: 'black'}}
+              onPress={() => HandleNoti()}
+            />
+          )
         }}
       />
     </Drawer.Navigator>
