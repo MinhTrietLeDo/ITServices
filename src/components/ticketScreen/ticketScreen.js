@@ -88,7 +88,7 @@ const TicketScreen = () => {
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
-            maxHeight={windowHeight*0.8}
+            maxHeight={windowHeight * 0.8}
           >
             {ticket.map(el => {
               let rawDate = el["15"].split(' ')
@@ -111,10 +111,16 @@ const TicketScreen = () => {
                       // backgroundColor:'white'
                     }}
                   >
-                    <View style={{ padding: windowWidth * 0.02 }}>
+                    <View style={{
+                      padding: windowWidth * 0.02,
+                      // backgroundColor: 'black',
+                      justifyContent: 'space-between',
+                      alignContent: 'center',
+                      height: '100%'
+                    }}>
                       <Text
                         maxWidth={windowWidth * 0.8}
-                        maxH={windowHeight * 0.06}
+                        maxH={windowHeight * 0.035}
                         style={{
                           fontSize: windowWidth * 0.05,
                           fontWeight: 700,
@@ -124,6 +130,8 @@ const TicketScreen = () => {
                         {ticketTitle} #{ticketID}
                       </Text>
                       <Text style={{ fontSize: windowWidth * 0.04 }}>Created: {ticketDate}</Text>
+                      <Text style={{ fontSize: windowWidth * 0.04 }}>Request by: {ticketDate}</Text>
+                      {/*============== BAGDE ==============*/}
                       <HStack alignSelf={'center'} space={windowWidth * 0.02} marginTop={windowHeight * 0.01}>
                         <Badge
                           _text={{ fontSize: windowWidth * 0.037 }}
@@ -137,13 +145,13 @@ const TicketScreen = () => {
                         <Badge
                           _text={{ fontSize: windowWidth * 0.037 }}
                           variant="solid"
-                          style={{ backgroundColor: HandeStatusColor({status}) }}
+                          style={{ backgroundColor: HandeStatusColor({ status }) }}
                           rounded={windowWidth * 0.01}
                         >
                           {HandleBadgeStatus({ status })}
                         </Badge>
                       </HStack>
-
+                      {/*============== BAGDE ==============*/}
                     </View>
                   </VStack>
                 </Center>

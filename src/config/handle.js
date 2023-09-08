@@ -4,7 +4,7 @@ export const HandleUrgency = (urgency) => {
         case 6:
             return 'Major'
         case 5:
-            return 'Very High'
+            return 'High'
         case 4:
             return 'Medium'
         case 3:
@@ -60,21 +60,27 @@ export const HandeUrgencyColor = (urgency) => {
     switch (urgency.urgency) {
         case 6: //Major
             return "red"
-        case 5: //Very High
+        case 5: //High
             return "#FF7D61"
         case 4: //Medium
-            return "#FF9138"
+            return "#f0ad4e"
         case 3: //Low
-            return "#B7AC44"
+            return "#5bc0de"
         case 2: //Very Low
-            return "gray"
+            return "#5bc0de"
         case 1: //Minor 😭
             return "gray"
         default: return "gray"
     }
 }
 
-
-export const HandleNoti = ({navigation, noti}) => {
+//handle khứa noti
+export const HandleNoti = (navigate, noti) => {
     console.log('AAAAAAAAA')
+}
+
+export const NotiOnOff = (noti) => {
+    switch (noti){
+        // case 
+    }
 }
