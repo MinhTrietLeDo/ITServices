@@ -20,7 +20,6 @@ import { HandeStatusColor, HandeUrgencyColor, HandleBadgeStatus, HandleUrgency }
 const TicketScreen = () => {
   const [ticket, setTicket] = useState([])
   const [loading, setLoading] = useState(true)
-  const [id, setID] = useState(null)
   const token = useSelector((state) => state.user.token.session_token)
   const [refreshing, setRefreshing] = useState(false);
   const [defaultSort, setDefaultSort] = useState(2)
@@ -89,6 +88,7 @@ const TicketScreen = () => {
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
+            maxHeight={windowHeight*0.8}
           >
             {ticket.map(el => {
               let rawDate = el["15"].split(' ')
@@ -98,14 +98,6 @@ const TicketScreen = () => {
               let ticketID = el["2"]
               let urgency = el["3"]
               let status = el["12"]
-              console.log(
-                'Ticket ID:', ticketID,
-                'Ticket Date:', ticketDate,
-                'Ticket Name:', ticketTitle,
-                'Last update:', lastUpdate,
-                'Urgency:', urgency,
-                'Status:', status
-              )
               return (
                 <Center key={ticketID}>
                   <VStack
@@ -134,17 +126,18 @@ const TicketScreen = () => {
                       <Text style={{ fontSize: windowWidth * 0.04 }}>Created: {ticketDate}</Text>
                       <HStack alignSelf={'center'} space={windowWidth * 0.02} marginTop={windowHeight * 0.01}>
                         <Badge
-                          _text={{ fontSize: windowWidth * 0.035 }}
+                          _text={{ fontSize: windowWidth * 0.037 }}
                           variant="solid"
-                          colorScheme={HandeUrgencyColor({urgency})}
+                          //colorScheme={HandeUrgencyColor({ urgency })}
+                          style={{ backgroundColor: HandeUrgencyColor({ urgency }) }}
                           rounded={windowWidth * 0.01}
                         >
                           {HandleUrgency({ urgency })}
                         </Badge>
                         <Badge
-                          _text={{ fontSize: windowWidth * 0.035 }}
+                          _text={{ fontSize: windowWidth * 0.037 }}
                           variant="solid"
-                          colorScheme={HandeStatusColor({status})}
+                          style={{ backgroundColor: HandeStatusColor({status}) }}
                           rounded={windowWidth * 0.01}
                         >
                           {HandleBadgeStatus({ status })}

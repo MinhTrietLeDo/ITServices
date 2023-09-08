@@ -40,18 +40,18 @@ export const HandleBadgeStatus = (status) => {
 export const HandeStatusColor = (status) => {
     switch (status.status) {
         case 6: //Ticket Closed
-            return "default"
+            return "#444444"
         case 5://Solved
-            //return 'Solved'
+            return "#595E60"
         case 4: //Pending
-            // return 'Pending'
+            return "#AEC300"
         case 3: //Processing (planned)
-            // return 'Processing (planned)'
+            return "#FFA500"
         case 2: //Processing (assigned)
-            // return 'Processing (assigned)'
+            return "#FFA500"
         case 1: //New
-            return "success"
-        default: 
+            return "#65D03D"
+        default:
     }
 }
 
@@ -59,17 +59,17 @@ export const HandeStatusColor = (status) => {
 export const HandeUrgencyColor = (urgency) => {
     switch (urgency.urgency) {
         case 6: //Major
-            return 'error'
+            return "red"
         case 5: //Very High
-            return 'warning'
+            return "#FF7D61"
         case 4: //Medium
-            return 'info'
+            return "#FF9138"
         case 3: //Low
-            return 'info'
+            return "#B7AC44"
         case 2: //Very Low
-            return 'info'
+            return "gray"
         case 1: //Minor 😭
-            //return "success"
-        default: 
+            return "gray"
+        default: return "gray"
     }
 }
