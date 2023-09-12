@@ -39,7 +39,7 @@ const TicketScreen = () => {
   }, []);
 
   const GetTickets = async () => {
-    const ticket = '/search/Ticket/?order=DESC&expand_dropdowns=true&sort=' + defaultSort
+    const ticket = '/search/Ticket/?order=DESC&expand_dropdowns=true&forcedisplay[0]=1&forcedisplay[1]=2&forcedisplay[2]=3&forcedisplay[3]=12&forcedisplay[4]=15&forcedisplay[5]=19&forcedisplay[6]=21&sort=' + defaultSort
     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -98,6 +98,9 @@ const TicketScreen = () => {
               let ticketID = el["2"]
               let urgency = el["3"]
               let status = el["12"]
+              let getRawDescription = el["21"].split("&#60;p&#62;")
+              let description = getRawDescription[1].split('&#60;/p&#62;').toString().replace(/,/g, '')
+              console.log(description)
               return (
                 <Center key={ticketID}>
                   <VStack
@@ -130,7 +133,7 @@ const TicketScreen = () => {
                         {ticketTitle} #{ticketID}
                       </Text>
                       <Text style={{ fontSize: windowWidth * 0.04 }}>Created: {ticketDate}</Text>
-                      <Text style={{ fontSize: windowWidth * 0.04 }}>Request by: {ticketDate}</Text>
+                      <Text style={{ fontSize: windowWidth * 0.04 }}>Description: {description}</Text>
                       {/*============== BAGDE ==============*/}
                       <HStack alignSelf={'center'} space={windowWidth * 0.02} marginTop={windowHeight * 0.01}>
                         <Badge
