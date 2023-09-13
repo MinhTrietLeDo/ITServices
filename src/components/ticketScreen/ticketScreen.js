@@ -36,17 +36,29 @@ import {
   HandleBadgeStatus,
   HandleUrgency,
 } from '../../config/handle';
+import {SelectList} from 'react-native-dropdown-select-list';
 
 const TicketScreen = () => {
   const [ticket, setTicket] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = useSelector(state => state.user.token.session_token);
   const [refreshing, setRefreshing] = useState(false);
-  const [defaultSort, setDefaultSort] = useState(2);
+  const [sort, setSort] = useState(2);
+  const [select, setSelected] = useState(2);
+
+  const sortType = [
+    {key: '12', value: 'Status'},
+    {key: '2', value: 'ID'},
+    {key: '3', value: 'Impact'},
+  ];
 
   useEffect(() => {
     GetTickets().catch(console.error);
     console.log('Catch user token:', token);
+    console.log(
+      'SELECT:',
+      select,
+    );
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -61,7 +73,7 @@ const TicketScreen = () => {
   const GetTickets = async () => {
     const ticketURL =
       '/search/Ticket/?order=DESC&expand_dropdowns=true&forcedisplay[0]=1&forcedisplay[1]=2&forcedisplay[2]=3&forcedisplay[3]=12&forcedisplay[4]=15&forcedisplay[5]=19&forcedisplay[6]=21&sort=' +
-      defaultSort;
+      sort;
     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -100,7 +112,7 @@ const TicketScreen = () => {
   } else {
     return (
       <SafeAreaView style={styles.container}>
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             width: windowWidth * 0.8,
@@ -115,7 +127,19 @@ const TicketScreen = () => {
             color="muted.400"
             onPress={() => console.log('Sort Box Pressed')}
           />
-        </View>
+        </View> */}
+
+        <SelectList
+          data={sortType}
+          setSelected={setSelected}
+          placeholder="Sort By"
+          maxHeight={windowHeight * 0.2}
+          search={false}
+          fontFamily="WorkSans"
+          defaultOption={{key: '2', value: 'ID'}}
+          // onSelect={() => console.log(select)}
+          onSelect={() => setSort(select)}
+        />
         <View style={styles.TicketList}>
           <ScrollView
             refreshControl={
@@ -140,7 +164,6 @@ const TicketScreen = () => {
                 .split('&#60;/p&#62;')
                 .toString()
                 .replace(/,/g, '');
-              console.log(description);
               return (
                 <Center key={ticketID}>
                   <VStack
@@ -154,8 +177,7 @@ const TicketScreen = () => {
                       // backgroundColor:'white'
                     }}>
                     <TouchableOpacity
-                      onPress={() => console.log('Ticket View Pressed')}
-                    >
+                      onPress={() => console.log('Ticket View Pressed')}>
                       <View
                         style={{
                           padding: windowWidth * 0.02,
