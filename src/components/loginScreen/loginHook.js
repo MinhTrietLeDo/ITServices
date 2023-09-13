@@ -225,7 +225,7 @@ const LoginHook = () => {
                   <Icon
                     as={<MaterialIcons name="person" />}
                     size={0.06 * windowWidth}
-                    ml="2"
+                    ml={windowWidth * 0.02}
                     color="muted.400"
                   />
                 }
@@ -249,16 +249,16 @@ const LoginHook = () => {
                       />
                     }
                     size={0.06 * windowWidth}
-                    ml="2"
+                    mr={windowWidth * 0.02}
                     color="muted.400"
-                    style={{marginRight: windowWidth*0.02}}
+                    // style={{marginRight: windowWidth*0.02}}
                   />
                 }
                 InputLeftElement={
                   <Icon
                     as={<MaterialIcons name="lock" />}
                     size={0.06 * windowWidth}
-                    ml="2"
+                    ml={windowWidth * 0.02}
                     color="muted.400"
                   />
                 }
