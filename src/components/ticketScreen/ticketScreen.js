@@ -36,7 +36,6 @@ import {
   HandleBadgeStatus,
   HandleUrgency,
 } from '../../config/handle';
-import {SelectList} from 'react-native-dropdown-select-list';
 
 const TicketScreen = () => {
   const [ticket, setTicket] = useState([]);
@@ -129,17 +128,6 @@ const TicketScreen = () => {
           />
         </View> */}
 
-        <SelectList
-          data={sortType}
-          setSelected={setSelected}
-          placeholder="Sort By"
-          maxHeight={windowHeight * 0.2}
-          search={false}
-          fontFamily="WorkSans"
-          defaultOption={{key: '2', value: 'ID'}}
-          // onSelect={() => console.log(select)}
-          onSelect={() => setSort(select)}
-        />
         <View style={styles.TicketList}>
           <ScrollView
             refreshControl={
