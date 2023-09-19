@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   ActivityIndicator,
   View,
@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import {API_URL, App_Token} from '../../config/config';
+import { API_URL, App_Token } from '../../config/config';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
@@ -28,8 +28,8 @@ import {
   Badge,
   Icon,
 } from 'native-base';
-import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
-import {useSelector} from 'react-redux';
+import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
+import { useSelector } from 'react-redux';
 import {
   HandeStatusColor,
   HandeUrgencyColor,
@@ -37,7 +37,7 @@ import {
   HandleUrgency,
 } from '../../config/handle';
 
-const TicketScreen = () => {
+const TicketScreen = ({ navigation }) => {
   const [ticket, setTicket] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = useSelector(state => state.user.token.session_token);
@@ -46,9 +46,9 @@ const TicketScreen = () => {
   const [select, setSelected] = useState(2);
 
   const sortType = [
-    {key: '12', value: 'Status'},
-    {key: '2', value: 'ID'},
-    {key: '3', value: 'Impact'},
+    { key: '12', value: 'Status' },
+    { key: '2', value: 'ID' },
+    { key: '3', value: 'Impact' },
   ];
 
   useEffect(() => {
@@ -96,7 +96,7 @@ const TicketScreen = () => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]);
       setLoading(false);
     }
@@ -111,14 +111,14 @@ const TicketScreen = () => {
   } else {
     return (
       <SafeAreaView style={styles.container}>
-        {/* <View
+        <View
           style={{
             flexDirection: 'row',
             width: windowWidth * 0.8,
             alignContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={{fontSize: windowWidth * 0.05}}>Sort by:</Text>
+          <Text style={{ fontSize: windowWidth * 0.05 }}>Sort by:</Text>
           <Icon
             as={<MaterialIcons name="sort" />}
             size={0.09 * windowWidth}
@@ -126,7 +126,7 @@ const TicketScreen = () => {
             color="muted.400"
             onPress={() => console.log('Sort Box Pressed')}
           />
-        </View> */}
+        </View>
 
         <View style={styles.TicketList}>
           <ScrollView
@@ -165,7 +165,12 @@ const TicketScreen = () => {
                       // backgroundColor:'white'
                     }}>
                     <TouchableOpacity
-                      onPress={() => console.log('Ticket View Pressed')}>
+                      onPress={() => navigation.navigate('VỉewTicket',
+                        {
+                          id: ticketID,
+                          description: description,
+                        }
+                      )}>
                       <View
                         style={{
                           padding: windowWidth * 0.02,
@@ -184,7 +189,7 @@ const TicketScreen = () => {
                           }}>
                           {ticketTitle} #{ticketID}
                         </Text>
-                        <Text style={{fontSize: windowWidth * 0.04}}>
+                        <Text style={{ fontSize: windowWidth * 0.04 }}>
                           Created: {ticketDate}
                         </Text>
                         {/* <Text style={{fontSize: windowWidth * 0.04}}>
@@ -196,23 +201,23 @@ const TicketScreen = () => {
                           space={windowWidth * 0.02}
                           marginTop={windowHeight * 0.01}>
                           <Badge
-                            _text={{fontSize: windowWidth * 0.037}}
+                            _text={{ fontSize: windowWidth * 0.037 }}
                             variant="solid"
                             //colorScheme={HandeUrgencyColor({ urgency })}
                             style={{
-                              backgroundColor: HandeUrgencyColor({urgency}),
+                              backgroundColor: HandeUrgencyColor({ urgency }),
                             }}
                             rounded={windowWidth * 0.01}>
-                            {HandleUrgency({urgency})}
+                            {HandleUrgency({ urgency })}
                           </Badge>
                           <Badge
-                            _text={{fontSize: windowWidth * 0.037}}
+                            _text={{ fontSize: windowWidth * 0.037 }}
                             variant="solid"
                             style={{
-                              backgroundColor: HandeStatusColor({status}),
+                              backgroundColor: HandeStatusColor({ status }),
                             }}
                             rounded={windowWidth * 0.01}>
-                            {HandleBadgeStatus({status})}
+                            {HandleBadgeStatus({ status })}
                           </Badge>
                         </HStack>
                         {/*============== BAGDE ==============*/}

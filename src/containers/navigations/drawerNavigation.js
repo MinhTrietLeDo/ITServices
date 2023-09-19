@@ -9,6 +9,7 @@ import TicketScreen from '../../components/ticketScreen/ticketScreen';
 import Home from '../../components/home/home';
 import { NotiButton } from '../../components/headerBtn/headerBtn';
 import { HandleNoti } from '../../config/handle';
+import ViewTicket from '../../components/ticketScreen/viewTicket';
 
 const Drawer = createDrawerNavigator();
 
@@ -27,43 +28,54 @@ const MyDrawer = () => {
       // useLegacyImplementation
       drawerContent={(props) => <CustomDrawer {...props} />}
     >
-      <Drawer.Screen
-        component={Home}
-        name="Dashboard"
-        options={{
-          title: 'Home',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontFamily: 'WorkSans'
-          },
-          headerTitleAlign: 'center',
-          headerRight: () => (
-            <NotiButton
-              // containerStyle={{backgroundColor: 'black'}}
-              // onPress={() => console.log('Pressed')}
-              onPress={() => HandleNoti()}
-            />
-          )
-        }}
-      />
-      <Drawer.Screen
-        component={TicketScreen}
-        name="Ticket"
-        options={{
-          title: 'Ticket List',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontFamily: 'WorkSans'
-          },
-          headerTitleAlign: 'center',
-          headerRight: () => (
-            <NotiButton
-              // containerStyle={{backgroundColor: 'black'}}
-              onPress={() => HandleNoti()}
-            />
-          )
-        }}
-      />
+      <Drawer.Group>
+        <Drawer.Screen
+          component={Home}
+          name="Dashboard"
+          options={{
+            title: 'Home',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontFamily: 'WorkSans'
+            },
+            headerTitleAlign: 'center',
+            headerRight: () => (
+              <NotiButton
+                // containerStyle={{backgroundColor: 'black'}}
+                // onPress={() => console.log('Pressed')}
+                onPress={() => HandleNoti()}
+              />
+            )
+          }}
+        />
+        <Drawer.Screen
+          component={TicketScreen}
+          name="Ticket"
+          options={{
+            title: 'Ticket List',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontFamily: 'WorkSans'
+            },
+            headerTitleAlign: 'center',
+            headerRight: () => (
+              <NotiButton
+                // containerStyle={{backgroundColor: 'black'}}
+                onPress={() => HandleNoti()}
+              />
+            )
+          }}
+        />
+      </Drawer.Group>
+      <Drawer.Group screenOptions={{ presentation: 'modal' }}>
+        <Drawer.Screen
+          component={ViewTicket}
+          name="VỉewTicket"
+          options={{
+            drawerItemStyle: { display: "none", }
+          }}
+        />
+      </Drawer.Group>
     </Drawer.Navigator>
   );
 }
