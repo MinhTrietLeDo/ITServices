@@ -158,9 +158,9 @@ const TicketScreen = ({ navigation }) => {
                     divider={<Divider my="2" />}
                     w={windowWidth * 0.9}
                     style={{
-                      borderWidth: (windowWidth+windowHeight) * 0.001,
-                      borderRadius: (windowWidth+windowHeight) * 0.01,
-                      margin: (windowWidth+windowHeight) * 0.005,
+                      borderRadius: (windowWidth + windowHeight) * 0.01,
+                      borderWidth: (windowWidth + windowHeight) * 0.001,
+                      margin: (windowWidth + windowHeight) * 0.005,
                       height: windowHeight * 0.15,
                       // backgroundColor:'white'
                     }}>
@@ -199,7 +199,7 @@ const TicketScreen = ({ navigation }) => {
                         <HStack
                           alignSelf={'center'}
                           space={windowWidth * 0.02}
-                          marginTop={(windowWidth+windowHeight) * 0.015}>
+                          marginTop={(windowWidth + windowHeight) * 0.015}>
                           <Badge
                             _text={{ fontSize: windowWidth * 0.037 }}
                             variant="solid"
@@ -238,7 +238,7 @@ export default TicketScreen;
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: (windowWidth+windowHeight) * 0.01,
+    paddingVertical: (windowWidth + windowHeight) * 0.01,
     alignItems: 'center',
     alignSelf: 'center',
   },
@@ -249,11 +249,11 @@ const styles = StyleSheet.create({
   TicketList: {
     width: windowWidth * 0.95,
     height: windowHeight * 0.8,
-    margin: (windowWidth+windowHeight) * 0.01,
+    margin: (windowWidth + windowHeight) * 0.01,
     justifyContent: 'center',
   },
   StackStyle: {
     // backgroundColor: 'gray',
-    padding: (windowWidth+windowHeight) * 0.02,
+    padding: (windowWidth + windowHeight) * 0.02,
   },
 });

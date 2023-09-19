@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
         // backgroundColor: 'black',
     },
     ticketInformation:{
-        borderRadius: windowWidth*0.05,
-        borderWidth: windowWidth*0.003,
+        borderRadius: (windowWidth+windowHeight)*0.01,
+        borderWidth: (windowWidth+windowHeight)*0.001,
         width: windowWidth*0.9,
         height: windowHeight*0.7,
         maxHeight: windowHeight*0.8, 
