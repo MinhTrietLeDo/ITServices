@@ -169,6 +169,10 @@ const TicketScreen = ({ navigation }) => {
                         {
                           id: ticketID,
                           description: description,
+                          urgency: urgency, 
+                          date: ticketDate,
+                          status: status,
+                          title: ticketTitle,
                         }
                       )}>
                       <View
