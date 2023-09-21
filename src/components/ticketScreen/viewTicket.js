@@ -110,6 +110,23 @@ const ViewTicket = ({navigation}) => {
               {HandleUrgency({urgency})}
             </Badge>
           </View>
+          <View style={styles.row}>
+            <Text
+              style={{
+                fontSize: windowWidth * 0.05,
+                fontWeight: 700,
+              }}>
+              Người Yêu Cầu:
+            </Text>
+            <Text
+              style={{
+                fontSize: windowWidth * 0.045,
+                fontWeight: 400,
+                marginLeft: windowWidth*0.01
+              }}>
+              Me may beo
+            </Text>
+          </View>
           <View style={styles.row}></View>
         </View>
       </View>
@@ -123,10 +140,8 @@ const ViewTicket = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: (windowWidth + windowHeight) * 0.02,
     alignItems: 'center',
     alignSelf: 'center',
-    // backgroundColor: 'black',
   },
   card: {
     borderRadius: (windowWidth + windowHeight) * 0.01,
@@ -140,19 +155,18 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: '100%',
     alignItems: 'center',
-    // height: windowHeight * 0.1,
     maxHeight: windowHeight * 0.1,
   },
   Button: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    margin: (windowHeight + windowWidth) * 0.01,
-    backgroundColor: 'black',
+    margin: (windowHeight + windowWidth) * 0.02,
     width: windowWidth * 0.7,
   },
   row: {
     flexDirection: 'row',
     marginTop: (windowHeight + windowWidth) * 0.01,
+    alignItems: 'center',
   },
 });
 
