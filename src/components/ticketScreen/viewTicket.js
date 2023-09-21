@@ -25,6 +25,7 @@ const ViewTicket = ({navigation}) => {
     console.log('AAAA:', date);
     console.log(id, description, urgency, status);
     updateTicket().catch(console.error);
+    getUser().catch(console.error)
   }, []);
 
   updateTicket = async () => {
@@ -34,6 +35,10 @@ const ViewTicket = ({navigation}) => {
       'App-Token': App_Token,
     };
   };
+
+  getUser = async () => {
+
+  }
 
   return (
     <SafeAreaView style={styles.container}>
