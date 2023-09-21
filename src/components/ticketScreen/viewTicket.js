@@ -48,30 +48,22 @@ const ViewTicket = ({navigation}) => {
             }}>
             {title} #{id}
           </Text>
-          {/* <Badge
-                        _text={{ fontSize: windowWidth * 0.03 }}
-                        variant="solid"
-                        style={{
-                            backgroundColor: HandeStatusColor({ status }),
-                        }}
-                        rounded={windowWidth * 0.01}>
-                        {HandleBadgeStatus({ status })}
-                    </Badge> */}
         </View>
-        <View style={{margin: (windowHeight + windowWidth) * 0.01}}>
+        <View
+          style={{
+            margin: (windowHeight + windowWidth) * 0.01,
+          }}>
           <Text
             style={{
               fontSize: windowWidth * 0.05,
               fontWeight: 700,
-              // textAlign: 'center'
-              // backgroundColor: 'black'
             }}>
             Miêu tả sự cố:
           </Text>
           <ScrollView
             style={{
-              height: windowHeight * 0.2,
-              marginTop: windowHeight*0.01
+              maxHeight: windowHeight * 0.2,
+              marginTop: windowHeight * 0.01,
             }}>
             <Text
               style={{
@@ -80,7 +72,50 @@ const ViewTicket = ({navigation}) => {
               {description}
             </Text>
           </ScrollView>
+          <View style={styles.row}>
+            <Text
+              style={{
+                fontSize: windowWidth * 0.05,
+                fontWeight: 700,
+              }}>
+              Tình trạng:
+            </Text>
+            <Badge
+              _text={{fontSize: windowWidth * 0.03}}
+              variant="solid"
+              style={{
+                backgroundColor: HandeStatusColor({status}),
+                marginLeft: (windowHeight + windowWidth) * 0.01,
+              }}
+              rounded={windowWidth * 0.01}>
+              {HandleBadgeStatus({status})}
+            </Badge>
+          </View>
+          <View style={styles.row}>
+            <Text
+              style={{
+                fontSize: windowWidth * 0.05,
+                fontWeight: 700,
+              }}>
+              Mức Độ Ưu Tiên:
+            </Text>
+            <Badge
+              _text={{fontSize: windowWidth * 0.037}}
+              variant="solid"
+              style={{
+                backgroundColor: HandeUrgencyColor({urgency}),
+                marginLeft: (windowHeight + windowWidth) * 0.01,
+              }}
+              rounded={windowWidth * 0.01}>
+              {HandleUrgency({urgency})}
+            </Badge>
+          </View>
+          <View style={styles.row}></View>
         </View>
+      </View>
+      <View style={styles.Button}>
+        <Button onPress={() => navigation.goBack()}>Go Back</Button>
+        <Button onPress={() => console.log('Pressed!')}>Update</Button>
       </View>
     </SafeAreaView>
   );
@@ -102,14 +137,22 @@ const styles = StyleSheet.create({
     padding: (windowWidth + windowHeight) * 0.01,
   },
   title: {
-    // flexDirection: 'row',
-    // justifyContent: 'space-evenly',
-    // backgroundColor: 'black',
     width: '100%',
     maxWidth: '100%',
     alignItems: 'center',
-    height: windowHeight * 0.1,
+    // height: windowHeight * 0.1,
     maxHeight: windowHeight * 0.1,
+  },
+  Button: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    margin: (windowHeight + windowWidth) * 0.01,
+    backgroundColor: 'black',
+    width: windowWidth * 0.7,
+  },
+  row: {
+    flexDirection: 'row',
+    marginTop: (windowHeight + windowWidth) * 0.01,
   },
 });
 
