@@ -25,7 +25,7 @@ function CustomDrawer(props) {
 const MyDrawer = () => {
   return (
     <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}>
-      <Drawer.Screen
+      {/* <Drawer.Screen
         component={Home}
         name="Dashboard"
         options={{
@@ -43,7 +43,7 @@ const MyDrawer = () => {
             />
           ),
         }}
-      />
+      /> */}
       <Drawer.Screen
         component={TicketScreen}
         name="Ticket"
