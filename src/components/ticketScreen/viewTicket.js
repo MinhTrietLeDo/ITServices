@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
-import {Badge, Button, ScrollView, Text} from 'native-base';
-import {useRoute} from '@react-navigation/native';
-import {API_URL, App_Token} from '../../config/config';
-import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {StyleSheet, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Badge, Button, ScrollView, Text } from 'native-base';
+import { useRoute } from '@react-navigation/native';
+import { API_URL, App_Token } from '../../config/config';
+import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Alert, StyleSheet, View } from 'react-native';
 import {
   HandeStatusColor,
   HandeUrgencyColor,
@@ -12,7 +12,7 @@ import {
   HandleUrgency,
 } from '../../config/handle';
 
-const ViewTicket = ({navigation}) => {
+const ViewTicket = ({ navigation }) => {
   const route = useRoute();
   const id = route.params?.id;
   const description = route.params?.description;
@@ -21,23 +21,46 @@ const ViewTicket = ({navigation}) => {
   const status = route.params?.status;
   const title = route.params?.title;
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    console.log('AAAA:', date);
-    console.log(id, description, urgency, status);
-    updateTicket().catch(console.error);
-    getUser().catch(console.error)
+    // updateTicket().catch(console.error);
+    // getUser().catch(console.error)
   }, []);
 
   updateTicket = async () => {
+    console.log('updating..')
     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       'App-Token': App_Token,
     };
+    // if (condition) {
+
+    // } else {
+    //   Alert.alert('Error', 'Please try again later', [
+    //     {
+    //       text: 'Cancel',
+    //       onPress: () => console.log('Cancel Pressed'),
+    //       style: 'cancel',
+    //     },
+    //     { text: 'OK', onPress: () => console.log('OK Pressed') },
+    //   ]);
+    //   setLoading(false)
+    // }
+    navigation.goBack()
   };
 
-  getUser = async () => {
-
+  handleBtnTicket = () => {
+    console.log('Pressed!')
+    Alert.alert('Cập nhật lại ticket?', 'Bạn có muốn cập nhật ticket?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'OK', onPress: () => updateTicket() },
+    ]);
   }
 
   return (
@@ -86,14 +109,14 @@ const ViewTicket = ({navigation}) => {
               Tình trạng:
             </Text>
             <Badge
-              _text={{fontSize: windowWidth * 0.03}}
+              _text={{ fontSize: windowWidth * 0.03 }}
               variant="solid"
               style={{
-                backgroundColor: HandeStatusColor({status}),
+                backgroundColor: HandeStatusColor({ status }),
                 marginLeft: (windowHeight + windowWidth) * 0.01,
               }}
               rounded={windowWidth * 0.01}>
-              {HandleBadgeStatus({status})}
+              {HandleBadgeStatus({ status })}
             </Badge>
           </View>
           <View style={styles.row}>
@@ -105,14 +128,14 @@ const ViewTicket = ({navigation}) => {
               Mức Độ Ưu Tiên:
             </Text>
             <Badge
-              _text={{fontSize: windowWidth * 0.037}}
+              _text={{ fontSize: windowWidth * 0.037 }}
               variant="solid"
               style={{
-                backgroundColor: HandeUrgencyColor({urgency}),
+                backgroundColor: HandeUrgencyColor({ urgency }),
                 marginLeft: (windowHeight + windowWidth) * 0.01,
               }}
               rounded={windowWidth * 0.01}>
-              {HandleUrgency({urgency})}
+              {HandleUrgency({ urgency })}
             </Badge>
           </View>
           <View style={styles.row}>
@@ -127,7 +150,7 @@ const ViewTicket = ({navigation}) => {
               style={{
                 fontSize: windowWidth * 0.045,
                 fontWeight: 400,
-                marginLeft: windowWidth*0.01
+                marginLeft: windowWidth * 0.01
               }}>
               Me may beo
             </Text>
@@ -137,7 +160,7 @@ const ViewTicket = ({navigation}) => {
       </View>
       <View style={styles.Button}>
         <Button onPress={() => navigation.goBack()}>Go Back</Button>
-        <Button onPress={() => console.log('Pressed!')}>Update</Button>
+        <Button onPress={() => handleBtnTicket()}>Update</Button>
       </View>
     </SafeAreaView>
   );

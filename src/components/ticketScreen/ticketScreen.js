@@ -196,14 +196,12 @@ const TicketScreen = ({ navigation }) => {
                         <Text style={{ fontSize: windowWidth * 0.04 }}>
                           Created: {ticketDate}
                         </Text>
-                        {/* <Text style={{fontSize: windowWidth * 0.04}}>
-                        Description: {description}
-                      </Text> */}
                         {/*============== BAGDE ==============*/}
                         <HStack
                           alignSelf={'center'}
                           space={windowWidth * 0.02}
-                          marginTop={(windowWidth + windowHeight) * 0.015}>
+                          // marginTop={(windowWidth + windowHeight) * 0.01}
+                          >
                           <Badge
                             _text={{ fontSize: windowWidth * 0.037 }}
                             variant="solid"
