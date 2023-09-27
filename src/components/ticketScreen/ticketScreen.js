@@ -54,10 +54,6 @@ const TicketScreen = ({ navigation }) => {
   useEffect(() => {
     GetTickets().catch(console.error);
     console.log('Catch user token:', token);
-    console.log(
-      'SELECT:',
-      select,
-    );
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -101,6 +97,20 @@ const TicketScreen = ({ navigation }) => {
       setLoading(false);
     }
   };
+
+  getUsername = async () => {
+    const usernameURL = ''
+    let objHeader = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'App-Token': App_Token,
+    };
+    let request = await Promise.all([
+      await fetch(API_URL + usernameURL + '&session_token=' + token, {
+        headers: objHeader,
+      }).then(el => el.json()),
+    ]);
+  }
 
   if (loading) {
     return (
@@ -169,7 +179,7 @@ const TicketScreen = ({ navigation }) => {
                         {
                           id: ticketID,
                           description: description,
-                          urgency: urgency, 
+                          urgency: urgency,
                           date: ticketDate,
                           status: status,
                           title: ticketTitle,
@@ -200,8 +210,8 @@ const TicketScreen = ({ navigation }) => {
                         <HStack
                           alignSelf={'center'}
                           space={windowWidth * 0.02}
-                          // marginTop={(windowWidth + windowHeight) * 0.01}
-                          >
+                        // marginTop={(windowWidth + windowHeight) * 0.01}
+                        >
                           <Badge
                             _text={{ fontSize: windowWidth * 0.037 }}
                             variant="solid"

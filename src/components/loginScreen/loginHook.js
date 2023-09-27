@@ -57,22 +57,6 @@ const LoginHook = () => {
     return Base64.encode(username + ':' + password);
   };
 
-  // const GetFullProfile = async token => {
-  //   let result = await fetch(API_URL + '/getFullSession', {
-  //     method: 'GET',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //       'Session-Token': token,
-  //     },
-  //   });
-  //   let resultCvt = await result.json();
-
-  //   console.log('test', resultCvt);
-
-  //   return resultCvt;
-  // };
-
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };

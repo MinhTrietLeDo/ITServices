@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Badge, Button, ScrollView, Text } from 'native-base';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Badge, Button, ScrollView, Text, } from 'native-base';
 import { useRoute } from '@react-navigation/native';
 import { API_URL, App_Token } from '../../config/config';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
@@ -11,6 +11,8 @@ import {
   HandleBadgeStatus,
   HandleUrgency,
 } from '../../config/handle';
+import { RefreshControl } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
 const ViewTicket = ({ navigation }) => {
   const route = useRoute();
@@ -20,21 +22,29 @@ const ViewTicket = ({ navigation }) => {
   const date = route.params?.ticketDate;
   const status = route.params?.status;
   const title = route.params?.title;
+  const token = useSelector(state => state.user.token.session_token);
 
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    // updateTicket().catch(console.error);
-    // getUser().catch(console.error)
+    console.log(token)
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   }, []);
 
   updateTicket = async () => {
     console.log('updating..')
-    let objHeader = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'App-Token': App_Token,
-    };
+    // let objHeader = {
+    //   Accept: 'application/json',
+    //   'Content-Type': 'application/json',
+    //   'App-Token': App_Token,
+    // };
     // if (condition) {
 
     // } else {
@@ -66,97 +76,103 @@ const ViewTicket = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.card}>
-        <View style={styles.title}>
-          <Text
-            style={{
-              fontSize: windowWidth * 0.055,
-              fontWeight: 700,
-              textAlign: 'center',
-              alignItems: 'center',
-            }}>
-            {title} #{id}
-          </Text>
-        </View>
-        <View
-          style={{
-            margin: (windowHeight + windowWidth) * 0.01,
-          }}>
-          <Text
-            style={{
-              fontSize: windowWidth * 0.05,
-              fontWeight: 700,
-            }}>
-            Miêu tả sự cố:
-          </Text>
-          <ScrollView
-            style={{
-              maxHeight: windowHeight * 0.2,
-              marginTop: windowHeight * 0.01,
-            }}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <View style={styles.title}>
             <Text
               style={{
-                fontSize: windowWidth * 0.045,
+                fontSize: windowWidth * 0.055,
+                fontWeight: 700,
+                textAlign: 'center',
+                alignItems: 'center',
               }}>
-              {description}
+              {title} #{id}
             </Text>
-          </ScrollView>
-          <View style={styles.row}>
+          </View>
+          <View
+            style={{
+              margin: (windowHeight + windowWidth) * 0.01,
+            }}>
             <Text
               style={{
                 fontSize: windowWidth * 0.05,
                 fontWeight: 700,
               }}>
-              Tình trạng:
+              Miêu tả sự cố:
             </Text>
-            <Badge
-              _text={{ fontSize: windowWidth * 0.03 }}
-              variant="solid"
+            <ScrollView
               style={{
-                backgroundColor: HandeStatusColor({ status }),
-                marginLeft: (windowHeight + windowWidth) * 0.01,
-              }}
-              rounded={windowWidth * 0.01}>
-              {HandleBadgeStatus({ status })}
-            </Badge>
-          </View>
-          <View style={styles.row}>
-            <Text
-              style={{
-                fontSize: windowWidth * 0.05,
-                fontWeight: 700,
+                maxHeight: windowHeight * 0.2,
+                marginTop: windowHeight * 0.01,
               }}>
-              Mức Độ Ưu Tiên:
-            </Text>
-            <Badge
-              _text={{ fontSize: windowWidth * 0.037 }}
-              variant="solid"
-              style={{
-                backgroundColor: HandeUrgencyColor({ urgency }),
-                marginLeft: (windowHeight + windowWidth) * 0.01,
-              }}
-              rounded={windowWidth * 0.01}>
-              {HandleUrgency({ urgency })}
-            </Badge>
+              <Text
+                style={{
+                  fontSize: windowWidth * 0.045,
+                }}>
+                {description}
+              </Text>
+            </ScrollView>
+            <View style={styles.row}>
+              <Text
+                style={{
+                  fontSize: windowWidth * 0.05,
+                  fontWeight: 700,
+                }}>
+                Tình trạng:
+              </Text>
+              <Badge
+                _text={{ fontSize: windowWidth * 0.03 }}
+                variant="solid"
+                style={{
+                  backgroundColor: HandeStatusColor({ status }),
+                  marginLeft: (windowHeight + windowWidth) * 0.01,
+                }}
+                rounded={windowWidth * 0.01}>
+                {HandleBadgeStatus({ status })}
+              </Badge>
+            </View>
+            <View style={styles.row}>
+              <Text
+                style={{
+                  fontSize: windowWidth * 0.05,
+                  fontWeight: 700,
+                }}>
+                Mức Độ Ưu Tiên:
+              </Text>
+              <Badge
+                _text={{ fontSize: windowWidth * 0.037 }}
+                variant="solid"
+                style={{
+                  backgroundColor: HandeUrgencyColor({ urgency }),
+                  marginLeft: (windowHeight + windowWidth) * 0.01,
+                }}
+                rounded={windowWidth * 0.01}>
+                {HandleUrgency({ urgency })}
+              </Badge>
+            </View>
+            <View style={styles.row}>
+              <Text
+                style={{
+                  fontSize: windowWidth * 0.05,
+                  fontWeight: 700,
+                }}>
+                Người Yêu Cầu:
+              </Text>
+              <Text
+                style={{
+                  fontSize: windowWidth * 0.045,
+                  fontWeight: 400,
+                  marginLeft: windowWidth * 0.01
+                }}>
+                Me may beo
+              </Text>
+            </View>
+            <View style={styles.row}></View>
           </View>
-          <View style={styles.row}>
-            <Text
-              style={{
-                fontSize: windowWidth * 0.05,
-                fontWeight: 700,
-              }}>
-              Người Yêu Cầu:
-            </Text>
-            <Text
-              style={{
-                fontSize: windowWidth * 0.045,
-                fontWeight: 400,
-                marginLeft: windowWidth * 0.01
-              }}>
-              Me may beo
-            </Text>
-          </View>
-          <View style={styles.row}></View>
-        </View>
+        </ScrollView>
       </View>
       <View style={styles.Button}>
         <Button onPress={() => navigation.goBack()}>Go Back</Button>
