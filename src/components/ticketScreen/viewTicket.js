@@ -15,20 +15,14 @@ import { RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 const ViewTicket = ({ navigation }) => {
-  const route = useRoute();
-  const id = route.params?.id;
-  const description = route.params?.description;
-  const urgency = route.params?.urgency;
-  const date = route.params?.ticketDate;
-  const status = route.params?.status;
-  const title = route.params?.title;
   const token = useSelector(state => state.user.token.session_token);
+  const rawTicketData = useSelector(state => state.ticket.ticketArray.rawData)
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    console.log(token)
+    console.log(rawTicketData)
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -40,24 +34,6 @@ const ViewTicket = ({ navigation }) => {
 
   updateTicket = async () => {
     console.log('updating..')
-    // let objHeader = {
-    //   Accept: 'application/json',
-    //   'Content-Type': 'application/json',
-    //   'App-Token': App_Token,
-    // };
-    // if (condition) {
-
-    // } else {
-    //   Alert.alert('Error', 'Please try again later', [
-    //     {
-    //       text: 'Cancel',
-    //       onPress: () => console.log('Cancel Pressed'),
-    //       style: 'cancel',
-    //     },
-    //     { text: 'OK', onPress: () => console.log('OK Pressed') },
-    //   ]);
-    //   setLoading(false)
-    // }
     navigation.goBack()
   };
 
@@ -89,7 +65,7 @@ const ViewTicket = ({ navigation }) => {
                 textAlign: 'center',
                 alignItems: 'center',
               }}>
-              {title} #{id}
+              {/* {title} #{id} */}
             </Text>
           </View>
           <View
@@ -112,7 +88,7 @@ const ViewTicket = ({ navigation }) => {
                 style={{
                   fontSize: windowWidth * 0.045,
                 }}>
-                {description}
+                {/* {description} */}
               </Text>
             </ScrollView>
             <View style={styles.row}>
@@ -123,7 +99,7 @@ const ViewTicket = ({ navigation }) => {
                 }}>
                 Tình trạng:
               </Text>
-              <Badge
+              {/* <Badge
                 _text={{ fontSize: windowWidth * 0.03 }}
                 variant="solid"
                 style={{
@@ -132,7 +108,7 @@ const ViewTicket = ({ navigation }) => {
                 }}
                 rounded={windowWidth * 0.01}>
                 {HandleBadgeStatus({ status })}
-              </Badge>
+              </Badge> */}
             </View>
             <View style={styles.row}>
               <Text
@@ -142,7 +118,7 @@ const ViewTicket = ({ navigation }) => {
                 }}>
                 Mức Độ Ưu Tiên:
               </Text>
-              <Badge
+              {/* <Badge
                 _text={{ fontSize: windowWidth * 0.037 }}
                 variant="solid"
                 style={{
@@ -151,7 +127,7 @@ const ViewTicket = ({ navigation }) => {
                 }}
                 rounded={windowWidth * 0.01}>
                 {HandleUrgency({ urgency })}
-              </Badge>
+              </Badge> */}
             </View>
             <View style={styles.row}>
               <Text

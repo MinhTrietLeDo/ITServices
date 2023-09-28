@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux"
+
 //handle mức độ ưu tiên của ticket
 export const HandleUrgency = (urgency) => {
     switch (urgency.urgency) {

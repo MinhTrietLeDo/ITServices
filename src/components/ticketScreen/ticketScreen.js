@@ -29,31 +29,27 @@ import {
   Icon,
 } from 'native-base';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
-import { useSelector } from 'react-redux';
 import {
   HandeStatusColor,
   HandeUrgencyColor,
   HandleBadgeStatus,
   HandleUrgency,
 } from '../../config/handle';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTicket } from '../../redux/actions';
 
 const TicketScreen = ({ navigation }) => {
-  const [ticket, setTicket] = useState([]);
+  const dispatch = useDispatch();
+  const [ticket, setTicket] = useState([])
   const [loading, setLoading] = useState(true);
   const token = useSelector(state => state.user.token.session_token);
   const [refreshing, setRefreshing] = useState(false);
-  const [sort, setSort] = useState(2);
-  const [select, setSelected] = useState(2);
-
-  const sortType = [
-    { key: '12', value: 'Status' },
-    { key: '2', value: 'ID' },
-    { key: '3', value: 'Impact' },
-  ];
+  const TicketData = useSelector(state => state.ticket.ticketArray)
+  const [sort, setSort] = useState(2)
 
   useEffect(() => {
-    GetTickets().catch(console.error);
     console.log('Catch user token:', token);
+    GetTickets().catch(console.error);
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -67,8 +63,7 @@ const TicketScreen = ({ navigation }) => {
 
   const GetTickets = async () => {
     const ticketURL =
-      '/search/Ticket/?order=DESC&expand_dropdowns=true&forcedisplay[0]=1&forcedisplay[1]=2&forcedisplay[2]=3&forcedisplay[3]=12&forcedisplay[4]=15&forcedisplay[5]=19&forcedisplay[6]=21&sort=' +
-      sort;
+      '/search/Ticket/?order=DESC&expand_dropdowns=true&forcedisplay[0]=1&forcedisplay[1]=2&forcedisplay[2]=3&forcedisplay[3]=12&forcedisplay[4]=15&forcedisplay[5]=19&forcedisplay[6]=21&forcedisplay[7]=4&sort=' + sort;
     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -83,7 +78,9 @@ const TicketScreen = ({ navigation }) => {
     console.log(API_URL + ticketURL + '&session_token=' + token);
 
     if (typeof request[0].data !== 'undefined') {
-      setTicket(request[0].data);
+      const rawData = request[0].data
+      setTicket(rawData)
+      dispatch(getTicket({ rawData }))
       setLoading(false);
     } else {
       Alert.alert('Error', 'Please try again later', [
@@ -98,19 +95,19 @@ const TicketScreen = ({ navigation }) => {
     }
   };
 
-  getUsername = async () => {
-    const usernameURL = ''
-    let objHeader = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'App-Token': App_Token,
-    };
-    let request = await Promise.all([
-      await fetch(API_URL + usernameURL + '&session_token=' + token, {
-        headers: objHeader,
-      }).then(el => el.json()),
-    ]);
-  }
+  // getUsername = async () => {
+  //   const usernameURL = '/User/'
+  //   let objHeader = {
+  //     Accept: 'application/json',
+  //     'Content-Type': 'application/json',
+  //     'App-Token': App_Token,
+  //   };
+  //   let request = await Promise.all([
+  //     await fetch(API_URL + usernameURL + userRequestID + '?expand_dropdowns=true&session_token=' + token, {
+  //       headers: objHeader,
+  //     }).then(el => el.json()),
+  //   ]);
+  // }
 
   if (loading) {
     return (
@@ -157,6 +154,7 @@ const TicketScreen = ({ navigation }) => {
               let ticketID = el['2'];
               let urgency = el['3'];
               let status = el['12'];
+              let userRequestID = el['4'];
               let getRawDescription = el['21'].split('&#60;p&#62;');
               let description = getRawDescription[1]
                 .split('&#60;/p&#62;')
@@ -176,14 +174,14 @@ const TicketScreen = ({ navigation }) => {
                     }}>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('VỉewTicket',
-                        {
-                          id: ticketID,
-                          description: description,
-                          urgency: urgency,
-                          date: ticketDate,
-                          status: status,
-                          title: ticketTitle,
-                        }
+                        // {
+                        //   id: ticketID,
+                        //   description: description,
+                        //   urgency: urgency,
+                        //   date: ticketDate,
+                        //   status: status,
+                        //   title: ticketTitle,
+                        // }
                       )}>
                       <View
                         style={{
@@ -206,7 +204,6 @@ const TicketScreen = ({ navigation }) => {
                         <Text style={{ fontSize: windowWidth * 0.04 }}>
                           Created: {ticketDate}
                         </Text>
-                        {/*============== BAGDE ==============*/}
                         <HStack
                           alignSelf={'center'}
                           space={windowWidth * 0.02}
@@ -232,7 +229,6 @@ const TicketScreen = ({ navigation }) => {
                             {HandleBadgeStatus({ status })}
                           </Badge>
                         </HStack>
-                        {/*============== BAGDE ==============*/}
                       </View>
                     </TouchableOpacity>
                   </VStack>
