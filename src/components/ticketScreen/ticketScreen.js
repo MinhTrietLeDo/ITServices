@@ -35,11 +35,10 @@ import {
   HandleBadgeStatus,
   HandleUrgency,
 } from '../../config/handle';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getTicket } from '../../redux/actions';
 
 const TicketScreen = ({ navigation }) => {
-  const dispatch = useDispatch();
   const [ticket, setTicket] = useState([])
   const [loading, setLoading] = useState(true);
   const token = useSelector(state => state.user.token.session_token);
@@ -80,7 +79,6 @@ const TicketScreen = ({ navigation }) => {
     if (typeof request[0].data !== 'undefined') {
       const rawData = request[0].data
       setTicket(rawData)
-      dispatch(getTicket({ rawData }))
       setLoading(false);
     } else {
       Alert.alert('Error', 'Please try again later', [
@@ -181,6 +179,7 @@ const TicketScreen = ({ navigation }) => {
                           date: ticketDate,
                           status: status,
                           title: ticketTitle,
+                          userID: userRequestID,
                         }
                       )}>
                       <View

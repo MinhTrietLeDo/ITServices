@@ -22,13 +22,17 @@ const ViewTicket = ({ navigation }) => {
   const date = route.params?.ticketDate;
   const status = route.params?.status;
   const title = route.params?.title;
+  const userID = route.params?.userID
   const token = useSelector(state => state.user.token.session_token);
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [array, setArray] = useState([])
+  const [name, setName] = useState('')
 
   useEffect(() => {
-    // console.log(rawTicketData)
+    getUsername().catch(console.error)
+    console.log(id, description, userID)
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -36,7 +40,43 @@ const ViewTicket = ({ navigation }) => {
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
+    getUsername().catch(console.error)
   }, []);
+
+  const getUsername = async () => {
+    const a = '/User/'
+    const b = '?expand_dropdowns=true'
+    let objHeader = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'App-Token': App_Token,
+    };
+
+    let request = await Promise.all([
+      await fetch(API_URL + a + userID + b + '&session_token=' + token, {
+        headers: objHeader,
+      }).then(el => el.json()),
+    ]);
+    console.log(API_URL + a + userID + b + '&session_token=' + token);
+    console.log('TEEEEEEEEEEEESSSSSSSSSTTTT:', request[0])
+    if (typeof request !== 'undefined') {
+      setArray(request)
+      const aName = array.map(el => el['firstname'])
+      const bName = array.map(el => el['realname'])
+      setName(bName + ' ' + aName)
+      console.log(name)
+    } else {
+      Alert.alert('Error', 'Please try again later', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ]);
+      setLoading(false);
+    }
+  };
 
   updateTicket = async () => {
     console.log('updating..')
@@ -61,8 +101,7 @@ const ViewTicket = ({ navigation }) => {
         <ScrollView
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
+          }>
           <View style={styles.title}>
             <Text
               style={{
@@ -149,7 +188,8 @@ const ViewTicket = ({ navigation }) => {
                   fontWeight: 400,
                   marginLeft: windowWidth * 0.01
                 }}>
-                Me may beo
+                {/* {firstName + ' ' + lastName} */}
+                {name}
               </Text>
             </View>
             <View style={styles.row}></View>
