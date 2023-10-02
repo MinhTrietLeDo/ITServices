@@ -58,13 +58,12 @@ const ViewTicket = ({ navigation }) => {
       }).then(el => el.json()),
     ]);
     console.log(API_URL + a + userID + b + '&session_token=' + token);
-    console.log('TEEEEEEEEEEEESSSSSSSSSTTTT:', request[0])
     if (typeof request !== 'undefined') {
       setArray(request)
       const aName = array.map(el => el['firstname'])
       const bName = array.map(el => el['realname'])
       setName(bName + ' ' + aName)
-      console.log(name)
+      console.log('hjkasgdrkjashdgf', aName)
     } else {
       Alert.alert('Error', 'Please try again later', [
         {
@@ -80,7 +79,7 @@ const ViewTicket = ({ navigation }) => {
 
   updateTicket = async () => {
     console.log('updating..')
-    navigation.goBack()
+    // navigation.goBack()
   };
 
   handleBtnTicket = () => {
@@ -188,7 +187,6 @@ const ViewTicket = ({ navigation }) => {
                   fontWeight: 400,
                   marginLeft: windowWidth * 0.01
                 }}>
-                {/* {firstName + ' ' + lastName} */}
                 {name}
               </Text>
             </View>
@@ -197,7 +195,15 @@ const ViewTicket = ({ navigation }) => {
         </ScrollView>
       </View>
       <View style={styles.Button}>
-        <Button onPress={() => navigation.goBack()}>Go Back</Button>
+        <Button onPress={() => navigation.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'Ticket',
+              params: '',
+            },
+          ],
+        })}>Go Back</Button>
         <Button onPress={() => handleBtnTicket()}>Update</Button>
       </View>
     </SafeAreaView>
