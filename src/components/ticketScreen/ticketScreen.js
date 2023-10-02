@@ -174,14 +174,14 @@ const TicketScreen = ({ navigation }) => {
                     }}>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('VỉewTicket',
-                        // {
-                        //   id: ticketID,
-                        //   description: description,
-                        //   urgency: urgency,
-                        //   date: ticketDate,
-                        //   status: status,
-                        //   title: ticketTitle,
-                        // }
+                        {
+                          id: ticketID,
+                          description: description,
+                          urgency: urgency,
+                          date: ticketDate,
+                          status: status,
+                          title: ticketTitle,
+                        }
                       )}>
                       <View
                         style={{
