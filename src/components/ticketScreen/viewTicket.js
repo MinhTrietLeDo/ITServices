@@ -4,7 +4,7 @@ import { createNavigationContainerRef, useRoute } from '@react-navigation/native
 import { API_URL, App_Token } from '../../config/config';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { Alert, StyleSheet, View, ActivityIndicator, BackHandler } from 'react-native';
 import {
   HandeStatusColor,
   HandeUrgencyColor,
@@ -32,7 +32,8 @@ const ViewTicket = ({ navigation }) => {
 
   useEffect(() => {
     getUsername().catch(console.error);
-    console.log("ID:",id,"Miêu tả:", description, 'Ngày tạo:', date);
+    console.log("ID:", id, "Miêu tả:", description, 'Ngày tạo:', date);
+    return () => backHandler.remove()
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -42,6 +43,23 @@ const ViewTicket = ({ navigation }) => {
     }, 1000);
     getUsername().catch(console.error);
   }, []);
+
+  const backButton = () => {
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'Ticket',
+          params: '',
+        },
+      ],
+    })
+    return true
+  }
+
+  const backHandler = BackHandler.addEventListener(
+    'hardwareBackPress', backButton
+  )
 
   const getUsername = async () => {
     const a = '/User/';

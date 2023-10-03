@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { MyDrawer } from './navigations/drawerNavigation';
 import theme from '../assets/res/theme';
 import loginHook from '../components/loginScreen/loginHook';
+import MyBottomTab from './navigations/bottomTabNavigation';
 
 const Stack = createStackNavigator()
 
@@ -28,8 +29,8 @@ const RootStack = () => {
           />
         ) : (
           <Stack.Screen
-            name="Home"
-            component={MyDrawer}
+            name="Mới"
+            component={MyBottomTab}
             options={{
               headerBackVisible: false,
               headerShown: false,

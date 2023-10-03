@@ -102,23 +102,6 @@ const TicketScreen = ({ navigation }) => {
   } else {
     return (
       <SafeAreaView style={styles.container}>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: windowWidth * 0.8,
-            alignContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{ fontSize: windowWidth * 0.05 }}>Sort by:</Text>
-          <Icon
-            as={<MaterialIcons name="sort" />}
-            size={0.09 * windowWidth}
-            ml={windowWidth * 0.02}
-            color="muted.400"
-            onPress={() => console.log('Sort Box Pressed')}
-          />
-        </View>
-
         <View style={styles.TicketList}>
           <ScrollView
             refreshControl={
@@ -241,7 +224,7 @@ const styles = StyleSheet.create({
   },
   TicketList: {
     width: windowWidth * 0.95,
-    height: windowHeight * 0.8,
+    height: windowHeight * 0.95,
     margin: (windowWidth + windowHeight) * 0.01,
     justifyContent: 'center',
   },
