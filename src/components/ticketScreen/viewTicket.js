@@ -4,7 +4,7 @@ import { useRoute } from '@react-navigation/native';
 import { API_URL, App_Token } from '../../config/config';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
 import {
   HandeStatusColor,
   HandeUrgencyColor,
@@ -27,7 +27,6 @@ const ViewTicket = ({ navigation }) => {
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [array, setArray] = useState([])
   const [name, setName] = useState('')
 
   useEffect(() => {
@@ -59,11 +58,11 @@ const ViewTicket = ({ navigation }) => {
     ]);
     console.log(API_URL + a + userID + b + '&session_token=' + token);
     if (typeof request !== 'undefined') {
-      setArray(request)
-      const aName = array.map(el => el['firstname'])
-      const bName = array.map(el => el['realname'])
+      const aName = request.map(el => el['firstname'])
+      const bName = request.map(el => el['realname'])
       setName(bName + ' ' + aName)
-      console.log('hjkasgdrkjashdgf', aName)
+      console.log('hjkasgdrkjashdgf', request)
+      setLoading(false)
     } else {
       Alert.alert('Error', 'Please try again later', [
         {
@@ -94,120 +93,129 @@ const ViewTicket = ({ navigation }) => {
     ]);
   }
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.card}>
-        <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }>
-          <View style={styles.title}>
-            <Text
-              style={{
-                fontSize: windowWidth * 0.055,
-                fontWeight: 700,
-                textAlign: 'center',
-                alignItems: 'center',
-              }}>
-              {title} #{id}
-            </Text>
-          </View>
-          <View
-            style={{
-              margin: (windowHeight + windowWidth) * 0.01,
-            }}>
-            <Text
-              style={{
-                fontSize: windowWidth * 0.05,
-                fontWeight: 700,
-              }}>
-              Miêu tả sự cố:
-            </Text>
-            <ScrollView
-              style={{
-                maxHeight: windowHeight * 0.2,
-                marginTop: windowHeight * 0.01,
-              }}>
-              <Text
-                style={{
-                  fontSize: windowWidth * 0.045,
-                }}>
-                {description}
-              </Text>
-            </ScrollView>
-            <View style={styles.row}>
-              <Text
-                style={{
-                  fontSize: windowWidth * 0.05,
-                  fontWeight: 700,
-                }}>
-                Tình trạng:
-              </Text>
-              <Badge
-                _text={{ fontSize: windowWidth * 0.03 }}
-                variant="solid"
-                style={{
-                  backgroundColor: HandeStatusColor({ status }),
-                  marginLeft: (windowHeight + windowWidth) * 0.01,
-                }}
-                rounded={windowWidth * 0.01}>
-                {HandleBadgeStatus({ status })}
-              </Badge>
-            </View>
-            <View style={styles.row}>
-              <Text
-                style={{
-                  fontSize: windowWidth * 0.05,
-                  fontWeight: 700,
-                }}>
-                Mức Độ Ưu Tiên:
-              </Text>
-              <Badge
-                _text={{ fontSize: windowWidth * 0.037 }}
-                variant="solid"
-                style={{
-                  backgroundColor: HandeUrgencyColor({ urgency }),
-                  marginLeft: (windowHeight + windowWidth) * 0.01,
-                }}
-                rounded={windowWidth * 0.01}>
-                {HandleUrgency({ urgency })}
-              </Badge>
-            </View>
-            <View style={styles.row}>
-              <Text
-                style={{
-                  fontSize: windowWidth * 0.05,
-                  fontWeight: 700,
-                }}>
-                Người Yêu Cầu:
-              </Text>
-              <Text
-                style={{
-                  fontSize: windowWidth * 0.045,
-                  fontWeight: 400,
-                  marginLeft: windowWidth * 0.01
-                }}>
-                {name}
-              </Text>
-            </View>
-            <View style={styles.row}></View>
-          </View>
-        </ScrollView>
+  if (loading) {
+    return (
+      <View style={[styles.container, styles.horizontal]}>
+        <ActivityIndicator size="large" />
       </View>
-      <View style={styles.Button}>
-        <Button onPress={() => navigation.reset({
-          index: 0,
-          routes: [
-            {
-              name: 'Ticket',
-              params: '',
-            },
-          ],
-        })}>Go Back</Button>
-        <Button onPress={() => handleBtnTicket()}>Update</Button>
-      </View>
-    </SafeAreaView>
-  );
+    )
+  } else {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.card}>
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
+            <View style={styles.title}>
+              <Text
+                style={{
+                  fontSize: windowWidth * 0.055,
+                  fontWeight: 700,
+                  textAlign: 'center',
+                  alignItems: 'center',
+                }}>
+                {title} #{id}
+              </Text>
+            </View>
+            <View
+              style={{
+                margin: (windowHeight + windowWidth) * 0.01,
+              }}>
+              <Text
+                style={{
+                  fontSize: windowWidth * 0.05,
+                  fontWeight: 700,
+                }}>
+                Miêu tả sự cố:
+              </Text>
+              <ScrollView
+                style={{
+                  maxHeight: windowHeight * 0.2,
+                  marginTop: windowHeight * 0.01,
+                }}>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.045,
+                  }}>
+                  {description}
+                </Text>
+              </ScrollView>
+              <View style={styles.row}>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.05,
+                    fontWeight: 700,
+                  }}>
+                  Tình trạng:
+                </Text>
+                <Badge
+                  _text={{ fontSize: windowWidth * 0.03 }}
+                  variant="solid"
+                  style={{
+                    backgroundColor: HandeStatusColor({ status }),
+                    marginLeft: (windowHeight + windowWidth) * 0.01,
+                  }}
+                  rounded={windowWidth * 0.01}>
+                  {HandleBadgeStatus({ status })}
+                </Badge>
+              </View>
+              <View style={styles.row}>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.05,
+                    fontWeight: 700,
+                  }}>
+                  Mức Độ Ưu Tiên:
+                </Text>
+                <Badge
+                  _text={{ fontSize: windowWidth * 0.037 }}
+                  variant="solid"
+                  style={{
+                    backgroundColor: HandeUrgencyColor({ urgency }),
+                    marginLeft: (windowHeight + windowWidth) * 0.01,
+                  }}
+                  rounded={windowWidth * 0.01}>
+                  {HandleUrgency({ urgency })}
+                </Badge>
+              </View>
+              <View style={styles.row}>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.05,
+                    fontWeight: 700,
+                  }}>
+                  Người Yêu Cầu:
+                </Text>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.045,
+                    fontWeight: 400,
+                    marginLeft: windowWidth * 0.01
+                  }}>
+                  {name}
+                </Text>
+              </View>
+              <View style={styles.row}></View>
+            </View>
+          </ScrollView>
+        </View>
+        <View style={styles.Button}>
+          <Button onPress={() => navigation.reset({
+            index: 0,
+            routes: [
+              {
+                name: 'Ticket',
+                params: '',
+              },
+            ],
+          })}>Go Back</Button>
+          <Button onPress={() => handleBtnTicket()}>Update</Button>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
 };
 
 const styles = StyleSheet.create({
