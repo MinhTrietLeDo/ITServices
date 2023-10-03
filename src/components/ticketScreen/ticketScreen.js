@@ -93,20 +93,6 @@ const TicketScreen = ({ navigation }) => {
     }
   };
 
-  // getUsername = async () => {
-  //   const usernameURL = '/User/'
-  //   let objHeader = {
-  //     Accept: 'application/json',
-  //     'Content-Type': 'application/json',
-  //     'App-Token': App_Token,
-  //   };
-  //   let request = await Promise.all([
-  //     await fetch(API_URL + usernameURL + userRequestID + '?expand_dropdowns=true&session_token=' + token, {
-  //       headers: objHeader,
-  //     }).then(el => el.json()),
-  //   ]);
-  // }
-
   if (loading) {
     return (
       <View style={[styles.container, styles.horizontal]}>

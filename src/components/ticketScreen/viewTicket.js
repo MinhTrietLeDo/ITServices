@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Badge, Button, ScrollView, Text, } from 'native-base';
-import { createNavigationContainerRef, useRoute } from '@react-navigation/native';
-import { API_URL, App_Token } from '../../config/config';
-import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {Badge, Button, ScrollView, Text} from 'native-base';
+import {createNavigationContainerRef, useRoute} from '@react-navigation/native';
+import {API_URL, App_Token} from '../../config/config';
+import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Alert, StyleSheet, View, ActivityIndicator} from 'react-native';
 import {
   HandeStatusColor,
   HandeUrgencyColor,
   HandleBadgeStatus,
   HandleUrgency,
 } from '../../config/handle';
-import { RefreshControl } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import {RefreshControl} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
 
-const ViewTicket = ({ navigation }) => {
+const ViewTicket = ({navigation}) => {
   const route = useRoute();
   const id = route.params?.id;
   const description = route.params?.description;
@@ -22,17 +22,17 @@ const ViewTicket = ({ navigation }) => {
   const date = route.params?.ticketDate;
   const status = route.params?.status;
   const title = route.params?.title;
-  const userID = route.params?.userID
+  const userID = route.params?.userID;
   const token = useSelector(state => state.user.token.session_token);
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [name, setName] = useState('')
-  const [location, setLocation] = useState('')
+  const [name, setName] = useState('');
+  const [location, setLocation] = useState('');
 
   useEffect(() => {
-    getUsername().catch(console.error)
-    console.log(id, description, userID)
+    getUsername().catch(console.error);
+    console.log(id, description, userID);
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -40,12 +40,12 @@ const ViewTicket = ({ navigation }) => {
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
-    getUsername().catch(console.error)
+    getUsername().catch(console.error);
   }, []);
 
   const getUsername = async () => {
-    const a = '/User/'
-    const b = '?expand_dropdowns=true'
+    const a = '/User/';
+    const b = '?expand_dropdowns=true';
     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -59,13 +59,20 @@ const ViewTicket = ({ navigation }) => {
     ]);
     console.log(API_URL + a + userID + b + '&session_token=' + token);
     if (typeof request !== 'undefined') {
-      const aName = request.map(el => el['firstname'])
-      const bName = request.map(el => el['realname'])
-      const loca = request.map(el => el['locations_id'])
-      setName(bName + ' ' + aName)
-      setLocation(loca)
-      console.log('hjkasgdrkjashdgf', location)
-      setLoading(false)
+      const aName = request.map(el => el['firstname']);
+      const bName = request.map(el => el['realname']);
+      const loca = request.map(el => el['locations_id']);
+      setName(bName + ' ' + aName);
+      setLocation(loca);
+      console.log('hjkasgdrkjashdgf', location);
+      setLoading(false);
+      if (
+        request.map(el => el['locations_id']) !== null &&
+        request.map(el => el['locations_id']) !== '0'
+      ) {
+        console.log('DEO PHAI 0');
+      }
+      // else{}
     } else {
       Alert.alert('Error', 'Please try again later', [
         {
@@ -73,35 +80,35 @@ const ViewTicket = ({ navigation }) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
       setLoading(false);
     }
   };
 
   updateTicket = async () => {
-    console.log('updating..')
+    console.log('updating..');
     // navigation.goBack()
   };
 
   handleBtnTicket = () => {
-    console.log('Pressed!')
+    console.log('Pressed!');
     Alert.alert('Cập nhật lại ticket?', 'Bạn có muốn cập nhật ticket?', [
       {
         text: 'Cancel',
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      { text: 'OK', onPress: () => updateTicket() },
+      {text: 'OK', onPress: () => updateTicket()},
     ]);
-  }
+  };
 
   if (loading) {
     return (
       <View style={[styles.container, styles.horizontal]}>
         <ActivityIndicator size="large" />
       </View>
-    )
+    );
   } else {
     return (
       <SafeAreaView style={styles.container}>
@@ -153,14 +160,14 @@ const ViewTicket = ({ navigation }) => {
                   Tình trạng:
                 </Text>
                 <Badge
-                  _text={{ fontSize: windowWidth * 0.03 }}
+                  _text={{fontSize: windowWidth * 0.03}}
                   variant="solid"
                   style={{
-                    backgroundColor: HandeStatusColor({ status }),
+                    backgroundColor: HandeStatusColor({status}),
                     marginLeft: (windowHeight + windowWidth) * 0.01,
                   }}
                   rounded={windowWidth * 0.01}>
-                  {HandleBadgeStatus({ status })}
+                  {HandleBadgeStatus({status})}
                 </Badge>
               </View>
               <View style={styles.row}>
@@ -172,14 +179,14 @@ const ViewTicket = ({ navigation }) => {
                   Mức Độ Ưu Tiên:
                 </Text>
                 <Badge
-                  _text={{ fontSize: windowWidth * 0.037 }}
+                  _text={{fontSize: windowWidth * 0.037}}
                   variant="solid"
                   style={{
-                    backgroundColor: HandeUrgencyColor({ urgency }),
+                    backgroundColor: HandeUrgencyColor({urgency}),
                     marginLeft: (windowHeight + windowWidth) * 0.01,
                   }}
                   rounded={windowWidth * 0.01}>
-                  {HandleUrgency({ urgency })}
+                  {HandleUrgency({urgency})}
                 </Badge>
               </View>
               <View style={styles.row}>
@@ -194,7 +201,7 @@ const ViewTicket = ({ navigation }) => {
                   style={{
                     fontSize: windowWidth * 0.045,
                     fontWeight: 400,
-                    marginLeft: windowWidth * 0.01
+                    marginLeft: windowWidth * 0.01,
                   }}>
                   {name}
                 </Text>
@@ -211,7 +218,7 @@ const ViewTicket = ({ navigation }) => {
                   style={{
                     fontSize: windowWidth * 0.045,
                     fontWeight: 400,
-                    marginLeft: windowWidth * 0.01
+                    marginLeft: windowWidth * 0.01,
                   }}>
                   {location}
                 </Text>
@@ -220,33 +227,38 @@ const ViewTicket = ({ navigation }) => {
           </ScrollView>
         </View>
         <View style={styles.Button}>
-          <Button onPress={() => navigation.reset({
-            index: 0,
-            routes: [
-              {
-                name: 'Ticket',
-                params: '',
-              },
-            ],
-          })}>Go Back</Button>
+          <Button
+            onPress={() =>
+              navigation.reset({
+                index: 0,
+                routes: [
+                  {
+                    name: 'Ticket',
+                    params: '',
+                  },
+                ],
+              })
+            }>
+            Go Back
+          </Button>
           <Button onPress={() => handleBtnTicket()}>Update</Button>
         </View>
       </SafeAreaView>
     );
   }
-
 };
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     alignSelf: 'center',
+    flex: 1,
   },
   card: {
     borderRadius: (windowWidth + windowHeight) * 0.01,
     borderWidth: (windowWidth + windowHeight) * 0.001,
     width: windowWidth * 0.9,
-    height: windowHeight * 0.75,
+    height: windowHeight * 0.7,
     maxHeight: windowHeight * 0.8,
     padding: (windowWidth + windowHeight) * 0.01,
   },
