@@ -1,25 +1,25 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {Badge, Button, ScrollView, Text} from 'native-base';
-import {createNavigationContainerRef, useRoute} from '@react-navigation/native';
-import {API_URL, App_Token} from '../../config/config';
-import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Alert, StyleSheet, View, ActivityIndicator} from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Badge, Button, ScrollView, Text } from 'native-base';
+import { createNavigationContainerRef, useRoute } from '@react-navigation/native';
+import { API_URL, App_Token } from '../../config/config';
+import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
 import {
   HandeStatusColor,
   HandeUrgencyColor,
   HandleBadgeStatus,
   HandleUrgency,
 } from '../../config/handle';
-import {RefreshControl} from 'react-native-gesture-handler';
-import {useSelector} from 'react-redux';
+import { RefreshControl } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
-const ViewTicket = ({navigation}) => {
+const ViewTicket = ({ navigation }) => {
   const route = useRoute();
   const id = route.params?.id;
   const description = route.params?.description;
   const urgency = route.params?.urgency;
-  const date = route.params?.ticketDate;
+  const date = route.params?.date;
   const status = route.params?.status;
   const title = route.params?.title;
   const userID = route.params?.userID;
@@ -32,7 +32,7 @@ const ViewTicket = ({navigation}) => {
 
   useEffect(() => {
     getUsername().catch(console.error);
-    console.log(id, description, userID);
+    console.log("ID:",id,"Miêu tả:", description, 'Ngày tạo:', date);
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -66,13 +66,6 @@ const ViewTicket = ({navigation}) => {
       setLocation(loca);
       console.log('hjkasgdrkjashdgf', location);
       setLoading(false);
-      if (
-        request.map(el => el['locations_id']) !== null &&
-        request.map(el => el['locations_id']) !== '0'
-      ) {
-        console.log('DEO PHAI 0');
-      }
-      // else{}
     } else {
       Alert.alert('Error', 'Please try again later', [
         {
@@ -80,7 +73,7 @@ const ViewTicket = ({navigation}) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]);
       setLoading(false);
     }
@@ -99,7 +92,7 @@ const ViewTicket = ({navigation}) => {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'OK', onPress: () => updateTicket()},
+      { text: 'OK', onPress: () => updateTicket() },
     ]);
   };
 
@@ -160,15 +153,32 @@ const ViewTicket = ({navigation}) => {
                   Tình trạng:
                 </Text>
                 <Badge
-                  _text={{fontSize: windowWidth * 0.03}}
+                  _text={{ fontSize: windowWidth * 0.03 }}
                   variant="solid"
                   style={{
-                    backgroundColor: HandeStatusColor({status}),
+                    backgroundColor: HandeStatusColor({ status }),
                     marginLeft: (windowHeight + windowWidth) * 0.01,
                   }}
                   rounded={windowWidth * 0.01}>
-                  {HandleBadgeStatus({status})}
+                  {HandleBadgeStatus({ status })}
                 </Badge>
+              </View>
+              <View style={styles.row}>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.05,
+                    fontWeight: 700,
+                  }}>
+                  Ngày tạo:
+                </Text>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.045,
+                    fontWeight: 400,
+                    marginLeft: windowWidth * 0.01,
+                  }}>
+                  {date}
+                </Text>
               </View>
               <View style={styles.row}>
                 <Text
@@ -179,14 +189,14 @@ const ViewTicket = ({navigation}) => {
                   Mức Độ Ưu Tiên:
                 </Text>
                 <Badge
-                  _text={{fontSize: windowWidth * 0.037}}
+                  _text={{ fontSize: windowWidth * 0.037 }}
                   variant="solid"
                   style={{
-                    backgroundColor: HandeUrgencyColor({urgency}),
+                    backgroundColor: HandeUrgencyColor({ urgency }),
                     marginLeft: (windowHeight + windowWidth) * 0.01,
                   }}
                   rounded={windowWidth * 0.01}>
-                  {HandleUrgency({urgency})}
+                  {HandleUrgency({ urgency })}
                 </Badge>
               </View>
               <View style={styles.row}>
@@ -252,7 +262,8 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     alignSelf: 'center',
-    flex: 1,
+    // flex: 1,
+    margin: (windowWidth + windowHeight) * 0.02
   },
   card: {
     borderRadius: (windowWidth + windowHeight) * 0.01,
