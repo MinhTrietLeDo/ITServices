@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/drawer';
 import TicketScreen from '../../components/ticketScreen/ticketScreen';
 import Home from '../../components/home/home';
-import {NotiButton} from '../../components/headerBtn/headerBtn';
+import {NotiButton} from '../../components/Btn/headerBtn';
 import {HandleNoti} from '../../config/handle';
 import ViewTicket from '../../components/ticketScreen/viewTicket';
 

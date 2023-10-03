@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Badge, Button, ScrollView, Text, } from 'native-base';
-import { useRoute } from '@react-navigation/native';
+import { createNavigationContainerRef, useRoute } from '@react-navigation/native';
 import { API_URL, App_Token } from '../../config/config';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -28,6 +28,7 @@ const ViewTicket = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [name, setName] = useState('')
+  const [location, setLocation] = useState('')
 
   useEffect(() => {
     getUsername().catch(console.error)
@@ -60,8 +61,10 @@ const ViewTicket = ({ navigation }) => {
     if (typeof request !== 'undefined') {
       const aName = request.map(el => el['firstname'])
       const bName = request.map(el => el['realname'])
+      const loca = request.map(el => el['locations_id'])
       setName(bName + ' ' + aName)
-      console.log('hjkasgdrkjashdgf', request)
+      setLocation(loca)
+      console.log('hjkasgdrkjashdgf', location)
       setLoading(false)
     } else {
       Alert.alert('Error', 'Please try again later', [
@@ -196,7 +199,23 @@ const ViewTicket = ({ navigation }) => {
                   {name}
                 </Text>
               </View>
-              <View style={styles.row}></View>
+              <View style={styles.row}>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.05,
+                    fontWeight: 700,
+                  }}>
+                  Phòng Ban/Khoa:
+                </Text>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.045,
+                    fontWeight: 400,
+                    marginLeft: windowWidth * 0.01
+                  }}>
+                  {location}
+                </Text>
+              </View>
             </View>
           </ScrollView>
         </View>
