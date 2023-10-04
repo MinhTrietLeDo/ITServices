@@ -5,7 +5,7 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import TicketScreen from '../../components/ticketScreen/ticketScreen';
+import TicketScreen from '../../components/ticketScreen/ticketClosed';
 import Home from '../../components/home/home';
 import {NotiButton} from '../../components/Btn/headerBtn';
 import {HandleNoti} from '../../config/handle';

@@ -2,10 +2,12 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MyStack } from './stackNavigation';
 import Home from '../../components/home/home';
-import TicketScreen from '../../components/ticketScreen/ticketScreen';
+import TicketScreen from '../../components/ticketScreen/ticketClosed';
 import { MyDrawer } from './drawerNavigation';
 import ViewTicket from '../../components/ticketScreen/viewTicket';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
+import NewTicket from '../../components/ticketScreen/ticketNew';
+import PendingTicket from '../../components/ticketScreen/ticketPending';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +17,7 @@ const MyBottomTab = () => {
       <Tab.Group>
         <Tab.Screen
           name="Mới"
-          component={Home}
+          component={NewTicket}
           options={{
             headerBackVisible: false,
             headerShown: false,
@@ -28,7 +30,7 @@ const MyBottomTab = () => {
         />
         <Tab.Screen
           name="Đang Xử Lý"
-          component={Home}
+          component={PendingTicket}
           options={{
             headerBackVisible: false,
             headerShown: false,
