@@ -5,11 +5,10 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import TicketScreen from '../../components/ticketScreen/ticketClosed';
 import Home from '../../components/home/home';
 import {NotiButton} from '../../components/Btn/headerBtn';
 import {HandleNoti} from '../../config/handle';
-import ViewTicket from '../../components/ticketScreen/viewTicket';
+import MyBottomTab from './bottomTabNavigation';
 
 const Drawer = createDrawerNavigator();
 
@@ -25,7 +24,7 @@ function CustomDrawer(props) {
 const MyDrawer = () => {
   return (
     <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}>
-      {/* <Drawer.Screen
+      <Drawer.Screen
         component={Home}
         name="Dashboard"
         options={{
@@ -43,9 +42,9 @@ const MyDrawer = () => {
             />
           ),
         }}
-      /> */}
+      />
       <Drawer.Screen
-        component={TicketScreen}
+        component={MyBottomTab}
         name="Ticket"
         options={{
           title: 'Ticket List',
@@ -62,7 +61,7 @@ const MyDrawer = () => {
           ),
         }}
       />
-      <Drawer.Group screenOptions={{presentation: 'modal'}}>
+      {/* <Drawer.Group screenOptions={{presentation: 'modal'}}>
         <Drawer.Screen
           component={ViewTicket}
           name="VỉewTicket"
@@ -70,7 +69,7 @@ const MyDrawer = () => {
             drawerItemStyle: {display: 'none'},
           }}
         />
-      </Drawer.Group>
+      </Drawer.Group> */}
     </Drawer.Navigator>
   );
 };

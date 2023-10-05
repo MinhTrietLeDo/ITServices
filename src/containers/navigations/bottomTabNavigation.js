@@ -21,40 +21,43 @@ const MyBottomTab = () => {
           name="Mới"
           component={TicketScreen}
           options={{
-            // headerBackVisible: false,
-            // headerShown: false,
+            headerBackVisible: false,
+            headerShown: false,
             tabBarLabelStyle: {
               fontFamily: 'WorkSans',
               fontSize: (windowHeight + windowWidth) * 0.012
-            }
+            },
+            headerTitleAlign: 'center',
           }}
-          initialParams={{ticketURL: newTicket}}
+          initialParams={{ ticketURL: newTicket }}
         />
         <Tab.Screen
           name="Đang Xử Lý"
           component={TicketScreen}
           options={{
-            // headerBackVisible: false,
-            // headerShown: false,
+            headerBackVisible: false,
+            headerShown: false,
             tabBarLabelStyle: {
               fontFamily: 'WorkSans',
               fontSize: (windowHeight + windowWidth) * 0.012
-            }
+            },
+            headerTitleAlign: 'center',
           }}
-          initialParams={{ticketURL: pendingTicket}}
+          initialParams={{ ticketURL: pendingTicket }}
         />
         <Tab.Screen
           name="Đã Xử Lý"
           component={TicketScreen}
           options={{
-            // headerBackVisible: false,
-            // headerShown: false,
+            headerBackVisible: false,
+            headerShown: false,
             tabBarLabelStyle: {
               fontFamily: 'WorkSans',
               fontSize: (windowHeight + windowWidth) * 0.012
-            }
+            },
+            headerTitleAlign: 'center',
           }}
-          initialParams={{ticketURL: closedTicket}}
+          initialParams={{ ticketURL: closedTicket }}
         />
       </Tab.Group>
       <Tab.Group screenOptions={{ presentation: 'modal' }}>
@@ -63,6 +66,8 @@ const MyBottomTab = () => {
           name="VỉewTicket"
           options={{
             tabBarItemStyle: { display: 'none' },
+            headerBackVisible: false,
+            headerShown: false,
           }}
         />
       </Tab.Group>

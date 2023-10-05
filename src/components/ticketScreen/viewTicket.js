@@ -33,7 +33,7 @@ const ViewTicket = ({ navigation }) => {
   useEffect(() => {
     getUsername().catch(console.error);
     console.log("ID:", id, "Miêu tả:", description, 'Ngày tạo:', date);
-    return () => backHandler.remove()
+    // return () => backHandler.remove()
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -44,22 +44,23 @@ const ViewTicket = ({ navigation }) => {
     getUsername().catch(console.error);
   }, []);
 
-  const backButton = () => {
-    navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'Ticket',
-          params: '',
-        },
-      ],
-    })
-    return true
-  }
+  // const backButton = () => {
+  //   // navigation.reset({
+  //   //   index: 0,
+  //   //   routes: [
+  //   //     {
+  //   //       name: 'Ticket',
+  //   //       params: '',
+  //   //     },
+  //   //   ],
+  //   // })
+  //   navigation.goBack()
+  //   return true
+  // }
 
-  const backHandler = BackHandler.addEventListener(
-    'hardwareBackPress', backButton
-  )
+  // const backHandler = BackHandler.addEventListener(
+  //   'hardwareBackPress', backButton
+  // )
 
   const getUsername = async () => {
     const a = '/User/';
@@ -261,7 +262,7 @@ const ViewTicket = ({ navigation }) => {
                 index: 0,
                 routes: [
                   {
-                    name: 'Ticket',
+                    name: 'Mới',
                     params: '',
                   },
                 ],

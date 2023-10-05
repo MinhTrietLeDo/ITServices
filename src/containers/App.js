@@ -30,7 +30,7 @@ const RootStack = () => {
         ) : (
           <Stack.Screen
             name="Logined"
-            component={MyBottomTab}
+            component={MyDrawer}
             options={{
               headerBackVisible: false,
               headerShown: false,
