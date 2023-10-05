@@ -6,6 +6,7 @@ import { MyDrawer } from './drawerNavigation';
 import ViewTicket from '../../components/ticketScreen/viewTicket';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import TicketScreen from '../../components/ticketScreen/ticketScreen';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const Tab = createBottomTabNavigator();
 
@@ -68,6 +69,9 @@ const MyBottomTab = () => {
             tabBarItemStyle: { display: 'none' },
             headerBackVisible: false,
             headerShown: false,
+            tabBarIcon: () =>(
+              <MaterialCommunityIcons name="bell" color={'black'} size={16} />
+            ),
           }}
         />
       </Tab.Group>
