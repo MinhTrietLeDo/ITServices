@@ -37,8 +37,9 @@ import {
 } from '../../config/handle';
 import { useSelector } from 'react-redux';
 import { getTicket } from '../../redux/actions';
+import { useRoute } from '@react-navigation/native';
 
-const NewTicket = ({ navigation }) => {
+const TicketScreen = ({ navigation }) => {
   const [ticket, setTicket] = useState([])
   const [loading, setLoading] = useState(true);
   const token = useSelector(state => state.user.token.session_token);
@@ -46,9 +47,13 @@ const NewTicket = ({ navigation }) => {
   const TicketData = useSelector(state => state.ticket.ticketArray)
   const [sort, setSort] = useState(2)
 
+  const route = useRoute()
+  const {ticketURL}= route.params
+
   useEffect(() => {
     console.log('Catch user token:', token);
     GetTickets().catch(console.error);
+    console.log(ticketURL)
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -61,9 +66,9 @@ const NewTicket = ({ navigation }) => {
   }, []);
 
   const GetTickets = async () => {
-    const ticketURL =
-      '/search/Ticket/?order=DESC&criteria[0][itemtype]=Ticket&criteria[0][field]=12&criteria[0][searchtype]=contains&criteria[0][value]=1&forcedisplay[0]=1&forcedisplay[1]=2&forcedisplay[2]=3&forcedisplay[3]=12&forcedisplay[4]=15&forcedisplay[5]=19&forcedisplay[6]=21&forcedisplay[7]=4&sort=' + sort;
-    let objHeader = {
+    // const ticketURL =
+    //   '/search/Ticket/?order=DESC&criteria[0][itemtype]=Ticket&criteria[0][field]=12&criteria[0][searchtype]=contains&criteria[0][value]=1&forcedisplay[0]=1&forcedisplay[1]=2&forcedisplay[2]=3&forcedisplay[3]=12&forcedisplay[4]=15&forcedisplay[5]=19&forcedisplay[6]=21&forcedisplay[7]=4&sort=' + sort;
+     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       'App-Token': App_Token,
@@ -210,7 +215,7 @@ const NewTicket = ({ navigation }) => {
   }
 };
 
-export default NewTicket;
+export default TicketScreen;
 
 const styles = StyleSheet.create({
   container: {

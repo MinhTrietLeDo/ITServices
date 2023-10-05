@@ -29,7 +29,7 @@ const RootStack = () => {
           />
         ) : (
           <Stack.Screen
-            name="Mới"
+            name="Logined"
             component={MyBottomTab}
             options={{
               headerBackVisible: false,
