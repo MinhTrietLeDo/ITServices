@@ -3,8 +3,8 @@ import { Badge, Button, ScrollView, Text } from 'native-base';
 import { createNavigationContainerRef, useRoute } from '@react-navigation/native';
 import { API_URL, App_Token } from '../../config/config';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Alert, StyleSheet, View, ActivityIndicator, BackHandler } from 'react-native';
+// import { SafeAreaView } from 'react-native-safe-area-context';
+import { Alert, StyleSheet, View, ActivityIndicator, BackHandler,SafeAreaView } from 'react-native';
 import {
   HandeStatusColor,
   HandeUrgencyColor,
@@ -281,8 +281,8 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     alignSelf: 'center',
-    // flex: 1,
-    margin: (windowWidth + windowHeight) * 0.02
+    flex: 1,
+    margin: (windowWidth + windowHeight) * 0.01
   },
   card: {
     borderRadius: (windowWidth + windowHeight) * 0.01,

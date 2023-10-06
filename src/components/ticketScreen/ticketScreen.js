@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   ActivityIndicator,
   View,
@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import { API_URL, App_Token } from '../../config/config';
+import {API_URL, App_Token} from '../../config/config';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
@@ -28,32 +28,31 @@ import {
   Badge,
   Icon,
 } from 'native-base';
-import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
+import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
 import {
   HandeStatusColor,
   HandeUrgencyColor,
   HandleBadgeStatus,
   HandleUrgency,
 } from '../../config/handle';
-import { useSelector } from 'react-redux';
-import { getTicket } from '../../redux/actions';
-import { useRoute } from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {getTicket} from '../../redux/actions';
+import {useRoute} from '@react-navigation/native';
 
-const TicketScreen = ({ navigation }) => {
-  const [ticket, setTicket] = useState([])
+const TicketScreen = ({navigation}) => {
+  const [ticket, setTicket] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = useSelector(state => state.user.token.session_token);
   const [refreshing, setRefreshing] = useState(false);
-  const TicketData = useSelector(state => state.ticket.ticketArray)
-  const [sort, setSort] = useState(2)
+  const TicketData = useSelector(state => state.ticket.ticketArray);
 
-  const route = useRoute()
-  const {ticketURL}= route.params
+  const route = useRoute();
+  const {ticketURL} = route.params;
 
   useEffect(() => {
     console.log('Catch user token:', token);
     GetTickets().catch(console.error);
-    console.log(ticketURL)
+    console.log(ticketURL);
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -66,9 +65,7 @@ const TicketScreen = ({ navigation }) => {
   }, []);
 
   const GetTickets = async () => {
-    // const ticketURL =
-    //   '/search/Ticket/?order=DESC&criteria[0][itemtype]=Ticket&criteria[0][field]=12&criteria[0][searchtype]=contains&criteria[0][value]=1&forcedisplay[0]=1&forcedisplay[1]=2&forcedisplay[2]=3&forcedisplay[3]=12&forcedisplay[4]=15&forcedisplay[5]=19&forcedisplay[6]=21&forcedisplay[7]=4&sort=' + sort;
-     let objHeader = {
+    let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       'App-Token': App_Token,
@@ -82,8 +79,8 @@ const TicketScreen = ({ navigation }) => {
     console.log(API_URL + ticketURL + '&session_token=' + token);
 
     if (typeof request[0].data !== 'undefined') {
-      const rawData = request[0].data
-      setTicket(rawData)
+      const rawData = request[0].data;
+      setTicket(rawData);
       setLoading(false);
     } else {
       Alert.alert('Error', 'Please try again later', [
@@ -92,7 +89,7 @@ const TicketScreen = ({ navigation }) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
       setLoading(false);
     }
@@ -145,8 +142,8 @@ const TicketScreen = ({ navigation }) => {
                       // backgroundColor:'white'
                     }}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('VỉewTicket',
-                        {
+                      onPress={() =>
+                        navigation.navigate('VỉewTicket', {
                           id: ticketID,
                           description: description,
                           urgency: urgency,
@@ -154,8 +151,8 @@ const TicketScreen = ({ navigation }) => {
                           status: status,
                           title: ticketTitle,
                           userID: userRequestID,
-                        }
-                      )}>
+                        })
+                      }>
                       <View
                         style={{
                           padding: windowWidth * 0.02,
@@ -174,32 +171,32 @@ const TicketScreen = ({ navigation }) => {
                           }}>
                           {ticketTitle} #{ticketID}
                         </Text>
-                        <Text style={{ fontSize: windowWidth * 0.04 }}>
+                        <Text style={{fontSize: windowWidth * 0.04}}>
                           Created: {ticketDate}
                         </Text>
                         <HStack
                           alignSelf={'center'}
                           space={windowWidth * 0.02}
-                        // marginTop={(windowWidth + windowHeight) * 0.01}
+                          // marginTop={(windowWidth + windowHeight) * 0.01}
                         >
                           <Badge
-                            _text={{ fontSize: windowWidth * 0.037 }}
+                            _text={{fontSize: windowWidth * 0.037}}
                             variant="solid"
                             //colorScheme={HandeUrgencyColor({ urgency })}
                             style={{
-                              backgroundColor: HandeUrgencyColor({ urgency }),
+                              backgroundColor: HandeUrgencyColor({urgency}),
                             }}
                             rounded={windowWidth * 0.01}>
-                            {HandleUrgency({ urgency })}
+                            {HandleUrgency({urgency})}
                           </Badge>
                           <Badge
-                            _text={{ fontSize: windowWidth * 0.037 }}
+                            _text={{fontSize: windowWidth * 0.037}}
                             variant="solid"
                             style={{
-                              backgroundColor: HandeStatusColor({ status }),
+                              backgroundColor: HandeStatusColor({status}),
                             }}
                             rounded={windowWidth * 0.01}>
-                            {HandleBadgeStatus({ status })}
+                            {HandleBadgeStatus({status})}
                           </Badge>
                         </HStack>
                       </View>
@@ -222,6 +219,7 @@ const styles = StyleSheet.create({
     paddingVertical: (windowWidth + windowHeight) * 0.01,
     alignItems: 'center',
     alignSelf: 'center',
+    flex: 1,
   },
   activityIndicator: {
     alignItems: 'center',
@@ -229,7 +227,7 @@ const styles = StyleSheet.create({
   },
   TicketList: {
     width: windowWidth * 0.95,
-    height:'100%',
+    height: '100%',
     margin: (windowWidth + windowHeight) * 0.01,
   },
   StackStyle: {
