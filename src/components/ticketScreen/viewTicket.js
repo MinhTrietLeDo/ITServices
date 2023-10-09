@@ -1,20 +1,27 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Badge, Button, ScrollView, Text } from 'native-base';
-import { createNavigationContainerRef, useRoute } from '@react-navigation/native';
-import { API_URL, App_Token } from '../../config/config';
-import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
+import React, {useState, useEffect, useCallback} from 'react';
+import {Badge, Button, ScrollView, Text} from 'native-base';
+import {createNavigationContainerRef, useRoute} from '@react-navigation/native';
+import {API_URL, App_Token} from '../../config/config';
+import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
 // import { SafeAreaView } from 'react-native-safe-area-context';
-import { Alert, StyleSheet, View, ActivityIndicator, BackHandler,SafeAreaView } from 'react-native';
+import {
+  Alert,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  BackHandler,
+  SafeAreaView,
+} from 'react-native';
 import {
   HandeStatusColor,
   HandeUrgencyColor,
   HandleBadgeStatus,
   HandleUrgency,
 } from '../../config/handle';
-import { RefreshControl } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import {RefreshControl} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
 
-const ViewTicket = ({ navigation }) => {
+const ViewTicket = ({navigation}) => {
   const route = useRoute();
   const id = route.params?.id;
   const description = route.params?.description;
@@ -32,8 +39,8 @@ const ViewTicket = ({ navigation }) => {
 
   useEffect(() => {
     getUsername().catch(console.error);
-    console.log("ID:", id, "Miêu tả:", description, 'Ngày tạo:', date);
-    return () => backHandler.remove()
+    console.log('ID:', id, 'Miêu tả:', description, 'Ngày tạo:', date);
+    return () => backHandler.remove();
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -53,14 +60,15 @@ const ViewTicket = ({ navigation }) => {
           params: '',
         },
       ],
-    })
+    });
     // navigation.goBack()
-    return true
-  }
+    return true;
+  };
 
   const backHandler = BackHandler.addEventListener(
-    'hardwareBackPress', backButton
-  )
+    'hardwareBackPress',
+    backButton,
+  );
 
   const getUsername = async () => {
     const a = '/User/';
@@ -92,7 +100,7 @@ const ViewTicket = ({ navigation }) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
       setLoading(false);
     }
@@ -111,7 +119,7 @@ const ViewTicket = ({ navigation }) => {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      { text: 'OK', onPress: () => updateTicket() },
+      {text: 'OK', onPress: () => updateTicket()},
     ]);
   };
 
@@ -172,14 +180,14 @@ const ViewTicket = ({ navigation }) => {
                   Tình trạng:
                 </Text>
                 <Badge
-                  _text={{ fontSize: windowWidth * 0.03 }}
+                  _text={{fontSize: windowWidth * 0.03}}
                   variant="solid"
                   style={{
-                    backgroundColor: HandeStatusColor({ status }),
+                    backgroundColor: HandeStatusColor({status}),
                     marginLeft: (windowHeight + windowWidth) * 0.01,
                   }}
                   rounded={windowWidth * 0.01}>
-                  {HandleBadgeStatus({ status })}
+                  {HandleBadgeStatus({status})}
                 </Badge>
               </View>
               <View style={styles.row}>
@@ -208,14 +216,14 @@ const ViewTicket = ({ navigation }) => {
                   Mức Độ Ưu Tiên:
                 </Text>
                 <Badge
-                  _text={{ fontSize: windowWidth * 0.037 }}
+                  _text={{fontSize: windowWidth * 0.037}}
                   variant="solid"
                   style={{
-                    backgroundColor: HandeUrgencyColor({ urgency }),
+                    backgroundColor: HandeUrgencyColor({urgency}),
                     marginLeft: (windowHeight + windowWidth) * 0.01,
                   }}
                   rounded={windowWidth * 0.01}>
-                  {HandleUrgency({ urgency })}
+                  {HandleUrgency({urgency})}
                 </Badge>
               </View>
               <View style={styles.row}>
@@ -282,7 +290,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     flex: 1,
-    margin: (windowWidth + windowHeight) * 0.01
+    margin: (windowWidth + windowHeight) * 0.01,
   },
   card: {
     borderRadius: (windowWidth + windowHeight) * 0.01,

@@ -14,7 +14,6 @@ const Stack = createStackNavigator()
 const RootStack = () => {
 
   React.useEffect(() => {
-    // getNoti().catch(console.error);
     hanldeNoti().catch(console.error)
   }, [])
 

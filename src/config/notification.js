@@ -1,5 +1,5 @@
 import messaging from '@react-native-firebase/messaging';
-import { PermissionsAndroid } from 'react-native';
+import {PermissionsAndroid} from 'react-native';
 
 export const requestUserPermission = async () => {
   /**
@@ -18,7 +18,7 @@ export const requestUserPermission = async () => {
 
 export const getNoti = async () => {
   if (requestUserPermission()) {
-    console.log('Authorized!')
+    console.log('Authorized!');
     await messaging().registerDeviceForRemoteMessages();
     messaging()
       .getToken()
@@ -35,7 +35,7 @@ export const getNoti = async () => {
 
 export const hanldeNoti = async () => {
   if (requestUserPermission()) {
-    console.log('Authorized!')
+    console.log('Authorized!');
     await messaging().registerDeviceForRemoteMessages();
 
     messaging()
@@ -58,12 +58,12 @@ export const hanldeNoti = async () => {
       if (remoteMessage) {
         console.log(
           'getInitialNotification:' +
-          'Notification caused app to open from quit state',
+            'Notification caused app to open from quit state',
         );
         console.log(remoteMessage);
         alert(
           'getInitialNotification: Notification caused app to' +
-          ' open from quit state',
+            ' open from quit state',
         );
       }
     });
@@ -79,12 +79,12 @@ export const hanldeNoti = async () => {
     if (remoteMessage) {
       console.log(
         'onNotificationOpenedApp: ' +
-        'Notification caused app to open from background state',
+          'Notification caused app to open from background state',
       );
       console.log(remoteMessage);
       alert(
         'onNotificationOpenedApp: Notification caused app to' +
-        ' open from background state',
+          ' open from background state',
       );
     }
   });
