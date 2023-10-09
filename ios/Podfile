@@ -9,6 +9,8 @@ platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
 pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+pod 'React-RCTPushNotification', :path => '../node_modules/react-native/Libraries/PushNotificationIOS'
+
 # use_frameworks! :linkage => :static
 $RNFirebaseAsStaticFramework = true
 

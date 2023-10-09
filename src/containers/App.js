@@ -8,10 +8,16 @@ import { MyDrawer } from './navigations/drawerNavigation';
 import theme from '../assets/res/theme';
 import loginHook from '../components/loginScreen/loginHook';
 import MyBottomTab from './navigations/bottomTabNavigation';
+import { getNoti, hanldeNoti, requestUserPermission } from '../config/notification';
 
 const Stack = createStackNavigator()
 
 const RootStack = () => {
+
+  React.useEffect(()=> {
+    hanldeNoti()
+  },[])
+
   const isLogin = useSelector(state => state.user.isLoginedIn)
   console.log('Check login state:', isLogin)
   return (

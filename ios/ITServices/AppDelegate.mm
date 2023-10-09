@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import <React/RCTPushNotificationManager.h>
 #import <Firebase.h>
 #import <React/RCTBundleURLProvider.h>
 
