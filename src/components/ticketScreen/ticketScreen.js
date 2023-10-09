@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   TicketList: {
     width: windowWidth * 0.95,
     height: '100%',
-    margin: (windowWidth + windowHeight) * 0.01,
+    // margin: (windowWidth + windowHeight) * 0.01,
   },
   StackStyle: {
     // backgroundColor: 'gray',

@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
   Button: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    margin: (windowHeight + windowWidth) * 0.02,
+    margin: (windowHeight + windowWidth) * 0.01,
     width: windowWidth * 0.7,
   },
   row: {
