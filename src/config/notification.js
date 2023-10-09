@@ -13,7 +13,7 @@ export const requestUserPermission = async () => {
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
     authStatus === messaging.AuthorizationStatus.PROVISIONAL
   );
-  
+ 
 };
 
 export const getNoti = () => {
