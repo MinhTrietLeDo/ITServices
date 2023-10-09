@@ -10,8 +10,6 @@ import {
   Heading,
   ScrollView
 } from 'native-base'
-import dynamicStyles from '../../assets/res/styles';
-import { useTheme } from '../../assets/res/theming';
 
 const Home = ({ navigation }) => {
   // const {theme, appearance} = useTheme()

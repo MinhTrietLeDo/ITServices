@@ -14,7 +14,8 @@ const Stack = createStackNavigator()
 const RootStack = () => {
 
   React.useEffect(() => {
-    getNoti().catch(console.error);
+    // getNoti().catch(console.error);
+    hanldeNoti().catch(console.error)
   }, [])
 
   const isLogin = useSelector(state => state.user.isLoginedIn)
