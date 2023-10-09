@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "332471141836",
+    "project_id": "itservices-cb746",
+    "storage_bucket": "itservices-cb746.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332471141836:android:2e260d9633ebe2347d0969",
+        "android_client_info": {
+          "package_name": "com.itservices"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb_6kdg0Fi5FeL8ru99YIPdO4C7I1wwCU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
