@@ -8,7 +8,7 @@ import {
 import Home from '../../components/home/home';
 import { NotiButton } from '../../components/Btn/headerBtn';
 import { NotiBtn } from '../../config/handle';
-import MyBottomTab from './bottomTabNavigation';
+import MyBottomTab from './ticketTabNavigation';
 import { useDispatch } from 'react-redux';
 import { logOutUser } from '../../redux/actions';
 import { Alert } from 'react-native';
@@ -38,9 +38,7 @@ const CustomDrawer = (props) => {
 
 const MyDrawer = () => {
   return (
-    <Drawer.Navigator drawerContent={
-      props => <CustomDrawer {...props} />
-    }>
+    <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}>
       <Drawer.Screen
         component={Home}
         name="Dashboard"
@@ -78,15 +76,6 @@ const MyDrawer = () => {
           ),
         }}
       />
-      {/* <Drawer.Group screenOptions={{presentation: 'modal'}}>
-        <Drawer.Screen
-          component={ViewTicket}
-          name="VỉewTicket"
-          options={{
-            drawerItemStyle: {display: 'none'},
-          }}
-        />
-      </Drawer.Group> */}
     </Drawer.Navigator>
   );
 };
