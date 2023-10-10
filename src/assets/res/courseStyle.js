@@ -9,7 +9,7 @@ export const windowHeight = Dimensions.get('window').height;
 
 const scaleVer = (sizeWindow.height / sizeDefautft.height)
 const scaleHoz = (sizeWindow.width / sizeDefautft.width)
-const scaleValue = (
+export const scaleValue = (
      Math.sqrt(Math.pow(sizeWindow.height, 2) +
           Math.pow(sizeDefautft.width, 2))) /
      Math.sqrt(Math.pow(sizeDefautft.height, 2) +
