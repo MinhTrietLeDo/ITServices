@@ -12,15 +12,18 @@ import MyBottomTab from './ticketTabNavigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOutUser } from '../../redux/actions';
 import { Alert } from 'react-native';
-import { View, Text, Avatar, Divider } from 'native-base';
-import { StyleSheet } from 'react-native';
+import { Text, Avatar, Divider } from 'native-base';
+import { StyleSheet, View, } from 'react-native';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = (props) => {
   const dispatch = useDispatch()
   const username = useSelector(state => state.user.userObj.glpifriendlyname)
+  const avatarURL = useSelector(state => state.user.userProfile.picture)
+  console.log(avatarURL)
   const askLogOut = () => {
     Alert.alert('Warning', 'Bạn có muốn đăng xuất?', [
       {
@@ -34,29 +37,44 @@ const CustomDrawer = (props) => {
 
   return (
     <DrawerContentScrollView {...props}>
-      <View style={styles.container}>
-        <View >
+      <View style={styles.container} >
+        <View style={styles.topContainer}>
           <Avatar
             style={styles.avatar}
-            source={{ uri: 'https://cdn.cwsplatform.com/assets/no-photo-available.png' }}
+            // source={{ uri: 'https://cdn.cwsplatform.com/assets/no-photo-available.png' }}
+            source={{ uri: !!avatarURL ? 'http://172.16.18.45/front/document.send.php?file=_pictures/' + avatarURL : 'https://cdn.cwsplatform.com/assets/no-photo-available.png' }}
+
+          />
+          <View style={{ margin: (windowHeight + windowWidth) * 0.015, }}>
+            <Text
+              style={{
+                fontSize: windowWidth * 0.05,
+                fontWeight: 600,
+                textAlign: 'center',
+                alignItems: 'center',
+              }} note>
+              {username}
+            </Text>
+            <View style={styles.split} />
+          </View>
+        </View>
+        <DrawerItemList {...props} />
+        <View style={styles.botContainer}>
+          <View style={styles.splitBottom} />
+          <DrawerItem
+            label="Logout"
+            onPress={() => askLogOut()}
+            icon={
+              ({ color, size }) =>
+                <MaterialCommunityIcons
+                  name="exit-to-app"
+                  color={color}
+                  size={(windowHeight + windowWidth) * 0.022}
+                />}
           />
         </View>
 
-        <View style={{ margin: (windowHeight + windowWidth) * 0.015, }}>
-          <Text
-            style={{
-              fontSize: windowWidth * 0.05,
-              fontWeight: 600,
-              textAlign: 'center',
-              alignItems: 'center',
-            }} note>
-            {username}
-          </Text>
-          <View style={styles.split} />
-        </View>
       </View>
-      <DrawerItemList {...props} />
-      <DrawerItem label="Logout" onPress={() => askLogOut()} />
     </DrawerContentScrollView>
   );
 }
@@ -68,7 +86,7 @@ const MyDrawer = () => {
         component={Home}
         name="Dashboard"
         options={{
-          title: 'Home',
+          title: 'Dashboard',
           headerTitleStyle: {
             fontWeight: 'bold',
             fontFamily: 'WorkSans',
@@ -81,6 +99,12 @@ const MyDrawer = () => {
               onPress={() => NotiBtn()}
             />
           ),
+          drawerIcon: () => (
+            <MaterialCommunityIcons
+              name="monitor-dashboard"
+              size={(windowHeight + windowWidth) * 0.022}
+            />
+          )
         }}
       />
       <Drawer.Screen
@@ -99,6 +123,12 @@ const MyDrawer = () => {
               onPress={() => NotiBtn()}
             />
           ),
+          drawerIcon: () => (
+            <MaterialCommunityIcons
+              name="ticket-confirmation"
+              size={(windowHeight + windowWidth) * 0.022}
+            />
+          )
         }}
       />
     </Drawer.Navigator>
@@ -107,11 +137,24 @@ const MyDrawer = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    // backgroundColor: 'black',
+    height: windowHeight * 0.95,
+    margin: (windowHeight + windowWidth) * 0.001
+  },
+  topContainer: {
     // backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
     marginTop: windowHeight * 0.01
+  },
+  botContainer: {
+    // top: windowHeight * 0.01,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0
   },
   avatar: {
     height: windowHeight * 0.15,
@@ -124,7 +167,16 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.5,
     marginTop: windowHeight * 0.01,
     borderColor: '#D3D3D3'
-  }
+  },
+  splitBottom: {
+    borderWidth: (windowHeight + windowWidth) * 0.0005,
+    width: windowWidth * 0.5,
+    marginTop: windowHeight * 0.01,
+    borderColor: '#D3D3D3',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
 })
 
 export { MyDrawer };
