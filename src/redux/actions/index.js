@@ -1,4 +1,4 @@
-import { GET_TICKET, GET_USER, SET_TOKEN, SET_USER } from "./actionTypes";
+import { GET_TICKET, GET_USER, LOG_OUT, SET_TOKEN, SET_USER } from "./actionTypes";
 export const setSessionToken = (param) => ({
     type: SET_TOKEN,
     payload: param
@@ -17,5 +17,10 @@ export const getTicket = (param) => ({
 export const getUserID = (param) => ({
     type: GET_USER,
     payload: param
+})
+
+export const logOutUser = (param) => ({
+    type: LOG_OUT,
+    // payload: param
 })
 

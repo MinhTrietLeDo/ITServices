@@ -6,24 +6,41 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 import Home from '../../components/home/home';
-import {NotiButton} from '../../components/Btn/headerBtn';
-import {HandleNoti} from '../../config/handle';
+import { NotiButton } from '../../components/Btn/headerBtn';
+import { NotiBtn } from '../../config/handle';
 import MyBottomTab from './bottomTabNavigation';
+import { useDispatch } from 'react-redux';
+import { logOutUser } from '../../redux/actions';
+import { Alert } from 'react-native';
 
 const Drawer = createDrawerNavigator();
 
-function CustomDrawer(props) {
+const CustomDrawer = (props) => {
+  const dispatch = useDispatch()
+  const askLogOut = () => {
+    Alert.alert('Warning', 'Bạn có muốn đăng xuất?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'OK', onPress: () => dispatch(logOutUser()) },
+    ]);
+  }
+
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      <DrawerItem label="Help" onPress={() => alert('Link to help')} />
+      <DrawerItem label="Logout" onPress={() => askLogOut()} />
     </DrawerContentScrollView>
   );
 }
 
 const MyDrawer = () => {
   return (
-    <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}>
+    <Drawer.Navigator drawerContent={
+      props => <CustomDrawer {...props} />
+    }>
       <Drawer.Screen
         component={Home}
         name="Dashboard"
@@ -38,7 +55,7 @@ const MyDrawer = () => {
             <NotiButton
               // containerStyle={{backgroundColor: 'black'}}
               // onPress={() => console.log('Pressed')}
-              onPress={() => HandleNoti()}
+              onPress={() => NotiBtn()}
             />
           ),
         }}
@@ -56,7 +73,7 @@ const MyDrawer = () => {
           headerRight: () => (
             <NotiButton
               // containerStyle={{backgroundColor: 'black'}}
-              onPress={() => HandleNoti()}
+              onPress={() => NotiBtn()}
             />
           ),
         }}
@@ -74,4 +91,4 @@ const MyDrawer = () => {
   );
 };
 
-export {MyDrawer};
+export { MyDrawer };
