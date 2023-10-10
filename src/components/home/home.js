@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
-  RefreshControl
+  RefreshControl,
+  SafeAreaView,
+  StyleSheet
 } from 'react-native';
 import {
   Text,
@@ -10,10 +12,9 @@ import {
   Heading,
   ScrollView
 } from 'native-base'
+import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 
 const Home = ({ navigation }) => {
-  // const {theme, appearance} = useTheme()
-  // const styles = dynamicStyles(theme, appearance)
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(() => {
@@ -25,8 +26,7 @@ const Home = ({ navigation }) => {
   }, []);
 
   return (
-
-    <Center>
+    <SafeAreaView style={styles.container}>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -45,9 +45,17 @@ const Home = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
-
-    </Center>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: (windowWidth + windowHeight) * 0.01,
+    alignItems: 'center',
+    alignSelf: 'center',
+    flex: 1,
+  },
+})
 
 export default Home;
