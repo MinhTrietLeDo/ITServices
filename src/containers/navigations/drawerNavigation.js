@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logOutUser } from '../../redux/actions';
 import { Alert } from 'react-native';
 import { Text, Avatar, Divider } from 'native-base';
-import { StyleSheet, View, } from 'react-native';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -23,7 +23,7 @@ const CustomDrawer = (props) => {
   const dispatch = useDispatch()
   const username = useSelector(state => state.user.userObj.glpifriendlyname)
   const avatarURL = useSelector(state => state.user.userProfile.picture)
-  console.log(avatarURL)
+  // console.log(avatarURL)
   const askLogOut = () => {
     Alert.alert('Warning', 'Bạn có muốn đăng xuất?', [
       {
@@ -37,7 +37,7 @@ const CustomDrawer = (props) => {
 
   return (
     <DrawerContentScrollView {...props}>
-      <View style={styles.container} >
+      <SafeAreaView style={styles.container} >
         <View style={styles.topContainer}>
           <Avatar
             style={styles.avatar}
@@ -73,8 +73,7 @@ const CustomDrawer = (props) => {
                 />}
           />
         </View>
-
-      </View>
+      </SafeAreaView>
     </DrawerContentScrollView>
   );
 }
@@ -139,7 +138,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // backgroundColor: 'black',
-    height: windowHeight * 0.95,
+    height: windowHeight*0.96 ,
     margin: (windowHeight + windowWidth) * 0.001
   },
   topContainer: {

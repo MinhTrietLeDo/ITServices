@@ -108,8 +108,7 @@ const TicketScreen = ({navigation}) => {
           <ScrollView
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            maxHeight={windowHeight * 0.8}>
+            }>
             {ticket.map(el => {
               let rawDate = el['15'].split(' ');
               let ticketDate = rawDate[0]
@@ -229,6 +228,7 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.95,
     height: '100%',
     // margin: (windowWidth + windowHeight) * 0.01,
+    // backgroundColor: 'black'
   },
   StackStyle: {
     // backgroundColor: 'gray',
