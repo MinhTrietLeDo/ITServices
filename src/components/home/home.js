@@ -34,10 +34,7 @@ const Home = ({ navigation }) => {
       >
         <View>
           <View>
-            <Avatar
-              style={{ height: 100, borderRadius: 50, width: 100, resizeMode: 'cover' }}
-              source={{ uri: 'https://cdn.cwsplatform.com/assets/no-photo-available.png' }}
-            />
+            
           </View>
           <View style={{ justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginLeft: '10%' }}>
             {/* <Heading fontSize={30} bold>{this.props.userObj.glpifirstname + ' ' + this.props.userObj.glpirealname}</Heading> */}

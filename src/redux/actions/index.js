@@ -19,7 +19,7 @@ export const getUserID = (param) => ({
     payload: param
 })
 
-export const logOutUser = (param) => ({
+export const logOutUser = () => ({
     type: LOG_OUT,
     // payload: param
 })

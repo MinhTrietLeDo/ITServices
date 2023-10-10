@@ -30,18 +30,12 @@ const userReducer = (state = initialState, action) => {
 
         case LOG_OUT:
             return {
-                ...state,
+                ...state,        
                 isLoginedIn: false,
-                token: '',
-                userId: '',
-                userObj: {},
-                userProfile: {},
-                ticketsId: []
-            }
+            }         
             break;
 
-        default:
-            return state;
+        default: return state;
     }
 };
 
