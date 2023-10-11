@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   createDrawerNavigator,
   DrawerItem,
@@ -6,15 +6,15 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 import Home from '../../components/home/home';
-import {NotiButton} from '../../components/Btn/headerBtn';
-import {NotiBtn} from '../../config/handle';
+import { NotiButton } from '../../components/Btn/headerBtn';
+import { NotiBtn } from '../../config/handle';
 import MyBottomTab from './ticketTabNavigation';
-import {useDispatch, useSelector} from 'react-redux';
-import {logOutUser} from '../../redux/actions';
-import {Alert} from 'react-native';
-import {Text, Avatar, Divider} from 'native-base';
-import {StyleSheet, View, SafeAreaView} from 'react-native';
-import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
+import { useDispatch, useSelector } from 'react-redux';
+import { logOutUser } from '../../redux/actions';
+import { Alert } from 'react-native';
+import { Text, Avatar, Divider } from 'native-base';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Drawer = createDrawerNavigator();
@@ -31,7 +31,7 @@ const CustomDrawer = props => {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'OK', onPress: () => dispatch(logOutUser())},
+      { text: 'OK', onPress: () => dispatch(logOutUser()) },
     ]);
   };
 
@@ -39,7 +39,7 @@ const CustomDrawer = props => {
     <DrawerContentScrollView {...props}>
       <SafeAreaView style={styles.container}>
         <View style={styles.topContainer}>
-          <Avatar
+          {/* <Avatar
             style={styles.avatar}
             // source={{ uri: 'https://cdn.cwsplatform.com/assets/no-photo-available.png' }}
             source={{
@@ -48,8 +48,19 @@ const CustomDrawer = props => {
                   avatarURL
                 : 'https://cdn.cwsplatform.com/assets/no-photo-available.png',
             }}
-          />
-          <View style={{margin: (windowHeight + windowWidth) * 0.015}}>
+          /> */}
+
+          <View style={{ margin: (windowHeight + windowWidth) * 0.015 }}>
+            <Text
+              style={{
+                fontSize: windowWidth * 0.052,
+                fontWeight: 800,
+                textAlign: 'center',
+                alignItems: 'center',
+              }}
+              note>
+              Xin Chào!
+            </Text>
             <Text
               style={{
                 fontSize: windowWidth * 0.05,
@@ -69,7 +80,7 @@ const CustomDrawer = props => {
           <DrawerItem
             label="Logout"
             onPress={() => askLogOut()}
-            icon={({color, size}) => (
+            icon={({ color, size }) => (
               <MaterialCommunityIcons
                 name="exit-to-app"
                 color={color}
@@ -187,4 +198,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export {MyDrawer};
+export { MyDrawer };
