@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.15,
     borderRadius: (windowWidth + windowHeight) * 0.5,
     width: windowWidth * 0.282,
-    resizeMode: 'cover',
+    resizeMode: 'cover'
   },
   split: {
     borderWidth: (windowHeight + windowWidth) * 0.0005,
