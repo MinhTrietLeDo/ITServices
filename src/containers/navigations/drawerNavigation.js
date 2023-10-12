@@ -16,7 +16,7 @@ import { StyleSheet, View, SafeAreaView } from 'react-native';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SettingScreen from '../../components/setting/setting';
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import DashboardTab from './dashboardBottomTab';
 import NotiScreen from '../../components/notification/notiScreen';
 
@@ -151,8 +151,8 @@ const MyDrawer = () => {
               />
             ),
             drawerIcon: () => (
-              <AntDesign
-                name="setting"
+              <Ionicons
+                name="settings"
                 size={(windowHeight + windowWidth) * 0.022}
               />
             ),
