@@ -1,8 +1,5 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {MyStack} from './stackNavigation';
-import Home from '../../components/home/home';
-import {MyDrawer} from './drawerNavigation';
 import ViewTicket from '../../components/ticketScreen/viewTicket';
 import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
 import TicketScreen from '../../components/ticketScreen/ticketScreen';
@@ -10,7 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const Tab = createBottomTabNavigator();
 
-const MyBottomTab = () => {
+const TicketTab = () => {
   const newTicket =
     '/search/Ticket/?order=DESC&criteria[0][itemtype]=Ticket&criteria[0][field]=12&criteria[0][searchtype]=contains&criteria[0][value]=1&forcedisplay[0]=1&forcedisplay[1]=2&forcedisplay[2]=3&forcedisplay[3]=12&forcedisplay[4]=15&forcedisplay[5]=19&forcedisplay[6]=21&forcedisplay[7]=4&sort=2';
   const pendingTicket =
@@ -103,4 +100,4 @@ const MyBottomTab = () => {
   );
 };
 
-export default MyBottomTab;
+export default TicketTab;

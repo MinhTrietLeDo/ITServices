@@ -5,10 +5,9 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import Home from '../../components/home/home';
 import { NotiButton } from '../../components/Btn/headerBtn';
 import { NotiBtn } from '../../config/handle';
-import MyBottomTab from './ticketTabNavigation';
+import TicketTab from './ticketBottomTab';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOutUser } from '../../redux/actions';
 import { Alert } from 'react-native';
@@ -16,14 +15,15 @@ import { Text, Avatar, Divider } from 'native-base';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import SettingScreen from '../../components/setting/setting';
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import DashboardTab from './dashboardBottomTab';
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = props => {
   const dispatch = useDispatch();
   const username = useSelector(state => state.user.userObj.glpifriendlyname);
-  const avatarURL = useSelector(state => state.user.userProfile.picture);
-  // console.log(avatarURL)
   const askLogOut = () => {
     Alert.alert('Warning', 'Bạn có muốn đăng xuất?', [
       {
@@ -39,17 +39,6 @@ const CustomDrawer = props => {
     <DrawerContentScrollView {...props}>
       <SafeAreaView style={styles.container}>
         <View style={styles.topContainer}>
-          {/* <Avatar
-            style={styles.avatar}
-            // source={{ uri: 'https://cdn.cwsplatform.com/assets/no-photo-available.png' }}
-            source={{
-              uri: !!avatarURL
-                ? 'http://172.16.18.45/front/document.send.php?file=_pictures/' +
-                  avatarURL
-                : 'https://cdn.cwsplatform.com/assets/no-photo-available.png',
-            }}
-          /> */}
-
           <View style={{ margin: (windowHeight + windowWidth) * 0.015 }}>
             <Text
               style={{
@@ -99,7 +88,7 @@ const MyDrawer = () => {
     <Drawer.Navigator
       drawerContent={props => <CustomDrawer {...props} screenOptions={{}} />}>
       <Drawer.Screen
-        component={Home}
+        component={DashboardTab}
         name="Dashboard"
         options={{
           title: 'Dashboard',
@@ -124,7 +113,7 @@ const MyDrawer = () => {
         }}
       />
       <Drawer.Screen
-        component={MyBottomTab}
+        component={TicketTab}
         name="Ticket"
         options={{
           title: 'Ticket List',
@@ -142,6 +131,30 @@ const MyDrawer = () => {
           drawerIcon: () => (
             <MaterialCommunityIcons
               name="ticket-confirmation"
+              size={(windowHeight + windowWidth) * 0.022}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        component={SettingScreen}
+        name="Setting"
+        options={{
+          title: 'Setting',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontFamily: 'WorkSans',
+          },
+          headerTitleAlign: 'center',
+          headerRight: () => (
+            <NotiButton
+              // containerStyle={{backgroundColor: 'black'}}
+              onPress={() => NotiBtn()}
+            />
+          ),
+          drawerIcon: () => (
+            <AntDesign
+              name="setting"
               size={(windowHeight + windowWidth) * 0.022}
             />
           ),

@@ -34,7 +34,7 @@ const Home = ({ navigation }) => {
       >
         <View>
           <View>
-            
+            <Text>HOME</Text>
           </View>
           <View style={{ justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginLeft: '10%' }}>
             {/* <Heading fontSize={30} bold>{this.props.userObj.glpifirstname + ' ' + this.props.userObj.glpirealname}</Heading> */}
