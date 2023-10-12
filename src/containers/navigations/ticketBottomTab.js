@@ -90,9 +90,6 @@ const TicketTab = () => {
             tabBarItemStyle: {display: 'none'},
             headerBackVisible: false,
             headerShown: false,
-            tabBarIcon: () => (
-              <MaterialCommunityIcons name="bell" color={'black'} size={16} />
-            ),
           }}
         />
       </Tab.Group>

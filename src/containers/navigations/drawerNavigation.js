@@ -11,17 +11,18 @@ import TicketTab from './ticketBottomTab';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOutUser } from '../../redux/actions';
 import { Alert } from 'react-native';
-import { Text, Avatar, Divider } from 'native-base';
+import { Text, Avatar, Divider, Button } from 'native-base';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SettingScreen from '../../components/setting/setting';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import DashboardTab from './dashboardBottomTab';
+import NotiScreen from '../../components/notification/notiScreen';
 
 const Drawer = createDrawerNavigator();
 
-const CustomDrawer = props => {
+const CustomDrawer = (props) => {
   const dispatch = useDispatch();
   const username = useSelector(state => state.user.userObj.glpifriendlyname);
   const askLogOut = () => {
@@ -87,79 +88,88 @@ const MyDrawer = () => {
   return (
     <Drawer.Navigator
       drawerContent={props => <CustomDrawer {...props} screenOptions={{}} />}>
-      <Drawer.Screen
-        component={DashboardTab}
-        name="Dashboard"
-        options={{
-          title: 'Dashboard',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontFamily: 'WorkSans',
-          },
-          headerTitleAlign: 'center',
-          headerRight: () => (
-            <NotiButton
-              // containerStyle={{backgroundColor: 'black'}}
-              // onPress={() => console.log('Pressed')}
-              onPress={() => NotiBtn()}
-            />
-          ),
-          drawerIcon: () => (
-            <MaterialCommunityIcons
-              name="monitor-dashboard"
-              size={(windowHeight + windowWidth) * 0.022}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        component={TicketTab}
-        name="Ticket"
-        options={{
-          title: 'Ticket List',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontFamily: 'WorkSans',
-          },
-          headerTitleAlign: 'center',
-          headerRight: () => (
-            <NotiButton
-              // containerStyle={{backgroundColor: 'black'}}
-              onPress={() => NotiBtn()}
-            />
-          ),
-          drawerIcon: () => (
-            <MaterialCommunityIcons
-              name="ticket-confirmation"
-              size={(windowHeight + windowWidth) * 0.022}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        component={SettingScreen}
-        name="Setting"
-        options={{
-          title: 'Setting',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontFamily: 'WorkSans',
-          },
-          headerTitleAlign: 'center',
-          headerRight: () => (
-            <NotiButton
-              // containerStyle={{backgroundColor: 'black'}}
-              onPress={() => NotiBtn()}
-            />
-          ),
-          drawerIcon: () => (
-            <AntDesign
-              name="setting"
-              size={(windowHeight + windowWidth) * 0.022}
-            />
-          ),
-        }}
-      />
+      <Drawer.Group>
+        <Drawer.Screen
+          component={DashboardTab}
+          name="Dashboard"
+          options={{
+            title: 'Dashboard',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontFamily: 'WorkSans',
+            },
+            headerTitleAlign: 'center',
+            headerRight: () => (
+              <NotiButton
+                onPress={() => NotiBtn()}
+              />
+            ),
+            drawerIcon: () => (
+              <MaterialCommunityIcons
+                name="monitor-dashboard"
+                size={(windowHeight + windowWidth) * 0.022}
+              />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          component={TicketTab}
+          name="Ticket"
+          options={{
+            title: 'Ticket List',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontFamily: 'WorkSans',
+            },
+            headerTitleAlign: 'center',
+            headerRight: () => (
+              <NotiButton
+                onPress={() => NotiBtn()}
+              />
+            ),
+            drawerIcon: () => (
+              <MaterialCommunityIcons
+                name="ticket-confirmation"
+                size={(windowHeight + windowWidth) * 0.022}
+              />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          component={SettingScreen}
+          name="Setting"
+          options={{
+            title: 'Setting',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontFamily: 'WorkSans',
+            },
+            headerTitleAlign: 'center',
+            headerRight: () => (
+              <NotiButton
+                onPress={() => NotiBtn()}
+              />
+            ),
+            drawerIcon: () => (
+              <AntDesign
+                name="setting"
+                size={(windowHeight + windowWidth) * 0.022}
+              />
+            ),
+          }}
+        />
+      </Drawer.Group>
+      <Drawer.Group screenOptions={{ presentation: 'modal' }}>
+        <Drawer.Screen
+          component={NotiScreen}
+          name="NotiScreen"
+          options={{
+            headerBackVisible: false,
+            headerShown: false,
+            drawerItemStyle: { display: 'none' }
+          }}
+        />
+      </Drawer.Group>
     </Drawer.Navigator>
   );
 };

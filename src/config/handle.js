@@ -1,5 +1,3 @@
-import { useDispatch, useSelector } from "react-redux"
-
 //handle mức độ ưu tiên của ticket
 export const HandleUrgency = (urgency) => {
     switch (urgency.urgency) {
@@ -77,7 +75,7 @@ export const HandeUrgencyColor = (urgency) => {
 }
 
 //handle khứa noti
-export const NotiBtn = (navigate, noti) => {
+export const NotiBtn = (noti) => {
     console.log('AAAAAAAAA')
 }
 
