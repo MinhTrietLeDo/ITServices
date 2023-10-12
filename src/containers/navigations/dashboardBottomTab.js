@@ -27,7 +27,7 @@ const DashboardTab = () => {
             headerTitleAlign: 'center',
             tabBarIcon: ({color, size}) => (
               <MaterialCommunityIcons
-                name="new-box"
+                name="home"
                 color={color}
                 size={size}
               />
