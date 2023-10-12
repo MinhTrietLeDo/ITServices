@@ -76,11 +76,7 @@ export const HandeUrgencyColor = (urgency) => {
 
 //handle khứa noti
 export const NotiBtn = (noti) => {
-    console.log('AAAAAAAAA')
+    // console.log('AAAAAAAAA')
+    alert('Đang phát triển')
 }
 
-export const NotiOnOff = (noti) => {
-    switch (noti) {
-        // case 
-    }
-}
