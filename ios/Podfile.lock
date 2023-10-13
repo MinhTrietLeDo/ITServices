@@ -630,14 +630,14 @@ PODS:
     - FirebaseCoreExtension (= 10.15.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.13.2):
+  - RNGestureHandler (2.12.1):
     - React-Core
   - RNNotifee (7.8.0):
     - React-Core
     - RNNotifee/NotifeeCore (= 7.8.0)
   - RNNotifee/NotifeeCore (7.8.0):
     - React-Core
-  - RNReanimated (3.5.4):
+  - RNReanimated (3.5.2):
     - DoubleConversion
     - FBLazyVector
     - glog
@@ -965,9 +965,9 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
   RNFBApp: 082df9f8ffba99f23f7aee3ecb64df703e7e1adb
   RNFBMessaging: b167065ee2fcc7fe43a32b35d79d5eb23bceb4ad
-  RNGestureHandler: bb86e378287f7713baf3ca205423eb8109790022
+  RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
   RNNotifee: f3c01b391dd8e98e67f539f9a35a9cbcd3bae744
-  RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
+  RNReanimated: 2491645f0883526f4470d8b5c761308709ba31f8
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
   RNSharedElement: 504fa28a235b12505b6daedbb452a9ec96809bd0
   RNSVG: ed492aaf3af9ca01bc945f7a149d76d62e73ec82

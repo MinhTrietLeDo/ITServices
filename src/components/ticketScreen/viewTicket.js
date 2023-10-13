@@ -70,6 +70,7 @@ const ViewTicket = ({navigation}) => {
     backButton,
   );
 
+  /////////////==== LẤY THÔNG TIN NGƯỜI YÊU CẦU ====/////////////
   const getUsername = async () => {
     const a = '/User/';
     const b = '?expand_dropdowns=true';
@@ -105,14 +106,27 @@ const ViewTicket = ({navigation}) => {
       setLoading(false);
     }
   };
+  /////////////==== LẤY THÔNG TIN NGƯỜI YÊU CẦU ====/////////////
 
   updateTicket = async () => {
     console.log('updating..');
     // navigation.goBack()
   };
 
-  handleBtnTicket = () => {
-    console.log('Pressed!');
+  assignBtn = () => {
+    console.log('CHỌN NGƯỜI AAA');
+    Alert.alert('Cập nhật lại ticket?', 'Bạn có muốn cập nhật ticket?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => updateTicket()},
+    ]);
+  };
+
+  editBtn = () => {
+    console.log('UPDATE/FINISH TICKET');
     Alert.alert('Cập nhật lại ticket?', 'Bạn có muốn cập nhật ticket?', [
       {
         text: 'Cancel',
@@ -278,7 +292,11 @@ const ViewTicket = ({navigation}) => {
             }>
             Go Back
           </Button>
-          <Button onPress={() => handleBtnTicket()}>Update</Button>
+          {status === 1 ? (
+            <Button onPress={() => assignBtn()}>Phân Công</Button>
+          ) : status === 2 || status === 3 || status === 4 ? (
+            <Button onPress={() => editBtn()}>Hoàn Thành</Button>
+          ) : null}
         </View>
       </SafeAreaView>
     );
