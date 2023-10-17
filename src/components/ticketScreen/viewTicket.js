@@ -39,6 +39,7 @@ const ViewTicket = ({ navigation }) => {
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
   const [modalVisible, setModalVisible] = useState(false)
+  const [technicianName, setTechnicianName] = useState('')
 
   useEffect(() => {
     getUsername().catch(console.error);
@@ -53,14 +54,6 @@ const ViewTicket = ({ navigation }) => {
     }, 1000);
     getUsername().catch(console.error);
   }, []);
-
-  const selectTechnicianModal = () => {
-    return (
-      <View>
-
-      </View>
-    )
-  }
 
   const backButton = () => {
     navigation.reset({
@@ -119,23 +112,61 @@ const ViewTicket = ({ navigation }) => {
   };
   /////////////==== LẤY THÔNG TIN NGƯỜI YÊU CẦU ====/////////////
 
+
+  /////////////==== LẤY THÔNG TIN NGƯỜI XỬ LÝ ====/////////////
+  const getTechnician = async () => {
+    const a = '/User/';
+    const b = '?expand_dropdowns=true';
+    let objHeader = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'App-Token': App_Token,
+    };
+
+    let request = await Promise.all([
+      await fetch(API_URL + a + userID + b + '&session_token=' + token, {
+        headers: objHeader,
+      }).then(el => el.json()),
+    ]);
+    console.log(API_URL + a + userID + b + '&session_token=' + token);
+    if (typeof request !== 'undefined') {
+      const aName = request.map(el => el['firstname']);
+      const bName = request.map(el => el['realname']);
+      const loca = request.map(el => el['locations_id']);
+      setName(bName + ' ' + aName);
+      console.log('hjkasgdrkjashdgf', location);
+      setLoading(false);
+    } else {
+      Alert.alert('Error', 'Please try again later', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ]);
+      setLoading(false);
+    }
+  };
+  /////////////==== LẤY THÔNG TIN NGƯỜI XỬ LÝ ====/////////////
+
   updateTicket = async () => {
     console.log('updating..');
     // navigation.goBack()
   };
 
-  // assignBtn = () => {
-  //   // console.log('CHỌN NGƯỜI AAA');
-  //   // Alert.alert('Cập nhật lại ticket?', 'Bạn có muốn cập nhật ticket?', [
-  //   //   {
-  //   //     text: 'Cancel',
-  //   //     onPress: () => console.log('Cancel Pressed'),
-  //   //     style: 'cancel',
-  //   //   },
-  //   //   { text: 'OK', onPress: () => updateTicket() },
-  //   // ]);
-  //   onPress={() => setModalVisible(true)}
-  // };
+  assignBtn = async () => {
+    console.log('CHỌN NGƯỜI AAA');
+    // Alert.alert('Cập nhật lại ticket?', 'Bạn có muốn cập nhật ticket?', [
+    //   {
+    //     text: 'Cancel',
+    //     onPress: () => console.log('Cancel Pressed'),
+    //     style: 'cancel',
+    //   },
+    //   { text: 'OK', onPress: () => updateTicket() },
+    // ]);
+    setModalVisible(!modalVisible)
+  };
 
   editBtn = () => {
     console.log('UPDATE/FINISH TICKET');
@@ -168,12 +199,16 @@ const ViewTicket = ({ navigation }) => {
           }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>Hello World!</Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}>
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </Pressable>
+              <Text style={{
+                fontSize: windowWidth * 0.055,
+                fontWeight: 600,
+                textAlign: 'center',
+                alignItems: 'center',
+              }}>Chọn Người Xử Lý:</Text>
+              <View style={styles.Button2}>
+                <Button style={{ width: windowWidth * 0.2 }} onPress={() => assignBtn()}>Cancel</Button>
+                <Button style={{ width: windowWidth * 0.2 }} onPress={() => assignBtn()}>OK</Button>
+              </View>
             </View>
           </View>
         </Modal>
@@ -315,6 +350,7 @@ const ViewTicket = ({ navigation }) => {
           </View>
           <View style={styles.Button}>
             <Button
+              style={{ width: windowWidth * 0.3 }}
               onPress={() =>
                 navigation.reset({
                   index: 0,
@@ -326,12 +362,12 @@ const ViewTicket = ({ navigation }) => {
                   ],
                 })
               }>
-              Go Back
+              Quay Về
             </Button>
             {status === 1 ? (
-              <Button onPress={() => setModalVisible(true)}>Phân Công</Button>
+              <Button style={{ width: windowWidth * 0.3 }} onPress={() => setModalVisible(true)}>Phân Công</Button>
             ) : status === 2 || status === 3 || status === 4 ? (
-              <Button onPress={() => editBtn()}>Hoàn Thành</Button>
+              <Button style={{ width: windowWidth * 0.3 }} onPress={() => editBtn()}>Hoàn Thành</Button>
             ) : null}
           </View>
         </SafeAreaView>
@@ -368,6 +404,12 @@ const styles = StyleSheet.create({
     margin: (windowHeight + windowWidth) * 0.01,
     width: windowWidth * 0.7,
   },
+  Button2: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    margin: (windowHeight + windowWidth) * 0.01,
+    width: windowWidth * 0.5,
+  },
   row: {
     flexDirection: 'row',
     marginTop: (windowHeight + windowWidth) * 0.01,
@@ -385,20 +427,6 @@ const styles = StyleSheet.create({
     padding: (windowHeight + windowWidth) * 0.05,
     alignItems: 'center',
     elevation: (windowHeight + windowWidth) * 0.4,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
   },
 });
 
