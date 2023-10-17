@@ -194,8 +194,14 @@ const ViewTicket = ({ navigation }) => {
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-            setModalVisible(!modalVisible);
+            Alert.alert('Các tác vụ sẽ không được lưu', 'Bạn có muốn thoát?', [
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+              },
+              { text: 'OK', onPress: () => setModalVisible(!modalVisible) },
+            ]);
           }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
