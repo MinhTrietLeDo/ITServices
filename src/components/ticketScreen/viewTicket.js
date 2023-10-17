@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {Badge, Button, ScrollView, Text} from 'native-base';
-import {createNavigationContainerRef, useRoute} from '@react-navigation/native';
-import {API_URL, App_Token} from '../../config/config';
-import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Badge, Button, ScrollView, Text } from 'native-base';
+import { createNavigationContainerRef, useRoute } from '@react-navigation/native';
+import { API_URL, App_Token } from '../../config/config';
+import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Alert,
@@ -11,6 +11,8 @@ import {
   ActivityIndicator,
   BackHandler,
   SafeAreaView,
+  Modal,
+  Pressable
 } from 'react-native';
 import {
   HandeStatusColor,
@@ -18,10 +20,10 @@ import {
   HandleBadgeStatus,
   HandleUrgency,
 } from '../../config/handle';
-import {RefreshControl} from 'react-native-gesture-handler';
-import {useSelector} from 'react-redux';
+import { RefreshControl } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
-const ViewTicket = ({navigation}) => {
+const ViewTicket = ({ navigation }) => {
   const route = useRoute();
   const id = route.params?.id;
   const description = route.params?.description;
@@ -36,6 +38,7 @@ const ViewTicket = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
+  const [modalVisible, setModalVisible] = useState(false)
 
   useEffect(() => {
     getUsername().catch(console.error);
@@ -50,6 +53,14 @@ const ViewTicket = ({navigation}) => {
     }, 1000);
     getUsername().catch(console.error);
   }, []);
+
+  const selectTechnicianModal = () => {
+    return (
+      <View>
+
+      </View>
+    )
+  }
 
   const backButton = () => {
     navigation.reset({
@@ -101,7 +112,7 @@ const ViewTicket = ({navigation}) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]);
       setLoading(false);
     }
@@ -113,17 +124,18 @@ const ViewTicket = ({navigation}) => {
     // navigation.goBack()
   };
 
-  assignBtn = () => {
-    console.log('CHỌN NGƯỜI AAA');
-    Alert.alert('Cập nhật lại ticket?', 'Bạn có muốn cập nhật ticket?', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {text: 'OK', onPress: () => updateTicket()},
-    ]);
-  };
+  // assignBtn = () => {
+  //   // console.log('CHỌN NGƯỜI AAA');
+  //   // Alert.alert('Cập nhật lại ticket?', 'Bạn có muốn cập nhật ticket?', [
+  //   //   {
+  //   //     text: 'Cancel',
+  //   //     onPress: () => console.log('Cancel Pressed'),
+  //   //     style: 'cancel',
+  //   //   },
+  //   //   { text: 'OK', onPress: () => updateTicket() },
+  //   // ]);
+  //   onPress={() => setModalVisible(true)}
+  // };
 
   editBtn = () => {
     console.log('UPDATE/FINISH TICKET');
@@ -133,7 +145,7 @@ const ViewTicket = ({navigation}) => {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'OK', onPress: () => updateTicket()},
+      { text: 'OK', onPress: () => updateTicket() },
     ]);
   };
 
@@ -144,162 +156,188 @@ const ViewTicket = ({navigation}) => {
       </View>
     );
   } else {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.card}>
-          <ScrollView
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }>
-            <View style={styles.title}>
-              <Text
-                style={{
-                  fontSize: windowWidth * 0.055,
-                  fontWeight: 700,
-                  textAlign: 'center',
-                  alignItems: 'center',
-                }}>
-                {title} #{id}
-              </Text>
+    if (modalVisible) {
+      return (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Hello World!</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Hide Modal</Text>
+              </Pressable>
             </View>
-            <View
-              style={{
-                margin: (windowHeight + windowWidth) * 0.01,
-              }}>
-              <Text
+          </View>
+        </Modal>
+      )
+    }
+    else {
+      return (
+        <SafeAreaView style={styles.container}>
+          <View style={styles.card}>
+            <ScrollView
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }>
+              <View style={styles.title}>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.055,
+                    fontWeight: 700,
+                    textAlign: 'center',
+                    alignItems: 'center',
+                  }}>
+                  {title} #{id}
+                </Text>
+              </View>
+              <View
                 style={{
-                  fontSize: windowWidth * 0.05,
-                  fontWeight: 700,
-                }}>
-                Miêu tả sự cố:
-              </Text>
-              <ScrollView
-                style={{
-                  maxHeight: windowHeight * 0.2,
-                  marginTop: windowHeight * 0.01,
+                  margin: (windowHeight + windowWidth) * 0.01,
                 }}>
                 <Text
                   style={{
-                    fontSize: windowWidth * 0.045,
-                  }}>
-                  {description}
-                </Text>
-              </ScrollView>
-              <View style={styles.row}>
-                <Text
-                  style={{
                     fontSize: windowWidth * 0.05,
                     fontWeight: 700,
                   }}>
-                  Tình trạng:
+                  Miêu tả sự cố:
                 </Text>
-                <Badge
-                  _text={{fontSize: windowWidth * 0.03}}
-                  variant="solid"
+                <ScrollView
                   style={{
-                    backgroundColor: HandeStatusColor({status}),
-                    marginLeft: (windowHeight + windowWidth) * 0.01,
-                  }}
-                  rounded={windowWidth * 0.01}>
-                  {HandleBadgeStatus({status})}
-                </Badge>
+                    maxHeight: windowHeight * 0.2,
+                    marginTop: windowHeight * 0.01,
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.045,
+                    }}>
+                    {description}
+                  </Text>
+                </ScrollView>
+                <View style={styles.row}>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.05,
+                      fontWeight: 700,
+                    }}>
+                    Tình trạng:
+                  </Text>
+                  <Badge
+                    _text={{ fontSize: windowWidth * 0.03 }}
+                    variant="solid"
+                    style={{
+                      backgroundColor: HandeStatusColor({ status }),
+                      marginLeft: (windowHeight + windowWidth) * 0.01,
+                    }}
+                    rounded={windowWidth * 0.01}>
+                    {HandleBadgeStatus({ status })}
+                  </Badge>
+                </View>
+                <View style={styles.row}>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.05,
+                      fontWeight: 700,
+                    }}>
+                    Ngày tạo:
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.045,
+                      fontWeight: 400,
+                      marginLeft: windowWidth * 0.01,
+                    }}>
+                    {date}
+                  </Text>
+                </View>
+                <View style={styles.row}>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.05,
+                      fontWeight: 700,
+                    }}>
+                    Mức Độ Ưu Tiên:
+                  </Text>
+                  <Badge
+                    _text={{ fontSize: windowWidth * 0.037 }}
+                    variant="solid"
+                    style={{
+                      backgroundColor: HandeUrgencyColor({ urgency }),
+                      marginLeft: (windowHeight + windowWidth) * 0.01,
+                    }}
+                    rounded={windowWidth * 0.01}>
+                    {HandleUrgency({ urgency })}
+                  </Badge>
+                </View>
+                <View style={styles.row}>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.05,
+                      fontWeight: 700,
+                    }}>
+                    Người Yêu Cầu:
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.045,
+                      fontWeight: 400,
+                      marginLeft: windowWidth * 0.01,
+                    }}>
+                    {name}
+                  </Text>
+                </View>
+                <View style={styles.row}>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.05,
+                      fontWeight: 700,
+                    }}>
+                    Phòng Ban/Khoa:
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.045,
+                      fontWeight: 400,
+                      marginLeft: windowWidth * 0.01,
+                    }}>
+                    {location}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.row}>
-                <Text
-                  style={{
-                    fontSize: windowWidth * 0.05,
-                    fontWeight: 700,
-                  }}>
-                  Ngày tạo:
-                </Text>
-                <Text
-                  style={{
-                    fontSize: windowWidth * 0.045,
-                    fontWeight: 400,
-                    marginLeft: windowWidth * 0.01,
-                  }}>
-                  {date}
-                </Text>
-              </View>
-              <View style={styles.row}>
-                <Text
-                  style={{
-                    fontSize: windowWidth * 0.05,
-                    fontWeight: 700,
-                  }}>
-                  Mức Độ Ưu Tiên:
-                </Text>
-                <Badge
-                  _text={{fontSize: windowWidth * 0.037}}
-                  variant="solid"
-                  style={{
-                    backgroundColor: HandeUrgencyColor({urgency}),
-                    marginLeft: (windowHeight + windowWidth) * 0.01,
-                  }}
-                  rounded={windowWidth * 0.01}>
-                  {HandleUrgency({urgency})}
-                </Badge>
-              </View>
-              <View style={styles.row}>
-                <Text
-                  style={{
-                    fontSize: windowWidth * 0.05,
-                    fontWeight: 700,
-                  }}>
-                  Người Yêu Cầu:
-                </Text>
-                <Text
-                  style={{
-                    fontSize: windowWidth * 0.045,
-                    fontWeight: 400,
-                    marginLeft: windowWidth * 0.01,
-                  }}>
-                  {name}
-                </Text>
-              </View>
-              <View style={styles.row}>
-                <Text
-                  style={{
-                    fontSize: windowWidth * 0.05,
-                    fontWeight: 700,
-                  }}>
-                  Phòng Ban/Khoa:
-                </Text>
-                <Text
-                  style={{
-                    fontSize: windowWidth * 0.045,
-                    fontWeight: 400,
-                    marginLeft: windowWidth * 0.01,
-                  }}>
-                  {location}
-                </Text>
-              </View>
-            </View>
-          </ScrollView>
-        </View>
-        <View style={styles.Button}>
-          <Button
-            onPress={() =>
-              navigation.reset({
-                index: 0,
-                routes: [
-                  {
-                    name: 'Mới',
-                    params: '',
-                  },
-                ],
-              })
-            }>
-            Go Back
-          </Button>
-          {status === 1 ? (
-            <Button onPress={() => assignBtn()}>Phân Công</Button>
-          ) : status === 2 || status === 3 || status === 4 ? (
-            <Button onPress={() => editBtn()}>Hoàn Thành</Button>
-          ) : null}
-        </View>
-      </SafeAreaView>
-    );
+            </ScrollView>
+          </View>
+          <View style={styles.Button}>
+            <Button
+              onPress={() =>
+                navigation.reset({
+                  index: 0,
+                  routes: [
+                    {
+                      name: 'Mới',
+                      params: '',
+                    },
+                  ],
+                })
+              }>
+              Go Back
+            </Button>
+            {status === 1 ? (
+              <Button onPress={() => setModalVisible(true)}>Phân Công</Button>
+            ) : status === 2 || status === 3 || status === 4 ? (
+              <Button onPress={() => editBtn()}>Hoàn Thành</Button>
+            ) : null}
+          </View>
+        </SafeAreaView>
+      );
+    }
+
   }
 };
 
@@ -334,6 +372,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: (windowHeight + windowWidth) * 0.01,
     alignItems: 'center',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: (windowHeight + windowWidth) * 0.01,
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderRadius: (windowHeight + windowWidth) * 0.02,
+    padding: (windowHeight + windowWidth) * 0.05,
+    alignItems: 'center',
+    elevation: (windowHeight + windowWidth) * 0.4,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });
 
