@@ -22,6 +22,7 @@ import {
 } from '../../config/handle';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
+import SelectUserListDropDown from './functionScreen/ticketFunctions';
 
 const ViewTicket = ({ navigation }) => {
   const route = useRoute();
@@ -211,6 +212,7 @@ const ViewTicket = ({ navigation }) => {
                 textAlign: 'center',
                 alignItems: 'center',
               }}>Chọn Người Xử Lý:</Text>
+              <SelectUserListDropDown/>
               <View style={styles.Button2}>
                 <Button style={{ width: windowWidth * 0.2 }} onPress={() => assignBtn()}>Cancel</Button>
                 <Button style={{ width: windowWidth * 0.2 }} onPress={() => assignBtn()}>OK</Button>

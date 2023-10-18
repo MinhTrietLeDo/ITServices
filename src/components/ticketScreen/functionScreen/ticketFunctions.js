@@ -5,41 +5,37 @@ import {
     View,
     StyleSheet
 } from 'react-native'
-import { Text } from 'native-base'
-import { App_Token, API_URL } from '../../../config/config'
 
-const SelectUser = async () => {
-    const dispatch = useDispatch()
-    const token = useSelector(state => state.user.token.session_token)
-    useEffect(() => {
-        // getTechnician().catch(console.error)
-        console.log(token)
-    }, [])
+import SelectDropdown from 'react-native-select-dropdown'
 
-    const getTechnician = async () => {
-        const technicianURL = ''
-        let objHeader = {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'App-Token': App_Token,
-        };
-    }
-
+const SelectUserListDropDown = ({ data }) => {
+    const countries = ["Tín", "Huy", "Triết"]
     return (
-        <SafeAreaView style={styles.container}>
-            <View>
-                <Text>AAAAAAAAAAAAAAAAAAAAA</Text>
-            </View>
-        </SafeAreaView>
+        <SelectDropdown
+            data={countries}
+            onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index)
+            }}
+            buttonTextAfterSelection={(selectedItem, index) => {
+                // text represented after item is selected
+                // if data array is an array of objects then return selectedItem.property to render after item is selected
+                return selectedItem
+            }}
+            rowTextForSelection={(item, index) => {
+                // text represented for each item in dropdown
+                // if data array is an array of objects then return item.property to represent item in dropdown
+                return item
+            }}
+        />
     )
 }
 
+export default SelectUserListDropDown
+
 const styles = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
         alignContent: 'center',
         justifyContent: 'center'
     }
 })
-
-export default SelectUser
