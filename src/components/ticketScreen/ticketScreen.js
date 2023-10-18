@@ -124,6 +124,7 @@ const TicketScreen = ({navigation}) => {
               let status = el['12'];
               let userRequestID = el['4'];
               let getRawDescription = el['21'].split('&#60;p&#62;');
+              let technicianID = el['5'];
               let description = getRawDescription[1]
                 .split('&#60;/p&#62;')
                 .toString()
@@ -150,6 +151,7 @@ const TicketScreen = ({navigation}) => {
                           status: status,
                           title: ticketTitle,
                           userID: userRequestID,
+                          technicianID: technicianID
                         })
                       }>
                       <View

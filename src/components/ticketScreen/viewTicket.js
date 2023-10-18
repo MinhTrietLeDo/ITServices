@@ -33,6 +33,7 @@ const ViewTicket = ({ navigation }) => {
   const status = route.params?.status;
   const title = route.params?.title;
   const userID = route.params?.userID;
+  const technicianID = route.params?.technicianID
   const token = useSelector(state => state.user.token.session_token);
 
   const [loading, setLoading] = useState(true);
@@ -44,7 +45,8 @@ const ViewTicket = ({ navigation }) => {
 
   useEffect(() => {
     getUsername().catch(console.error);
-    console.log('ID:', id, 'Miêu tả:', description, 'Ngày tạo:', date);
+    getTechnicianName().catch(console.error)
+    console.log('ID:', id, 'Miêu tả:', description, 'Ngày tạo:', date, 'technicianID:', technicianID);
     return () => backHandler.remove();
   }, []);
 
@@ -54,6 +56,7 @@ const ViewTicket = ({ navigation }) => {
       setRefreshing(false);
     }, 1000);
     getUsername().catch(console.error);
+    getTechnicianName().catch(console.error)
   }, []);
 
   const backButton = () => {
@@ -114,29 +117,27 @@ const ViewTicket = ({ navigation }) => {
   /////////////==== LẤY THÔNG TIN NGƯỜI YÊU CẦU ====/////////////
 
 
-  /////////////==== LẤY THÔNG TIN NGƯỜI XỬ LÝ ====/////////////
-  const getTechnician = async () => {
-    const a = '/User/';
-    const b = '?expand_dropdowns=true';
+  /////////////==== LẤY THÔNG TIN NGƯỜI ĐƯỢC GÁN XỬ LÝ ====/////////////
+  const getTechnicianName = async () => {
+    console.log('AAAAAAAAAAAAAA')
     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       'App-Token': App_Token,
     };
+    console.log("TECH:", API_URL + '/User/' + technicianID + '?expand_dropdowns=true' + '&session_token=' + token);
 
     let request = await Promise.all([
-      await fetch(API_URL + a + userID + b + '&session_token=' + token, {
+      await fetch(API_URL + '/User/' + technicianID + '?expand_dropdowns=true' + '&session_token=' + token, {
         headers: objHeader,
       }).then(el => el.json()),
     ]);
-    console.log(API_URL + a + userID + b + '&session_token=' + token);
     if (typeof request !== 'undefined') {
-      const aName = request.map(el => el['firstname']);
-      const bName = request.map(el => el['realname']);
-      const loca = request.map(el => el['locations_id']);
-      setName(bName + ' ' + aName);
-      console.log('hjkasgdrkjashdgf', location);
+      const techAName = request.map(el => el['firstname']);
+      const techBName = request.map(el => el['realname']);
+      setTechnicianName(techAName + ' ' + techBName);
       setLoading(false);
+      console.log('AAAAAAAAAAAAAAAAAAAAA')
     } else {
       Alert.alert('Error', 'Please try again later', [
         {
@@ -149,7 +150,7 @@ const ViewTicket = ({ navigation }) => {
       setLoading(false);
     }
   };
-  /////////////==== LẤY THÔNG TIN NGƯỜI XỬ LÝ ====/////////////
+  /////////////==== LẤY THÔNG TIN NGƯỜI ĐƯỢC GÁN XỬ LÝ ====/////////////
 
   updateTicket = async () => {
     console.log('updating..');
@@ -212,7 +213,7 @@ const ViewTicket = ({ navigation }) => {
                 textAlign: 'center',
                 alignItems: 'center',
               }}>Chọn Người Xử Lý:</Text>
-              <SelectUserListDropDown/>
+              <SelectUserListDropDown />
               <View style={styles.Button2}>
                 <Button style={{ width: windowWidth * 0.2 }} onPress={() => assignBtn()}>Cancel</Button>
                 <Button style={{ width: windowWidth * 0.2 }} onPress={() => assignBtn()}>OK</Button>
@@ -353,6 +354,44 @@ const ViewTicket = ({ navigation }) => {
                     {location}
                   </Text>
                 </View>
+                {status === 2 || status === 3 || status === 4 ? (
+                  <View style={styles.row}>
+                    <Text
+                      style={{
+                        fontSize: windowWidth * 0.05,
+                        fontWeight: 700,
+                      }}>
+                      Người được gán:
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: windowWidth * 0.045,
+                        fontWeight: 400,
+                        marginLeft: windowWidth * 0.01,
+                      }}>
+                      {technicianName}
+                    </Text>
+                  </View>
+                ) : status === 5 || status === 6 ? (
+                  <View style={styles.row}>
+                    <Text
+                      style={{
+                        fontSize: windowWidth * 0.05,
+                        fontWeight: 700,
+                      }}>
+                      Người đã xử lý:
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: windowWidth * 0.045,
+                        fontWeight: 400,
+                        marginLeft: windowWidth * 0.01,
+                      }}>
+                      {technicianName}
+                    </Text>
+                  </View>
+                ) : null}
+
               </View>
             </ScrollView>
           </View>
