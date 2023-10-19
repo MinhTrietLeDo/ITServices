@@ -36,6 +36,7 @@ const ViewTicket = ({ navigation }) => {
   const technicianID = route.params?.technicianID
   const lastUpdate = route.params?.lastUpdate
   const token = useSelector(state => state.user.token.session_token);
+  const AAAA = useSelector(state => state.ticket.ticketArray)
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -45,9 +46,12 @@ const ViewTicket = ({ navigation }) => {
   const [technicianName, setTechnicianName] = useState('')
 
   useEffect(() => {
+    console.log("AAAAAAAAAAAA:", AAAA)
     getUsername().catch(console.error);
     console.log('ID:', id, 'Miêu tả:', description, 'Ngày tạo:', date, 'technicianID:', technicianID, 'lastupdate:', lastUpdate);
     return () => backHandler.remove();
+
+
   }, []);
 
   const onRefresh = useCallback(() => {

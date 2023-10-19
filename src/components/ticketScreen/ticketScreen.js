@@ -35,7 +35,7 @@ import {
   HandleBadgeStatus,
   HandleUrgency,
 } from '../../config/handle';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getTicket } from '../../redux/actions';
 import { useRoute } from '@react-navigation/native';
 
@@ -48,6 +48,7 @@ const TicketScreen = ({ navigation }) => {
 
   const route = useRoute();
   const { ticketURL } = route.params;
+  const dispatch = useDispatch()
 
   useEffect(() => {
     console.log('Catch user token:', token);
@@ -81,6 +82,7 @@ const TicketScreen = ({ navigation }) => {
     if (typeof request[0].data !== 'undefined') {
       const rawData = request[0].data;
       setTicket(rawData);
+      dispatch(getTicket(rawData))
       setLoading(false);
     } else {
       Alert.alert('Error', 'Please try again later', [
