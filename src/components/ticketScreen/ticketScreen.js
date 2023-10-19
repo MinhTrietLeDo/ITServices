@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   ActivityIndicator,
   View,
@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import {API_URL, App_Token} from '../../config/config';
+import { API_URL, App_Token } from '../../config/config';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
@@ -28,18 +28,18 @@ import {
   Badge,
   Icon,
 } from 'native-base';
-import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
+import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import {
   HandeStatusColor,
   HandeUrgencyColor,
   HandleBadgeStatus,
   HandleUrgency,
 } from '../../config/handle';
-import {useSelector} from 'react-redux';
-import {getTicket} from '../../redux/actions';
-import {useRoute} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { getTicket } from '../../redux/actions';
+import { useRoute } from '@react-navigation/native';
 
-const TicketScreen = ({navigation}) => {
+const TicketScreen = ({ navigation }) => {
   const [ticket, setTicket] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = useSelector(state => state.user.token.session_token);
@@ -47,7 +47,7 @@ const TicketScreen = ({navigation}) => {
   const TicketData = useSelector(state => state.ticket.ticketArray);
 
   const route = useRoute();
-  const {ticketURL} = route.params;
+  const { ticketURL } = route.params;
 
   useEffect(() => {
     console.log('Catch user token:', token);
@@ -89,7 +89,7 @@ const TicketScreen = ({navigation}) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]);
       setLoading(false);
     }
@@ -118,7 +118,12 @@ const TicketScreen = ({navigation}) => {
                 .replace(/,/g, '-')
                 .concat(' ' + rawDate[1]);
               let ticketTitle = el['1'];
-              let lastUpdate = el['19'];
+              let rawLastUpdate = el['19'].split(' ');
+              let lastUpdate = rawLastUpdate[0].split('-')
+                .reverse()
+                .toString()
+                .replace(/,/g, '-')
+                .concat(' ' + rawDate[1]);
               let ticketID = el['2'];
               let urgency = el['3'];
               let status = el['12'];
@@ -151,7 +156,8 @@ const TicketScreen = ({navigation}) => {
                           status: status,
                           title: ticketTitle,
                           userID: userRequestID,
-                          technicianID: technicianID
+                          technicianID: technicianID,
+                          lastUpdate: lastUpdate
                         })
                       }>
                       <View
@@ -172,32 +178,32 @@ const TicketScreen = ({navigation}) => {
                           }}>
                           {ticketTitle} #{ticketID}
                         </Text>
-                        <Text style={{fontSize: windowWidth * 0.04}}>
-                          Created: {ticketDate}
+                        <Text style={{ fontSize: windowWidth * 0.04 }}>
+                          Ngày tạo: {ticketDate}
                         </Text>
                         <HStack
                           alignSelf={'center'}
                           space={windowWidth * 0.02}
-                          // marginTop={(windowWidth + windowHeight) * 0.01}
+                        // marginTop={(windowWidth + windowHeight) * 0.01}
                         >
                           <Badge
-                            _text={{fontSize: windowWidth * 0.037}}
+                            _text={{ fontSize: windowWidth * 0.037 }}
                             variant="solid"
                             //colorScheme={HandeUrgencyColor({ urgency })}
                             style={{
-                              backgroundColor: HandeUrgencyColor({urgency}),
+                              backgroundColor: HandeUrgencyColor({ urgency }),
                             }}
                             rounded={windowWidth * 0.01}>
-                            {HandleUrgency({urgency})}
+                            {HandleUrgency({ urgency })}
                           </Badge>
                           <Badge
-                            _text={{fontSize: windowWidth * 0.037}}
+                            _text={{ fontSize: windowWidth * 0.037 }}
                             variant="solid"
                             style={{
-                              backgroundColor: HandeStatusColor({status}),
+                              backgroundColor: HandeStatusColor({ status }),
                             }}
                             rounded={windowWidth * 0.01}>
-                            {HandleBadgeStatus({status})}
+                            {HandleBadgeStatus({ status })}
                           </Badge>
                         </HStack>
                       </View>

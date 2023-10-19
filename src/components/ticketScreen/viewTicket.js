@@ -34,6 +34,7 @@ const ViewTicket = ({ navigation }) => {
   const title = route.params?.title;
   const userID = route.params?.userID;
   const technicianID = route.params?.technicianID
+  const lastUpdate = route.params?.lastUpdate
   const token = useSelector(state => state.user.token.session_token);
 
   const [loading, setLoading] = useState(true);
@@ -45,8 +46,7 @@ const ViewTicket = ({ navigation }) => {
 
   useEffect(() => {
     getUsername().catch(console.error);
-    getTechnicianName().catch(console.error)
-    console.log('ID:', id, 'Miêu tả:', description, 'Ngày tạo:', date, 'technicianID:', technicianID);
+    console.log('ID:', id, 'Miêu tả:', description, 'Ngày tạo:', date, 'technicianID:', technicianID, 'lastupdate:', lastUpdate);
     return () => backHandler.remove();
   }, []);
 
@@ -56,7 +56,6 @@ const ViewTicket = ({ navigation }) => {
       setRefreshing(false);
     }, 1000);
     getUsername().catch(console.error);
-    getTechnicianName().catch(console.error)
   }, []);
 
   const backButton = () => {
@@ -78,7 +77,7 @@ const ViewTicket = ({ navigation }) => {
     backButton,
   );
 
-  /////////////==== LẤY THÔNG TIN NGƯỜI YÊU CẦU ====/////////////
+  /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
   const getUsername = async () => {
     const a = '/User/';
     const b = '?expand_dropdowns=true';
@@ -88,16 +87,16 @@ const ViewTicket = ({ navigation }) => {
       'App-Token': App_Token,
     };
 
-    let request = await Promise.all([
+    let requestUsername = await Promise.all([
       await fetch(API_URL + a + userID + b + '&session_token=' + token, {
         headers: objHeader,
       }).then(el => el.json()),
     ]);
     console.log(API_URL + a + userID + b + '&session_token=' + token);
-    if (typeof request !== 'undefined') {
-      const aName = request.map(el => el['firstname']);
-      const bName = request.map(el => el['realname']);
-      const loca = request.map(el => el['locations_id']);
+    if (typeof requestUsername !== 'undefined') {
+      const aName = requestUsername.map(el => el['firstname']);
+      const bName = requestUsername.map(el => el['realname']);
+      const loca = requestUsername.map(el => el['locations_id']);
       setName(bName + ' ' + aName);
       setLocation(loca);
       console.log('hjkasgdrkjashdgf', location);
@@ -113,28 +112,15 @@ const ViewTicket = ({ navigation }) => {
       ]);
       setLoading(false);
     }
-  };
-  /////////////==== LẤY THÔNG TIN NGƯỜI YÊU CẦU ====/////////////
 
-
-  /////////////==== LẤY THÔNG TIN NGƯỜI ĐƯỢC GÁN XỬ LÝ ====/////////////
-  const getTechnicianName = async () => {
-    console.log('AAAAAAAAAAAAAA')
-    let objHeader = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'App-Token': App_Token,
-    };
-    console.log("TECH:", API_URL + '/User/' + technicianID + '?expand_dropdowns=true' + '&session_token=' + token);
-
-    let request = await Promise.all([
+    let techinianName = await Promise.all([
       await fetch(API_URL + '/User/' + technicianID + '?expand_dropdowns=true' + '&session_token=' + token, {
         headers: objHeader,
       }).then(el => el.json()),
     ]);
-    if (typeof request !== 'undefined') {
-      const techAName = request.map(el => el['firstname']);
-      const techBName = request.map(el => el['realname']);
+    if (typeof techinianName !== 'undefined') {
+      const techAName = techinianName.map(el => el['firstname']);
+      const techBName = techinianName.map(el => el['realname']);
       setTechnicianName(techAName + ' ' + techBName);
       setLoading(false);
       console.log('AAAAAAAAAAAAAAAAAAAAA')
@@ -149,8 +135,10 @@ const ViewTicket = ({ navigation }) => {
       ]);
       setLoading(false);
     }
+
   };
-  /////////////==== LẤY THÔNG TIN NGƯỜI ĐƯỢC GÁN XỬ LÝ ====/////////////
+  /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
+
 
   updateTicket = async () => {
     console.log('updating..');
@@ -299,6 +287,23 @@ const ViewTicket = ({ navigation }) => {
                       marginLeft: windowWidth * 0.01,
                     }}>
                     {date}
+                  </Text>
+                </View>
+                <View style={styles.row}>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.05,
+                      fontWeight: 700,
+                    }}>
+                    Last Update:
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.045,
+                      fontWeight: 400,
+                      marginLeft: windowWidth * 0.01,
+                    }}>
+                    {lastUpdate}
                   </Text>
                 </View>
                 <View style={styles.row}>

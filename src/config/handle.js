@@ -27,9 +27,9 @@ export const HandleBadgeStatus = (status) => {
         case 4:
             return 'Pending'
         case 3:
-            return 'Processing (planned)'
+            return 'Processing'
         case 2:
-            return 'Processing (assigned)'
+            return 'Processing'
         case 1:
             return 'New'
         default: console.log('default case: no')
