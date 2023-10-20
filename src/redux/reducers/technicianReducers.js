@@ -1,8 +1,7 @@
 import { SET_TECHNICIAN } from "../actions/actionTypes";
 
 const initialState = {
-    userId: '',
-    userObj: {},
+    technicianArray: [],
 }
 
 const technicianReducer = (state = initialState, action) => {
@@ -10,7 +9,7 @@ const technicianReducer = (state = initialState, action) => {
         case SET_TECHNICIAN:
             return {
                 ...state,
-                // token: action.payload
+                technicianArray: action.payload
             }
             break;
         default: return state

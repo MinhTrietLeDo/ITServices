@@ -1,4 +1,4 @@
-const { GET_TICKET } = require("../actions/actionTypes");
+const { SET_TICKET } = require("../actions/actionTypes");
 
 const initialTicket = {
     ticketArray: []
@@ -6,7 +6,7 @@ const initialTicket = {
 
 const ticketReducer = (state = initialTicket, action) => {
     switch (action.type) {
-        case GET_TICKET:
+        case SET_TICKET:
             return {
                 ...state,
                 ticketArray:action.payload

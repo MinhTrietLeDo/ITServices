@@ -21,36 +21,45 @@ import {
   HandleUrgency,
 } from '../../config/handle';
 import { RefreshControl } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SelectUserListDropDown from './functionScreen/ticketFunctions';
+import { setRequester, setTechnician } from '../../redux/actions';
 
 const ViewTicket = ({ navigation }) => {
+  const dispatch = useDispatch()
   const route = useRoute();
   const id = route.params?.id;
-  const description = route.params?.description;
-  const urgency = route.params?.urgency;
-  const date = route.params?.date;
-  const status = route.params?.status;
-  const title = route.params?.title;
   const userID = route.params?.userID;
   const technicianID = route.params?.technicianID
-  const lastUpdate = route.params?.lastUpdate
   const token = useSelector(state => state.user.token.session_token);
-  const AAAA = useSelector(state => state.ticket.ticketArray)
+  const TicketArray = useSelector(state => state.ticket.ticketArray)
 
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [name, setName] = useState('');
-  const [location, setLocation] = useState('');
+
   const [modalVisible, setModalVisible] = useState(false)
-  const [technicianName, setTechnicianName] = useState('')
+
+  const [title, setTicketTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [urgency, setUrgency] = useState('')
+  const [date, setDate] = useState('')
+  const [status, setStatus] = useState('')
+  const [lastUpdate, setLastUpdate] = useState('')
+
+  const requesterArray = useSelector(state => state.requester.requesterArray)
+  const [reqName, setReqName] = useState('')
+  const [reqLocation, setReqLocation] = useState('')
+
+  const technicianArray = useSelector(state => state.technician.technicianArray)
+  const [techName, setTechName] = useState('')
+
 
   useEffect(() => {
-    console.log("AAAAAAAAAAAA:", AAAA)
     getUsername().catch(console.error);
-    console.log('ID:', id, 'Miêu tả:', description, 'Ngày tạo:', date, 'technicianID:', technicianID, 'lastupdate:', lastUpdate);
+    splitArray()
+    console.log('TECH ID:', technicianID, 'TECH ARR:', technicianArray)
+    console.log('ạkhdfgasdvbnf', techName)
     return () => backHandler.remove();
-
 
   }, []);
 
@@ -61,6 +70,116 @@ const ViewTicket = ({ navigation }) => {
     }, 1000);
     getUsername().catch(console.error);
   }, []);
+
+  /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
+  const getUsername = async () => {
+    const a = '/User/';
+    const b = '?expand_dropdowns=true';
+    let objHeader = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'App-Token': App_Token,
+    };
+
+    let requesterInfo = await Promise.all([
+      await fetch(API_URL + a + userID + b + '&session_token=' + token, {
+        headers: objHeader,
+      }).then(el => el.json()),
+    ]);
+    if (typeof requesterInfo !== 'undefined') {
+      dispatch(setRequester(requesterInfo))
+      setLoading(false);
+    } else {
+      Alert.alert('Error', 'Please try again later', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ]);
+      setLoading(false);
+    }
+
+    let techinianInfo = await Promise.all([
+      await fetch(API_URL + '/User/' + technicianID + '?expand_dropdowns=true' + '&session_token=' + token, {
+        headers: objHeader,
+      }).then(el => el.json()),
+    ]);
+    if (typeof techinianInfo !== 'undefined') {
+      dispatch(setTechnician(techinianInfo))
+      setLoading(false);
+    } else {
+      Alert.alert('Error', 'Please try again later', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ]);
+      setLoading(false);
+    }
+  };
+  /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
+
+  const splitArray = () => {
+    const splitTicket = TicketArray.map(el => {
+      if (el['2'] === id) {
+        const rawDate = el['15'].split(' ');
+        const ticketDate = rawDate[0]
+          .split('-')
+          .reverse()
+          .toString()
+          .replace(/,/g, '-')
+          .concat(' ' + rawDate[1]);
+        const ticketTitle = el['1'];
+        const rawlastUpdate = el['19'].split(' ');
+        const lastUpdate = rawlastUpdate[0].split('-')
+          .reverse()
+          .toString()
+          .replace(/,/g, '-')
+          .concat(' ' + rawDate[1]);
+        const urgency = el['3'];
+        const status = el['12'];
+        const getRawDescription = el['21'].split('&#60;p&#62;');
+        const description = getRawDescription[1]
+          .split('&#60;/p&#62;')
+          .toString()
+          .replace(/,/g, '');
+        return (
+          setTicketTitle(ticketTitle),
+          setDate(ticketDate),
+          setDescription(description),
+          setLastUpdate(lastUpdate),
+          setUrgency(urgency),
+          setStatus(status)
+        )
+      }
+    })
+
+    const splitRequester = requesterArray.map(arr => {
+      let reqFirstName = arr['firstname']
+      let reqRealtName = arr['realname']
+      let reqFullName = (reqFirstName + ' ' + reqRealtName)
+      let requesterLocation = arr['locations_id']
+      console.log(reqFullName, requesterLocation)
+      return (
+        setReqName(reqFullName)
+      )
+    })
+
+    const splitTechnician = technicianArray.map(arr => {
+      let techFirstName = arr['firstname']
+      let techRealtName = arr['realname']
+      let techFullName = (techFirstName + ' ' + techRealtName)
+      // let requesterLocation = arr['locations_id']
+      console.log("TECH:", techFullName)
+      return (
+        setTechName(techFullName)
+      )
+    })
+  }
 
   const backButton = () => {
     navigation.reset({
@@ -80,69 +199,6 @@ const ViewTicket = ({ navigation }) => {
     'hardwareBackPress',
     backButton,
   );
-
-  /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
-  const getUsername = async () => {
-    const a = '/User/';
-    const b = '?expand_dropdowns=true';
-    let objHeader = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'App-Token': App_Token,
-    };
-
-    let requestUsername = await Promise.all([
-      await fetch(API_URL + a + userID + b + '&session_token=' + token, {
-        headers: objHeader,
-      }).then(el => el.json()),
-    ]);
-    console.log(API_URL + a + userID + b + '&session_token=' + token);
-    if (typeof requestUsername !== 'undefined') {
-      const aName = requestUsername.map(el => el['firstname']);
-      const bName = requestUsername.map(el => el['realname']);
-      const loca = requestUsername.map(el => el['locations_id']);
-      setName(bName + ' ' + aName);
-      setLocation(loca);
-      console.log('hjkasgdrkjashdgf', location);
-      setLoading(false);
-    } else {
-      Alert.alert('Error', 'Please try again later', [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
-      ]);
-      setLoading(false);
-    }
-
-    let techinianName = await Promise.all([
-      await fetch(API_URL + '/User/' + technicianID + '?expand_dropdowns=true' + '&session_token=' + token, {
-        headers: objHeader,
-      }).then(el => el.json()),
-    ]);
-    if (typeof techinianName !== 'undefined') {
-      const techAName = techinianName.map(el => el['firstname']);
-      const techBName = techinianName.map(el => el['realname']);
-      setTechnicianName(techAName + ' ' + techBName);
-      setLoading(false);
-      console.log('AAAAAAAAAAAAAAAAAAAAA')
-    } else {
-      Alert.alert('Error', 'Please try again later', [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
-      ]);
-      setLoading(false);
-    }
-
-  };
-  /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
-
 
   updateTicket = async () => {
     console.log('updating..');
@@ -343,7 +399,7 @@ const ViewTicket = ({ navigation }) => {
                       fontWeight: 400,
                       marginLeft: windowWidth * 0.01,
                     }}>
-                    {name}
+                    {reqName}
                   </Text>
                 </View>
                 <View style={styles.row}>
@@ -360,7 +416,7 @@ const ViewTicket = ({ navigation }) => {
                       fontWeight: 400,
                       marginLeft: windowWidth * 0.01,
                     }}>
-                    {location}
+                    {reqLocation}
                   </Text>
                 </View>
                 {status === 2 || status === 3 || status === 4 ? (
@@ -378,7 +434,7 @@ const ViewTicket = ({ navigation }) => {
                         fontWeight: 400,
                         marginLeft: windowWidth * 0.01,
                       }}>
-                      {technicianName}
+                      {techName}
                     </Text>
                   </View>
                 ) : status === 5 || status === 6 ? (
@@ -396,7 +452,7 @@ const ViewTicket = ({ navigation }) => {
                         fontWeight: 400,
                         marginLeft: windowWidth * 0.01,
                       }}>
-                      {technicianName}
+                      {/* {technicianName} */}
                     </Text>
                   </View>
                 ) : null}

@@ -36,11 +36,10 @@ import {
   HandleUrgency,
 } from '../../config/handle';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTicket } from '../../redux/actions';
+import { setTicket, setRequester } from '../../redux/actions';
 import { useRoute } from '@react-navigation/native';
 
 const TicketScreen = ({ navigation }) => {
-  const [ticket, setTicket] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = useSelector(state => state.user.token.session_token);
   const [refreshing, setRefreshing] = useState(false);
@@ -53,7 +52,7 @@ const TicketScreen = ({ navigation }) => {
   useEffect(() => {
     console.log('Catch user token:', token);
     GetTickets().catch(console.error);
-    console.log(ticketURL);
+    // console.log('OBJ ARRAY: ', abc)
   }, []);
 
   const onRefresh = useCallback(() => {
@@ -77,12 +76,10 @@ const TicketScreen = ({ navigation }) => {
         headers: objHeader,
       }).then(el => el.json()),
     ]);
-    console.log(API_URL + ticketURL + '&session_token=' + token);
 
     if (typeof request[0].data !== 'undefined') {
       const rawData = request[0].data;
-      setTicket(rawData);
-      dispatch(getTicket(rawData))
+      dispatch(setTicket(rawData))
       setLoading(false);
     } else {
       Alert.alert('Error', 'Please try again later', [
@@ -111,7 +108,7 @@ const TicketScreen = ({ navigation }) => {
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
-            {ticket.map(el => {
+            {TicketData.map(el => {
               let rawDate = el['15'].split(' ');
               let ticketDate = rawDate[0]
                 .split('-')
@@ -152,14 +149,8 @@ const TicketScreen = ({ navigation }) => {
                       onPress={() =>
                         navigation.navigate('VỉewTicket', {
                           id: ticketID,
-                          description: description,
-                          urgency: urgency,
-                          date: ticketDate,
-                          status: status,
-                          title: ticketTitle,
                           userID: userRequestID,
                           technicianID: technicianID,
-                          lastUpdate: lastUpdate
                         })
                       }>
                       <View
