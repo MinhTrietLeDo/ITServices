@@ -165,7 +165,8 @@ const ViewTicket = ({ navigation }) => {
       let requesterLocation = arr['locations_id']
       console.log(reqFullName, requesterLocation)
       return (
-        setReqName(reqFullName)
+        setReqName(reqFullName),
+        setReqLocation(requesterLocation)
       )
     })
 
