@@ -57,10 +57,7 @@ const ViewTicket = ({ navigation }) => {
   useEffect(() => {
     getUsername().catch(console.error);
     splitArray()
-    console.log('TECH ID:', technicianID, 'TECH ARR:', technicianArray)
-    console.log('ạkhdfgasdvbnf', techName)
     return () => backHandler.remove();
-
   }, []);
 
   const onRefresh = useCallback(() => {

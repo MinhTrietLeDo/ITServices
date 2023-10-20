@@ -1,48 +1,97 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     SafeAreaView,
     View,
-    StyleSheet
+    StyleSheet, 
+    ActivityIndicator
 } from 'react-native'
 
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { windowHeight, windowWidth } from '../../../assets/res/courseStyle'
+import { App_Token, API_URL } from '../../../config/config'
 
 const SelectUserListDropDown = ({ data }) => {
-    const technicianName = useSelector(state => state.user.userObj.glpirealname)
-    const techArray = technicianName.split(" ")
+    const [technicianList, setTechnicianList] = useState([])
+    const [loading, setLoading] = useState(true)
+    const token = useSelector(state => state.user.token.session_token)
+
     useEffect(() => {
-        console.log(techArray)
+        getTechList().catch(console.error)
     }, [])
-    return (
-        <SelectDropdown
-            data={techArray}
-            onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index)
-            }}
-            buttonTextAfterSelection={(selectedItem, index) => {
-                // text represented after item is selected
-                // if data array is an array of objects then return selectedItem.property to render after item is selected
-                return selectedItem
-            }}
-            rowTextForSelection={(item, index) => {
-                // text represented for each item in dropdown
-                // if data array is an array of objects then return item.property to represent item in dropdown
-                return item
-            }}
-            buttonStyle={styles.dropdown1BtnStyle}
-            buttonTextStyle={styles.dropdown1BtnTxtStyle}
-            renderDropdownIcon={isOpened => {
-                return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={(windowHeight + windowWidth) * 0.012} />;
-            }}
-            dropdownIconPosition={'right'}
-            dropdownStyle={styles.dropdown1DropdownStyle}
-            rowStyle={styles.dropdown1RowStyle}
-            rowTextStyle={styles.dropdown1RowTxtStyle}
-        />
-    )
+
+    const getTechList = async () => {
+        const URL = "/search/User/?sort=34&expand_dropdowns=true&criteria[0][itemtype]=User&criteria[0][field]=20&criteria[0][searchtype]=contains&criteria[0][value]=Super-Admin&forcedisplay[0]=9&forcedisplay[1]=34"
+        let objHeader = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'App-Token': App_Token,
+        };
+        let request = await Promise.all([
+            await fetch(API_URL + URL + '&session_token=' + token, {
+                headers: objHeader,
+            }).then(el => el.json()),
+        ]);
+        if (typeof request[0].data !== 'undefined') {
+            const arr = request[0].data
+            console.log(arr)
+            const techname = arr.map(arr => {
+                let fullName = arr['34']
+                return fullName
+            })
+            console.log(techname)
+            setTechnicianList(techname)
+            setLoading(false);
+        } else {
+            Alert.alert('Error', 'Please try again later', [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                { text: 'OK', onPress: () => console.log('OK Pressed') },
+            ]);
+            setLoading(false);
+        }
+    }
+
+
+    if (loading) {
+        return (
+            <View style={[styles.container, styles.horizontal]}>
+                <ActivityIndicator size="large" />
+            </View>
+        );
+    } else {
+        return (
+            <SelectDropdown
+                data={technicianList}
+                onSelect={(selectedItem, index) => {
+                    console.log(selectedItem, index)
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                    // text represented after item is selected
+                    // if data array is an array of objects then return selectedItem.property to render after item is selected
+                    return selectedItem
+                }}
+                rowTextForSelection={(item, index) => {
+                    // text represented for each item in dropdown
+                    // if data array is an array of objects then return item.property to represent item in dropdown
+                    return item
+                }}
+                buttonStyle={styles.dropdown1BtnStyle}
+                buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                renderDropdownIcon={isOpened => {
+                    return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={(windowHeight + windowWidth) * 0.012} />;
+                }}
+                dropdownIconPosition={'right'}
+                dropdownStyle={styles.dropdown1DropdownStyle}
+                rowStyle={styles.dropdown1RowStyle}
+                rowTextStyle={styles.dropdown1RowTxtStyle}
+            />
+        )
+    }
 }
 
 export default SelectUserListDropDown
