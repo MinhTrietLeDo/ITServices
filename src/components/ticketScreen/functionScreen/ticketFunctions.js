@@ -6,7 +6,6 @@ import {
     StyleSheet, 
     ActivityIndicator
 } from 'react-native'
-
 import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { windowHeight, windowWidth } from '../../../assets/res/courseStyle'
@@ -35,12 +34,10 @@ const SelectUserListDropDown = ({ data }) => {
         ]);
         if (typeof request[0].data !== 'undefined') {
             const arr = request[0].data
-            console.log(arr)
             const techname = arr.map(arr => {
                 let fullName = arr['34']
                 return fullName
             })
-            console.log(techname)
             setTechnicianList(techname)
             setLoading(false);
         } else {
