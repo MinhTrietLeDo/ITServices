@@ -67,7 +67,7 @@ const SelectUserListDropDown = ({ data }) => {
 
     if (loading) {
         return (
-            <View style={[styles.container, styles.horizontal]}>
+            <View style={[styles.container]}>
                 <ActivityIndicator size="large" />
             </View>
         );
@@ -80,6 +80,7 @@ const SelectUserListDropDown = ({ data }) => {
                         console.log(selectedItem, index)
                         dispatch(setTechnician(selectedItem))
                     }}
+                    defaultButtonText='Select'
                     buttonTextAfterSelection={(selectedItem, index) => {
                         // text represented after item is selected
                         // if data array is an array of objects then return selectedItem.property to render after item is selected
@@ -109,7 +110,6 @@ export default SelectUserListDropDown
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         alignContent: 'center',
         justifyContent: 'center'
     },

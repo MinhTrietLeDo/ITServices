@@ -111,7 +111,7 @@ const ViewTicket = ({ navigation }) => {
       ]);
       setLoading(false);
     }
-
+    console.log(requesterInfo[0].data)
     if (technicianID === null) {
       console.log('skip, tech')
       setTechName('Chưa cập nhật')
