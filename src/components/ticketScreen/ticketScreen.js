@@ -117,22 +117,11 @@ const TicketScreen = ({ navigation }) => {
                 .replace(/,/g, '-')
                 .concat(' ' + rawDate[1]);
               let ticketTitle = el['1'];
-              let rawLastUpdate = el['19'].split(' ');
-              let lastUpdate = rawLastUpdate[0].split('-')
-                .reverse()
-                .toString()
-                .replace(/,/g, '-')
-                .concat(' ' + rawDate[1]);
               let ticketID = el['2'];
               let urgency = el['3'];
               let status = el['12'];
               let userRequestID = el['4'];
-              let getRawDescription = el['21'].split('&#60;p&#62;');
               let technicianID = el['5'];
-              let description = getRawDescription[1]
-                .split('&#60;/p&#62;')
-                .toString()
-                .replace(/,/g, '');
               return (
                 <Center key={ticketID}>
                   <VStack
