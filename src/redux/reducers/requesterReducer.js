@@ -1,4 +1,4 @@
-import { SET_REQUESTER } from "../actions/actionTypes";
+import { GET_REQUESTER } from "../actions/actionTypes";
 
 const initialState = {
     requesterArray: [],
@@ -6,7 +6,7 @@ const initialState = {
 
 const requesterReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SET_REQUESTER:
+        case GET_REQUESTER:
             return {
                 ...state,
                 requesterArray: action.payload

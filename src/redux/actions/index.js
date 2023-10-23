@@ -1,4 +1,4 @@
-import { GET_TECHNICIAN, SET_TICKET, GET_USER, LOG_OUT, SET_TECHNICIAN, SET_TOKEN, SET_USER, SET_REQUESTER } from "./actionTypes";
+import { GET_TECHNICIAN, SET_TICKET, GET_USER, LOG_OUT, SET_TECHNICIAN, SET_TOKEN, SET_USER, GET_REQUESTER } from "./actionTypes";
 export const setSessionToken = (param) => ({
     type: SET_TOKEN,
     payload: param
@@ -23,12 +23,12 @@ export const logOutUser = () => ({
     type: LOG_OUT,
 })
 
-export const setTechnician = (param) => ({
-    type: SET_TECHNICIAN,
+export const getTechnician = (param) => ({
+    type: GET_TECHNICIAN,
     payload: param
 })
 
-export const setRequester = (param) => ({
-    type: SET_REQUESTER,
+export const getRequester = (param) => ({
+    type: GET_REQUESTER,
     payload: param
 })

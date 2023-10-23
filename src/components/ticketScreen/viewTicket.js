@@ -23,7 +23,7 @@ import {
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectUserListDropDown from './functionScreen/ticketFunctions';
-import { setRequester, setTechnician } from '../../redux/actions';
+import { getRequester, getTechnician } from '../../redux/actions';
 
 const ViewTicket = ({ navigation }) => {
   const dispatch = useDispatch()
@@ -84,7 +84,7 @@ const ViewTicket = ({ navigation }) => {
       }).then(el => el.json()),
     ]);
     if (typeof requesterInfo !== 'undefined') {
-      dispatch(setRequester(requesterInfo))
+      dispatch(getRequester(requesterInfo))
       setLoading(false);
     } else {
       Alert.alert('Error', 'Please try again later', [
@@ -104,7 +104,7 @@ const ViewTicket = ({ navigation }) => {
       }).then(el => el.json()),
     ]);
     if (typeof techinianInfo !== 'undefined') {
-      dispatch(setTechnician(techinianInfo))
+      dispatch(getTechnician(techinianInfo))
       setLoading(false);
     } else {
       Alert.alert('Error', 'Please try again later', [

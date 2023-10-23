@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
     SafeAreaView,
     View,
-    StyleSheet, 
+    StyleSheet,
     ActivityIndicator
 } from 'react-native'
 import SelectDropdown from 'react-native-select-dropdown'
@@ -15,6 +15,7 @@ const SelectUserListDropDown = ({ data }) => {
     const [technicianList, setTechnicianList] = useState([])
     const [loading, setLoading] = useState(true)
     const token = useSelector(state => state.user.token.session_token)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         getTechList().catch(console.error)
@@ -53,7 +54,6 @@ const SelectUserListDropDown = ({ data }) => {
         }
     }
 
-
     if (loading) {
         return (
             <View style={[styles.container, styles.horizontal]}>
@@ -62,31 +62,35 @@ const SelectUserListDropDown = ({ data }) => {
         );
     } else {
         return (
-            <SelectDropdown
-                data={technicianList}
-                onSelect={(selectedItem, index) => {
-                    console.log(selectedItem, index)
-                }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                    // text represented after item is selected
-                    // if data array is an array of objects then return selectedItem.property to render after item is selected
-                    return selectedItem
-                }}
-                rowTextForSelection={(item, index) => {
-                    // text represented for each item in dropdown
-                    // if data array is an array of objects then return item.property to represent item in dropdown
-                    return item
-                }}
-                buttonStyle={styles.dropdown1BtnStyle}
-                buttonTextStyle={styles.dropdown1BtnTxtStyle}
-                renderDropdownIcon={isOpened => {
-                    return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={(windowHeight + windowWidth) * 0.012} />;
-                }}
-                dropdownIconPosition={'right'}
-                dropdownStyle={styles.dropdown1DropdownStyle}
-                rowStyle={styles.dropdown1RowStyle}
-                rowTextStyle={styles.dropdown1RowTxtStyle}
-            />
+            <SafeAreaView>
+                <SelectDropdown
+                    data={technicianList}
+                    onSelect={(selectedItem, index) => {
+                        // console.log(selectedItem, index)
+                        
+                    }}
+                    buttonTextAfterSelection={(selectedItem, index) => {
+                        // text represented after item is selected
+                        // if data array is an array of objects then return selectedItem.property to render after item is selected
+                        return selectedItem
+                    }}
+                    rowTextForSelection={(item, index) => {
+                        // text represented for each item in dropdown
+                        // if data array is an array of objects then return item.property to represent item in dropdown
+                        return item
+                    }}
+                    buttonStyle={styles.dropdown1BtnStyle}
+                    buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                    renderDropdownIcon={isOpened => {
+                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={(windowHeight + windowWidth) * 0.012} />;
+                    }}
+                    dropdownIconPosition={'right'}
+                    dropdownStyle={styles.dropdown1DropdownStyle}
+                    rowStyle={styles.dropdown1RowStyle}
+                    rowTextStyle={styles.dropdown1RowTxtStyle}
+                />
+            </SafeAreaView>
+
         )
     }
 }

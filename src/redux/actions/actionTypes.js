@@ -6,4 +6,4 @@ export const GET_USER = 'GET_USER';
 export const SET_TICKET = 'GET_TICKET';
 export const GET_TECHNICIAN = 'GET_TECHNICIAN'
 export const SET_TECHNICIAN = 'SET_TECHNICIAN'
-export const SET_REQUESTER = 'SET_REQUESTER'
+export const GET_REQUESTER = 'GET_REQUESTER'
