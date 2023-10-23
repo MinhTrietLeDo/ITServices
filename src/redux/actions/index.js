@@ -28,6 +28,11 @@ export const getTechnician = (param) => ({
     payload: param
 })
 
+export const setTechnician = (param) => ({
+    type: SET_TECHNICIAN,
+    payload: param
+})
+
 export const getRequester = (param) => ({
     type: GET_REQUESTER,
     payload: param

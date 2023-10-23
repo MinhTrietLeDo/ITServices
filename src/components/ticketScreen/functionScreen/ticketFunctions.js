@@ -10,6 +10,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { windowHeight, windowWidth } from '../../../assets/res/courseStyle'
 import { App_Token, API_URL } from '../../../config/config'
+import { setTechnician } from '../../../redux/actions'
 
 const SelectUserListDropDown = ({ data }) => {
     const [technicianList, setTechnicianList] = useState([])
@@ -36,9 +37,10 @@ const SelectUserListDropDown = ({ data }) => {
         if (typeof request[0].data !== 'undefined') {
             const arr = request[0].data
             const techname = arr.map(arr => {
-                let fullName = arr['34']
+                let fullName = (arr['34'] + ' ' + arr['9'])
                 return fullName
             })
+            console.log(arr)
             setTechnicianList(techname)
             setLoading(false);
         } else {
@@ -54,6 +56,15 @@ const SelectUserListDropDown = ({ data }) => {
         }
     }
 
+    const addTechnician = async () => {
+        const updateURL = ''
+        let objHeader = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'App-Token': App_Token,
+        };
+    }
+
     if (loading) {
         return (
             <View style={[styles.container, styles.horizontal]}>
@@ -66,8 +77,8 @@ const SelectUserListDropDown = ({ data }) => {
                 <SelectDropdown
                     data={technicianList}
                     onSelect={(selectedItem, index) => {
-                        // console.log(selectedItem, index)
-                        
+                        console.log(selectedItem, index)
+                        dispatch(setTechnician(selectedItem))
                     }}
                     buttonTextAfterSelection={(selectedItem, index) => {
                         // text represented after item is selected
@@ -90,7 +101,6 @@ const SelectUserListDropDown = ({ data }) => {
                     rowTextStyle={styles.dropdown1RowTxtStyle}
                 />
             </SafeAreaView>
-
         )
     }
 }

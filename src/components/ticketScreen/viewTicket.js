@@ -51,10 +51,10 @@ const ViewTicket = ({ navigation }) => {
   const [reqLocation, setReqLocation] = useState('')
 
   const technicianArray = useSelector(state => state.technician.technicianArray)
-  const [techName, setTechName] = useState('')
-
+  const [techName, setTechName] = useState([])
 
   useEffect(() => {
+    console.log('TechID:', technicianID)
     getUsername().catch(console.error);
     splitArray()
     return () => backHandler.remove();
@@ -66,12 +66,14 @@ const ViewTicket = ({ navigation }) => {
       setRefreshing(false);
     }, 1000);
     getUsername().catch(console.error);
+    splitArray()
   }, []);
 
   /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
   const getUsername = async () => {
-    const a = '/User/';
-    const b = '?expand_dropdowns=true';
+    const URL1 = '/search/User/?sort=34&criteria[0][itemtype]=User&criteria[0][field]=2&criteria[0][searchtype]=contains&criteria[0][value]='
+    const URL2 = '&forcedisplay[0]=9&forcedisplay[1]=34&forcedisplay[2]=3'
+
     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -79,12 +81,24 @@ const ViewTicket = ({ navigation }) => {
     };
 
     let requesterInfo = await Promise.all([
-      await fetch(API_URL + a + userID + b + '&session_token=' + token, {
+      await fetch(API_URL + URL1 + userID + URL2 + '&session_token=' + token, {
         headers: objHeader,
       }).then(el => el.json()),
     ]);
-    if (typeof requesterInfo !== 'undefined') {
-      dispatch(getRequester(requesterInfo))
+    if (typeof requesterInfo[0].data !== 'undefined') {
+      console.log('a:', requesterInfo[0].data)
+      let reqFullName = requesterInfo[0].data.map(arr => {
+        let rFullName = (arr['34'] + ' ' + arr['9'])
+        setReqName(rFullName)
+        let rLocation = arr['3']
+        if (rLocation === null) {
+          setReqLocation('Chưa cập nhật')
+        }
+        else { setReqLocation(rLocation) }
+        return ([rFullName, rLocation])
+      })
+      console.log('EEEEE', reqFullName)
+      // dispatch(getRequester(reqFullName))
       setLoading(false);
     } else {
       Alert.alert('Error', 'Please try again later', [
@@ -98,25 +112,38 @@ const ViewTicket = ({ navigation }) => {
       setLoading(false);
     }
 
-    let techinianInfo = await Promise.all([
-      await fetch(API_URL + '/User/' + technicianID + '?expand_dropdowns=true' + '&session_token=' + token, {
-        headers: objHeader,
-      }).then(el => el.json()),
-    ]);
-    if (typeof techinianInfo !== 'undefined') {
-      dispatch(getTechnician(techinianInfo))
-      setLoading(false);
+    if (technicianID === null) {
+      console.log('skip, tech')
+      setTechName('Chưa cập nhật')
     } else {
-      Alert.alert('Error', 'Please try again later', [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      let techinianInfo = await Promise.all([
+        await fetch(API_URL + URL1 + technicianID + URL2 + '&session_token=' + token, {
+          headers: objHeader,
+        }).then(el => el.json()),
       ]);
-      setLoading(false);
+      if (typeof techinianInfo[0].data !== 'undefined') {
+        console.log(techinianInfo[0].data)
+        let techFullName = techinianInfo[0].data.map(arr => {
+          let tFullName = (arr['34'] + ' ' + arr['9'])
+          setTechName(tFullName)
+          return tFullName
+        })
+        // console.log('ABC', techFullName)
+        dispatch(getTechnician(techFullName))
+        setLoading(false);
+      } else {
+        Alert.alert('Error', 'Please try again later', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ]);
+        setLoading(false);
+      }
     }
+
   };
   /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
 
@@ -155,28 +182,23 @@ const ViewTicket = ({ navigation }) => {
       }
     })
 
-    const splitRequester = requesterArray.map(arr => {
-      let reqFirstName = arr['firstname']
-      let reqRealtName = arr['realname']
-      let reqFullName = (reqFirstName + ' ' + reqRealtName)
-      let requesterLocation = arr['locations_id']
-      console.log(reqFullName, requesterLocation)
-      return (
-        setReqName(reqFullName),
-        setReqLocation(requesterLocation)
-      )
-    })
+    // const splitRequester = requesterArray.map(arr => {
+    //   let reqFirstName = arr['firstname']
+    //   let reqRealtName = arr['realname']
+    //   let reqFullName = (reqFirstName + ' ' + reqRealtName)
+    //   let requesterLocation = arr['locations_id']
+    //   console.log(reqFullName, requesterLocation)
+    //   return (
+    //     setReqName(reqFullName),
+    //     setReqLocation(requesterLocation)
+    //   )
+    // })
 
-    const splitTechnician = technicianArray.map(arr => {
-      let techFirstName = arr['firstname']
-      let techRealtName = arr['realname']
-      let techFullName = (techFirstName + ' ' + techRealtName)
-      // let requesterLocation = arr['locations_id']
-      console.log("TECH:", techFullName)
-      return (
-        setTechName(techFullName)
-      )
-    })
+    // const splitTechnician = technicianArray.map(arr => {
+    //   let techFullName = (arr['firstname'] + ' ' + arr['realname'])
+    //   return techFullName
+    // })
+    // console.log('123123123123', splitTechnician)
   }
 
   const backButton = () => {
@@ -450,7 +472,7 @@ const ViewTicket = ({ navigation }) => {
                         fontWeight: 400,
                         marginLeft: windowWidth * 0.01,
                       }}>
-                      {/* {technicianName} */}
+                      {techName}
                     </Text>
                   </View>
                 ) : null}
