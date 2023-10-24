@@ -295,10 +295,10 @@ const ViewTicket = ({ navigation }) => {
       return (
         <SafeAreaView style={styles.container}>
           <View style={styles.card}>
-            <ScrollView
+            {/* <ScrollView
               refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }>
+              }> */}
               <View style={styles.title}>
                 <Text
                   style={{
@@ -323,7 +323,7 @@ const ViewTicket = ({ navigation }) => {
                 </Text>
                 <ScrollView
                   style={{
-                    maxHeight: windowHeight * 0.2,
+                    maxHeight: windowHeight * 0.17,
                     marginTop: windowHeight * 0.01,
                   }}>
                   <Text
@@ -478,7 +478,7 @@ const ViewTicket = ({ navigation }) => {
                 ) : null}
 
               </View>
-            </ScrollView>
+            {/* </ScrollView> */}
           </View>
           <View style={styles.Button}>
             <Button

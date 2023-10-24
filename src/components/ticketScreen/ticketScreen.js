@@ -63,7 +63,6 @@ const TicketScreen = ({navigation}) => {
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
-    console.log('JKHKJAHSAKJHOIQW', TicketData);
   }, []);
 
   const GetTickets = async () => {
@@ -80,6 +79,7 @@ const TicketScreen = ({navigation}) => {
     ]);
 
     if (typeof request[0].data !== 'undefined') {
+      console.log('JKHKJAHSAKJHOIQW', request[0].data);
       const rawData = request[0].data;
       setTicketList(rawData);
       setLoading(false);
