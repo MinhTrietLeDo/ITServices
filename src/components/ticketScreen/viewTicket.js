@@ -515,7 +515,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     flex: 1,
-    // margin: (windowWidth + windowHeight) * 0.02,
+    margin: (windowWidth + windowHeight) * 0.015,
     justifyContent: 'center'
 
   },

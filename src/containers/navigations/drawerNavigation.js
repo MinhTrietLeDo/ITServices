@@ -36,6 +36,10 @@ const CustomDrawer = (props) => {
     ]);
   };
 
+  const moveScreen = () => {
+    
+  }
+
   return (
     <DrawerContentScrollView {...props}>
       <SafeAreaView style={styles.container}>
