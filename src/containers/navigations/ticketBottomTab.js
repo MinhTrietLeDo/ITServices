@@ -81,7 +81,7 @@ const TicketTab = () => {
           initialParams={{ticketURL: closedTicket}}
         />
       </Tab.Group>
-      <Tab.Group screenOptions={{presentation: 'modal'}}>
+      {/* <Tab.Group screenOptions={{presentation: 'modal'}}>
         <Tab.Screen
           component={ViewTicket}
           name="VỉewTicket"
@@ -91,7 +91,7 @@ const TicketTab = () => {
             headerShown: false,
           }}
         />
-      </Tab.Group>
+      </Tab.Group> */}
     </Tab.Navigator>
   );
 };

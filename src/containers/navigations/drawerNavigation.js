@@ -159,7 +159,7 @@ const MyDrawer = () => {
           }}
         />
       </Drawer.Group>
-      <Drawer.Group screenOptions={{ presentation: 'modal' }}>
+      {/* <Drawer.Group screenOptions={{ presentation: 'modal' }}>
         <Drawer.Screen
           component={NotiScreen}
           name="NotiScreen"
@@ -169,7 +169,7 @@ const MyDrawer = () => {
             drawerItemStyle: { display: 'none' }
           }}
         />
-      </Drawer.Group>
+      </Drawer.Group> */}
     </Drawer.Navigator>
   );
 };

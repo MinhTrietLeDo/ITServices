@@ -202,16 +202,16 @@ const ViewTicket = ({ navigation }) => {
   }
 
   const backButton = () => {
-    navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'Mới',
-          params: '',
-        },
-      ],
-    });
-    // navigation.goBack()
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [
+    //     {
+    //       name: 'Mới',
+    //       params: '',
+    //     },
+    //   ],
+    // });
+    navigation.goBack()
     return true;
   };
 
@@ -484,15 +484,16 @@ const ViewTicket = ({ navigation }) => {
             <Button
               style={{ width: windowWidth * 0.3 }}
               onPress={() =>
-                navigation.reset({
-                  index: 0,
-                  routes: [
-                    {
-                      name: 'Mới',
-                      params: '',
-                    },
-                  ],
-                })
+                // navigation.reset({
+                //   index: 0,
+                //   routes: [
+                //     {
+                //       name: 'Mới',
+                //       params: '',
+                //     },
+                //   ],
+                // })
+                navigation.goBack()
               }>
               Quay Về
             </Button>
@@ -514,13 +515,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     flex: 1,
-    margin: (windowWidth + windowHeight) * 0.01,
+    // margin: (windowWidth + windowHeight) * 0.02,
+    justifyContent: 'center'
+
   },
   card: {
     borderRadius: (windowWidth + windowHeight) * 0.01,
     borderWidth: (windowWidth + windowHeight) * 0.001,
     width: windowWidth * 0.9,
-    height: windowHeight * 0.7,
+    height: windowHeight * 0.8,
     maxHeight: windowHeight * 0.8,
     padding: (windowWidth + windowHeight) * 0.01,
   },

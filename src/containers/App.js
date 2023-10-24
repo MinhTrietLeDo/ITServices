@@ -8,6 +8,8 @@ import { MyDrawer } from './navigations/drawerNavigation';
 import theme from '../assets/res/theme';
 import loginHook from '../components/loginScreen/loginHook';
 import { getNoti, hanldeNoti, requestUserPermission } from '../config/notification';
+import ViewTicket from '../components/ticketScreen/viewTicket';
+import NotiScreen from '../components/notification/notiScreen';
 
 const Stack = createStackNavigator()
 
@@ -21,27 +23,53 @@ const RootStack = () => {
   console.log('Check login state:', isLogin)
   return (
     <NavigationContainer>
+
       <Stack.Navigator>
         {isLogin === false ? (
           // Check Login Stack
-          <Stack.Screen
-            name='Login'
-            component={loginHook}
-            options={{
-              headerBackVisible: false,
-              headerShown: false,
-            }}
-          />
+          <Stack.Group>
+            {/* Auth Group */}
+            <Stack.Screen
+              name='Login'
+              component={loginHook}
+              options={{
+                headerBackVisible: false,
+                headerShown: false,
+              }}
+            />
+          </Stack.Group>
         ) : (
+          <Stack.Group>
+            <Stack.Screen
+              name="Logined"
+              component={MyDrawer}
+              options={{
+                headerBackVisible: false,
+                headerShown: false,
+              }}
+            />
+          </Stack.Group>
+        )}
+        <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen
-            name="Logined"
-            component={MyDrawer}
+            component={ViewTicket}
+            name="VỉewTicket"
             options={{
+              tabBarItemStyle: { display: 'none' },
               headerBackVisible: false,
               headerShown: false,
             }}
           />
-        )}
+          <Stack.Screen
+            component={NotiScreen}
+            name="NotiScreen"
+            options={{
+              headerBackVisible: false,
+              headerShown: false,
+              drawerItemStyle: { display: 'none' }
+            }}
+          />
+        </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   )
