@@ -54,19 +54,10 @@ const ViewTicket = ({ navigation }) => {
   const [techName, setTechName] = useState([])
 
   useEffect(() => {
-    console.log('TechID:', technicianID)
+    console.log('Ticket Array:', TicketArray)
     getUsername().catch(console.error);
     splitArray()
     return () => backHandler.remove();
-  }, []);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
-    getUsername().catch(console.error);
-    splitArray()
   }, []);
 
   /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
