@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button, Avatar } from "native-base";
-import { SafeAreaView, StyleSheet, ActivityIndicator } from "react-native";
+import { Text, Button, Avatar, Alert } from "native-base";
+import { SafeAreaView, StyleSheet, ActivityIndicator, View, } from "react-native";
 import { API_URL, App_Token } from "../../config/config";
 import { useDispatch, useSelector } from "react-redux";
 import { useRoute } from "@react-navigation/native";
@@ -17,8 +17,8 @@ const UserInfo = () => {
     const [userLocation, setUserLocation] = useState('')
     const [userEmail, setUserEmail] = useState('')
     const [userPhone, setUserPhone] = useState('')
-    const [userAvatar, setUserAvatar] = useState('')
     const [userCreateDate, setUserCreateDate] = useState('')
+    const [userAvatar, setUserAvatar] = useState('')
 
     useEffect(() => {
         getUserData().catch(console.error)
@@ -44,18 +44,24 @@ const UserInfo = () => {
             }).then(el => el.json()),
         ]);
         if (typeof userInfo[0].data !== 'undefined') {
-            console.log('a:', userInfo[0].data)
-            let username = userInfo[0].data.map(arr => {
+            let userProfile = userInfo[0].data.map(arr => {
                 let rFullName = (arr['34'] + ' ' + arr['9'])
-                setUserName(rFullName)
                 let rLocation = arr['3']
-                if (rLocation === null) {
-                    setUserLocation('Chưa cập nhật')
-                }
+                let email = arr['5']
+                let phoneNumber = arr['6']
+                let createDate = arr['62']
+                setUserName(rFullName)
+                if (rLocation === null) { setUserLocation('Chưa cập nhật') }
                 else { setUserLocation(rLocation) }
-                return ([rFullName, rLocation])
+                if (email === null) { setUserEmail('Chưa cập nhật') }
+                else { setUserEmail(email) }
+                if (phoneNumber === null) { setUserPhone('Chưa cập nhật') }
+                else { setUserPhone(phoneNumber) }
+                if (createDate === null) { setUserCreateDate('Chưa cập nhật') }
+                else { setUserCreateDate(createDate) }
+                return ([rFullName, rLocation, email, phoneNumber, createDate])
             })
-            console.log('EEEEE', username)
+            // console.log('EEEEE', userProfile)
             setLoading(false);
         } else {
             Alert.alert('Error', 'Please try again later', [
@@ -68,8 +74,22 @@ const UserInfo = () => {
             ]);
             setLoading(false);
         }
-    }
 
+
+        // let resImg = await Promise.all([
+        //     await fetch(API_URL + '/User/' + userID + '/Picture/?session_token' + token, {
+        //         headers: objHeader,
+        //     })
+        // ]);
+
+        // const img = await fetch(API_URL + '/User/' + userID + '/Picture/?session_token' + token, { headers: objHeader })
+        // const imgBlob = await img.blob()
+        // const imgObjURL = URL.createObjectURL(imgBlob)
+        // let imgUri = "data:image/png;base64," + imgBlob
+        // setUserAvatar(imgUri)
+
+        // console.log(userAvatar)
+    }
 
     if (loading) {
         return (
@@ -80,7 +100,17 @@ const UserInfo = () => {
     } else {
         return (
             <SafeAreaView style={styles.container}>
-                <Text>123</Text>
+                <View style={styles.header}>
+                    <Avatar
+                        source={{ uri: 'https://cdn.cwsplatform.com/assets/no-photo-available.png' }}
+                        style={styles.avatar} />
+
+                    {/* <Avatar
+                        source={{ uri: userAvatar }}
+                        style={styles.avatar} /> */}
+                    <Text style={styles.headerText}>{userName}</Text>
+                </View>
+
             </SafeAreaView>
         )
     }
@@ -89,10 +119,27 @@ const UserInfo = () => {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        alignSelf: 'center',
         flex: 1,
         margin: (windowHeight + windowWidth) * 0.015,
-        justifyContent: 'center'
+        justifyContent: 'center',
+    },
+    header: {
+        width: '100%',
+        // height: windowHeight * 0.07,
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        flexDirection: 'row',
+    },
+    headerText: {
+        fontSize: windowWidth * 0.06,
+        fontWeight: 800,
+        paddingTop: (windowHeight + windowWidth) * 0.01
+    },
+    avatar: {
+        height: 100,
+        borderRadius: 50,
+        width: 100,
+        resizeMode: 'cover'
     }
 })
 

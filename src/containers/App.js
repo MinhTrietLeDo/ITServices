@@ -54,7 +54,7 @@ const RootStack = () => {
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen
             component={ViewTicket}
-            name="VỉewTicket"
+            name="ViewTicket"
             options={{
               tabBarItemStyle: { display: 'none' },
               headerBackVisible: false,

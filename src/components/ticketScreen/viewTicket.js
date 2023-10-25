@@ -12,7 +12,8 @@ import {
   BackHandler,
   SafeAreaView,
   Modal,
-  Pressable
+  Pressable,
+  TouchableOpacity
 } from 'react-native';
 import {
   HandeStatusColor,
@@ -290,120 +291,124 @@ const ViewTicket = ({ navigation }) => {
               refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
               }> */}
-              <View style={styles.title}>
+            <View style={styles.title}>
+              <Text
+                style={{
+                  fontSize: windowWidth * 0.055,
+                  fontWeight: 700,
+                  textAlign: 'center',
+                  alignItems: 'center',
+                }}>
+                {title} #{id}
+              </Text>
+            </View>
+            <View
+              style={{
+                margin: (windowHeight + windowWidth) * 0.01,
+              }}>
+              <Text
+                style={{
+                  fontSize: windowWidth * 0.05,
+                  fontWeight: 700,
+                }}>
+                Miêu tả sự cố:
+              </Text>
+              <ScrollView
+                style={{
+                  maxHeight: windowHeight * 0.17,
+                  marginTop: windowHeight * 0.01,
+                }}>
                 <Text
                   style={{
-                    fontSize: windowWidth * 0.055,
-                    fontWeight: 700,
-                    textAlign: 'center',
-                    alignItems: 'center',
+                    fontSize: windowWidth * 0.045,
                   }}>
-                  {title} #{id}
+                  {description}
                 </Text>
-              </View>
-              <View
-                style={{
-                  margin: (windowHeight + windowWidth) * 0.01,
-                }}>
+              </ScrollView>
+              <View style={styles.row}>
                 <Text
                   style={{
                     fontSize: windowWidth * 0.05,
                     fontWeight: 700,
                   }}>
-                  Miêu tả sự cố:
+                  Tình trạng:
                 </Text>
-                <ScrollView
+                <Badge
+                  _text={{ fontSize: windowWidth * 0.03 }}
+                  variant="solid"
                   style={{
-                    maxHeight: windowHeight * 0.17,
-                    marginTop: windowHeight * 0.01,
+                    backgroundColor: HandeStatusColor({ status }),
+                    marginLeft: (windowHeight + windowWidth) * 0.01,
+                  }}
+                  rounded={windowWidth * 0.01}>
+                  {HandleBadgeStatus({ status })}
+                </Badge>
+              </View>
+              <View style={styles.row}>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.05,
+                    fontWeight: 700,
                   }}>
-                  <Text
-                    style={{
-                      fontSize: windowWidth * 0.045,
-                    }}>
-                    {description}
-                  </Text>
-                </ScrollView>
-                <View style={styles.row}>
-                  <Text
-                    style={{
-                      fontSize: windowWidth * 0.05,
-                      fontWeight: 700,
-                    }}>
-                    Tình trạng:
-                  </Text>
-                  <Badge
-                    _text={{ fontSize: windowWidth * 0.03 }}
-                    variant="solid"
-                    style={{
-                      backgroundColor: HandeStatusColor({ status }),
-                      marginLeft: (windowHeight + windowWidth) * 0.01,
-                    }}
-                    rounded={windowWidth * 0.01}>
-                    {HandleBadgeStatus({ status })}
-                  </Badge>
-                </View>
-                <View style={styles.row}>
-                  <Text
-                    style={{
-                      fontSize: windowWidth * 0.05,
-                      fontWeight: 700,
-                    }}>
-                    Ngày tạo:
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: windowWidth * 0.045,
-                      fontWeight: 400,
-                      marginLeft: windowWidth * 0.01,
-                    }}>
-                    {date}
-                  </Text>
-                </View>
-                <View style={styles.row}>
-                  <Text
-                    style={{
-                      fontSize: windowWidth * 0.05,
-                      fontWeight: 700,
-                    }}>
-                    Last Update:
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: windowWidth * 0.045,
-                      fontWeight: 400,
-                      marginLeft: windowWidth * 0.01,
-                    }}>
-                    {lastUpdate}
-                  </Text>
-                </View>
-                <View style={styles.row}>
-                  <Text
-                    style={{
-                      fontSize: windowWidth * 0.05,
-                      fontWeight: 700,
-                    }}>
-                    Mức Độ Ưu Tiên:
-                  </Text>
-                  <Badge
-                    _text={{ fontSize: windowWidth * 0.037 }}
-                    variant="solid"
-                    style={{
-                      backgroundColor: HandeUrgencyColor({ urgency }),
-                      marginLeft: (windowHeight + windowWidth) * 0.01,
-                    }}
-                    rounded={windowWidth * 0.01}>
-                    {HandleUrgency({ urgency })}
-                  </Badge>
-                </View>
-                <View style={styles.row}>
-                  <Text
-                    style={{
-                      fontSize: windowWidth * 0.05,
-                      fontWeight: 700,
-                    }}>
-                    Người Yêu Cầu:
-                  </Text>
+                  Ngày tạo:
+                </Text>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.045,
+                    fontWeight: 400,
+                    marginLeft: windowWidth * 0.01,
+                  }}>
+                  {date}
+                </Text>
+              </View>
+              <View style={styles.row}>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.05,
+                    fontWeight: 700,
+                  }}>
+                  Last Update:
+                </Text>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.045,
+                    fontWeight: 400,
+                    marginLeft: windowWidth * 0.01,
+                  }}>
+                  {lastUpdate}
+                </Text>
+              </View>
+              <View style={styles.row}>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.05,
+                    fontWeight: 700,
+                  }}>
+                  Mức Độ Ưu Tiên:
+                </Text>
+                <Badge
+                  _text={{ fontSize: windowWidth * 0.037 }}
+                  variant="solid"
+                  style={{
+                    backgroundColor: HandeUrgencyColor({ urgency }),
+                    marginLeft: (windowHeight + windowWidth) * 0.01,
+                  }}
+                  rounded={windowWidth * 0.01}>
+                  {HandleUrgency({ urgency })}
+                </Badge>
+              </View>
+              <View style={styles.row}>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.05,
+                    fontWeight: 700,
+                  }}>
+                  Người Yêu Cầu:
+                </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('UserInfo', {
+                    userID: userID
+                  })}>
                   <Text
                     style={{
                       fontSize: windowWidth * 0.045,
@@ -412,14 +417,33 @@ const ViewTicket = ({ navigation }) => {
                     }}>
                     {reqName}
                   </Text>
-                </View>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.row}>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.05,
+                    fontWeight: 700,
+                  }}>
+                  Phòng Ban/Khoa:
+                </Text>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.045,
+                    fontWeight: 400,
+                    marginLeft: windowWidth * 0.01,
+                  }}>
+                  {reqLocation}
+                </Text>
+              </View>
+              {status === 2 || status === 3 || status === 4 ? (
                 <View style={styles.row}>
                   <Text
                     style={{
                       fontSize: windowWidth * 0.05,
                       fontWeight: 700,
                     }}>
-                    Phòng Ban/Khoa:
+                    Người được gán:
                   </Text>
                   <Text
                     style={{
@@ -427,48 +451,30 @@ const ViewTicket = ({ navigation }) => {
                       fontWeight: 400,
                       marginLeft: windowWidth * 0.01,
                     }}>
-                    {reqLocation}
+                    {techName}
                   </Text>
                 </View>
-                {status === 2 || status === 3 || status === 4 ? (
-                  <View style={styles.row}>
-                    <Text
-                      style={{
-                        fontSize: windowWidth * 0.05,
-                        fontWeight: 700,
-                      }}>
-                      Người được gán:
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: windowWidth * 0.045,
-                        fontWeight: 400,
-                        marginLeft: windowWidth * 0.01,
-                      }}>
-                      {techName}
-                    </Text>
-                  </View>
-                ) : status === 5 || status === 6 ? (
-                  <View style={styles.row}>
-                    <Text
-                      style={{
-                        fontSize: windowWidth * 0.05,
-                        fontWeight: 700,
-                      }}>
-                      Người đã xử lý:
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: windowWidth * 0.045,
-                        fontWeight: 400,
-                        marginLeft: windowWidth * 0.01,
-                      }}>
-                      {techName}
-                    </Text>
-                  </View>
-                ) : null}
+              ) : status === 5 || status === 6 ? (
+                <View style={styles.row}>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.05,
+                      fontWeight: 700,
+                    }}>
+                    Người đã xử lý:
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.045,
+                      fontWeight: 400,
+                      marginLeft: windowWidth * 0.01,
+                    }}>
+                    {techName}
+                  </Text>
+                </View>
+              ) : null}
 
-              </View>
+            </View>
             {/* </ScrollView> */}
           </View>
           <View style={styles.Button}>

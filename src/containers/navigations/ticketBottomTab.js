@@ -73,17 +73,6 @@ const TicketTab = () => {
         }}
         initialParams={{ticketURL: closedTicket}}
       />
-      {/* <Tab.Group screenOptions={{presentation: 'modal'}}>
-        <Tab.Screen
-          component={ViewTicket}
-          name="VỉewTicket"
-          options={{
-            tabBarItemStyle: {display: 'none'},
-            headerBackVisible: false,
-            headerShown: false,
-          }}
-        />
-      </Tab.Group> */}
     </Tab.Navigator>
   );
 };

@@ -139,7 +139,7 @@ const TicketScreen = ({navigation}) => {
                     }}>
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate('VỉewTicket', {
+                        navigation.navigate('ViewTicket', {
                           id: ticketID,
                           userID: userRequestID,
                           technicianID: technicianID,
