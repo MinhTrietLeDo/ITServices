@@ -10,21 +10,47 @@ import { NotiBtn } from '../../config/handle';
 import TicketTab from './ticketBottomTab';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOutUser } from '../../redux/actions';
-import { Alert } from 'react-native';
 import { Text, Avatar, Divider, Button } from 'native-base';
-import { StyleSheet, View, SafeAreaView } from 'react-native';
+import { StyleSheet, View, SafeAreaView, Alert } from 'react-native';
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SettingScreen from '../../components/setting/setting';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import DashboardTab from './dashboardBottomTab';
-import NotiScreen from '../../components/notification/notiScreen';
+import { API_URL, App_Token } from '../../config/config';
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = (props) => {
   const dispatch = useDispatch();
   const username = useSelector(state => state.user.userObj.glpifriendlyname);
+  const token = useSelector(state => state.user.token.session_token)
+
+  const logOut = async () => {
+    let objHeader = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'App-Token': App_Token,
+    };
+    let killSession = await Promise.all([
+      await fetch(API_URL + '/killSession?session_token=' + token, {
+        headers: objHeader,
+      }).then(el => el.json()),
+    ]);
+    if (typeof killSession !== undefined) {
+      dispatch(logOutUser()) //xóa token cũ => chuyển token về rỗng => về màn hình login
+    } else {
+      Alert.alert('Error', 'Please try again later', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ]);
+    }
+  }
+
   const askLogOut = () => {
     Alert.alert('Warning', 'Bạn có muốn đăng xuất?', [
       {
@@ -32,13 +58,9 @@ const CustomDrawer = (props) => {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      { text: 'OK', onPress: () => dispatch(logOutUser()) },
+      { text: 'OK', onPress: () => logOut().catch(console.error) },
     ]);
   };
-
-  const moveScreen = () => {
-    
-  }
 
   return (
     <DrawerContentScrollView {...props}>
@@ -163,17 +185,6 @@ const MyDrawer = () => {
           }}
         />
       </Drawer.Group>
-      {/* <Drawer.Group screenOptions={{ presentation: 'modal' }}>
-        <Drawer.Screen
-          component={NotiScreen}
-          name="NotiScreen"
-          options={{
-            headerBackVisible: false,
-            headerShown: false,
-            drawerItemStyle: { display: 'none' }
-          }}
-        />
-      </Drawer.Group> */}
     </Drawer.Navigator>
   );
 };

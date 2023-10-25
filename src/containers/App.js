@@ -10,6 +10,7 @@ import loginHook from '../components/loginScreen/loginHook';
 import { getNoti, hanldeNoti, requestUserPermission } from '../config/notification';
 import ViewTicket from '../components/ticketScreen/viewTicket';
 import NotiScreen from '../components/notification/notiScreen';
+import UserInfo from '../components/userScreen/userInfo';
 
 const Stack = createStackNavigator()
 
@@ -63,6 +64,15 @@ const RootStack = () => {
           <Stack.Screen
             component={NotiScreen}
             name="NotiScreen"
+            options={{
+              headerBackVisible: false,
+              headerShown: false,
+              drawerItemStyle: { display: 'none' }
+            }}
+          />
+          <Stack.Screen
+            component={UserInfo}
+            name="UserInfo"
             options={{
               headerBackVisible: false,
               headerShown: false,
