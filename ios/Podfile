@@ -10,7 +10,7 @@ prepare_react_native_project!
 
 pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 pod 'React-RCTPushNotification', :path => '../node_modules/react-native/Libraries/PushNotificationIOS'
-
+pod 'react-native-blob-util', :path => '../node_modules/react-native-blob-util'
 # use_frameworks! :linkage => :static
 $RNFirebaseAsStaticFramework = true
 
