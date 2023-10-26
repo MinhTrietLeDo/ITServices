@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Text, Button, Avatar, Alert } from "native-base";
-import { SafeAreaView, StyleSheet, ActivityIndicator, View, } from "react-native";
+import { Text, Button, Avatar, } from "native-base";
+import { SafeAreaView, StyleSheet, ActivityIndicator, View, Alert } from "react-native";
 import { API_URL, App_Token } from "../../config/config";
 import { useDispatch, useSelector } from "react-redux";
 import { useRoute } from "@react-navigation/native";
 import { windowHeight, windowWidth } from "../../assets/res/courseStyle";
+import ReactNativeBlobUtil from "react-native-blob-util";
 
 const UserInfo = () => {
     const token = useSelector(state => state.user.token.session_token)
@@ -22,6 +23,7 @@ const UserInfo = () => {
 
     useEffect(() => {
         getUserData().catch(console.error)
+        getImg().catch(console.error)
     }, [])
 
     const getUserData = async () => {
@@ -74,21 +76,54 @@ const UserInfo = () => {
             ]);
             setLoading(false);
         }
+    }
 
-
-        // let resImg = await Promise.all([
-        //     await fetch(API_URL + '/User/' + userID + '/Picture/?session_token' + token, {
-        //         headers: objHeader,
-        //     })
-        // ]);
-
-        // const img = await fetch(API_URL + '/User/' + userID + '/Picture/?session_token' + token, { headers: objHeader })
-        // const imgBlob = await img.blob()
-        // const imgObjURL = URL.createObjectURL(imgBlob)
-        // let imgUri = "data:image/png;base64," + imgBlob
-        // setUserAvatar(imgUri)
-
-        // console.log(userAvatar)
+    const getImg = async () => {
+        ReactNativeBlobUtil.fetch(
+            'GET', API_URL + '/User/' + userID + '/Picture/?session_token=' + token,
+            // 'GET', API_URL + '/User/2' + '/Picture/?session_token=' + token,
+            {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'App-Token': App_Token,
+            })
+            .then((res) => {
+                let status = res.info().status
+                console.log(status)
+                if (status == 200) {
+                    let base64Str = res.base64()
+                    // let text = res.text()
+                    // let json = res.json() //deohieu sao bị lỗi
+                    console.log('BASE64', base64Str)
+                    setUserAvatar(base64Str)
+                }
+                else if (status == 204) {
+                    console.log('không có hình')
+                }
+                else {
+                    Alert.alert('Error', 'Please try again later', [
+                        {
+                            text: 'Cancel',
+                            onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                        },
+                        { text: 'OK', onPress: () => console.log('OK Pressed') },
+                    ]);
+                }
+            })
+            .catch((errorMessage, statusCode) => {
+                let msg = errorMessage.toString()
+                console.log('AAAAAAAAAA', msg, 'BBBB', statusCode)
+                Alert.alert('Error', msg, [
+                    {
+                        text: 'Cancel',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel',
+                    },
+                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ]);
+                setLoading(false);
+            })
     }
 
     if (loading) {
@@ -102,12 +137,9 @@ const UserInfo = () => {
             <SafeAreaView style={styles.container}>
                 <View style={styles.header}>
                     <Avatar
-                        source={{ uri: 'https://cdn.cwsplatform.com/assets/no-photo-available.png' }}
+                        // source={{ uri: userAvatar }}
+                        source={{ uri: !!userAvatar ? `data:image/jpeg;base64,${userAvatar}` : 'https://cdn.cwsplatform.com/assets/no-photo-available.png' }}
                         style={styles.avatar} />
-
-                    {/* <Avatar
-                        source={{ uri: userAvatar }}
-                        style={styles.avatar} /> */}
                     <Text style={styles.headerText}>{userName}</Text>
                 </View>
 
