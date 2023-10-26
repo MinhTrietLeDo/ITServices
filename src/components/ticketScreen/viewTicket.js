@@ -480,18 +480,7 @@ const ViewTicket = ({ navigation }) => {
           <View style={styles.Button}>
             <Button
               style={{ width: windowWidth * 0.3 }}
-              onPress={() =>
-                // navigation.reset({
-                //   index: 0,
-                //   routes: [
-                //     {
-                //       name: 'Mới',
-                //       params: '',
-                //     },
-                //   ],
-                // })
-                navigation.goBack()
-              }>
+              onPress={() => navigation.goBack()}>
               Quay Về
             </Button>
             {status === 1 ? (
@@ -513,8 +502,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
     margin: (windowWidth + windowHeight) * 0.015,
-    justifyContent: 'center'
-
+    justifyContent: 'space-around',
   },
   card: {
     borderRadius: (windowWidth + windowHeight) * 0.01,
