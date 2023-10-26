@@ -56,7 +56,6 @@ const RootStack = () => {
             component={ViewTicket}
             name="ViewTicket"
             options={{
-              tabBarItemStyle: { display: 'none' },
               headerBackVisible: false,
               headerShown: false,
             }}
@@ -67,7 +66,6 @@ const RootStack = () => {
             options={{
               headerBackVisible: false,
               headerShown: false,
-              drawerItemStyle: { display: 'none' }
             }}
           />
           <Stack.Screen
@@ -76,7 +74,6 @@ const RootStack = () => {
             options={{
               headerBackVisible: false,
               headerShown: false,
-              drawerItemStyle: { display: 'none' }
             }}
           />
         </Stack.Group>
