@@ -173,36 +173,9 @@ const ViewTicket = ({ navigation }) => {
         )
       }
     })
-
-    // const splitRequester = requesterArray.map(arr => {
-    //   let reqFirstName = arr['firstname']
-    //   let reqRealtName = arr['realname']
-    //   let reqFullName = (reqFirstName + ' ' + reqRealtName)
-    //   let requesterLocation = arr['locations_id']
-    //   console.log(reqFullName, requesterLocation)
-    //   return (
-    //     setReqName(reqFullName),
-    //     setReqLocation(requesterLocation)
-    //   )
-    // })
-
-    // const splitTechnician = technicianArray.map(arr => {
-    //   let techFullName = (arr['firstname'] + ' ' + arr['realname'])
-    //   return techFullName
-    // })
-    // console.log('123123123123', splitTechnician)
   }
 
   const backButton = () => {
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [
-    //     {
-    //       name: 'Mới',
-    //       params: '',
-    //     },
-    //   ],
-    // });
     navigation.goBack()
     return true;
   };
@@ -537,8 +510,8 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
     marginTop: (windowHeight + windowWidth) * 0.01,
   },
   modalView: {

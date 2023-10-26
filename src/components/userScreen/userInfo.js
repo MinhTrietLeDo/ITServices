@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Text, Button, Avatar, } from "native-base";
-import { SafeAreaView, StyleSheet, ActivityIndicator, View, Alert, ScrollView } from "react-native";
+import {
+    SafeAreaView,
+    StyleSheet,
+    ActivityIndicator,
+    View,
+    Alert,
+    ScrollView
+} from "react-native";
 import { API_URL, App_Token } from "../../config/config";
 import { useDispatch, useSelector } from "react-redux";
 import { useRoute } from "@react-navigation/native";
@@ -201,7 +208,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     headerText: {
-        fontSize: windowWidth * 0.06,
+        fontSize: windowWidth * 0.055,
         fontWeight: 800,
         paddingTop: (windowHeight + windowWidth) * 0.01,
         textAlign: 'center'
@@ -233,7 +240,7 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontSize: windowWidth * 0.05,
-        fontWeight: 500,
+        fontWeight: 700,
         paddingTop: (windowHeight + windowWidth) * 0.01,
         textAlign: 'center'
     },
