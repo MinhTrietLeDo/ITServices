@@ -3,7 +3,9 @@ import {
   View,
   RefreshControl,
   SafeAreaView,
-  StyleSheet
+  StyleSheet,
+  BackHandler,
+  Alert
 } from 'react-native';
 import {
   Text,
@@ -13,9 +15,35 @@ import {
   ScrollView
 } from 'native-base'
 import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
+import { useDispatch } from 'react-redux';
 
 const Home = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
+  const dispatch= useDispatch()
+
+  useEffect(() => {
+    // const backAction = () => {
+    //   Alert.alert('Warning', 'Thoát khỏi ứng dụng?', [
+    //     {
+    //       text: 'Cancel',
+    //       onPress: () => null,
+    //       style: 'cancel',
+    //     },
+    //     { text: 'YES', onPress: () => {
+    //       BackHandler.exitApp() 
+    //     }},
+    //   ]);
+    //   return true;
+    // };
+
+    // const backHandler = BackHandler.addEventListener(
+    //   'hardwareBackPress',
+    //   backAction,
+    // );
+
+    // return () => backHandler.remove();
+  }, [])
+
 
   const onRefresh = useCallback(() => {
     console.log('MMMMMMMMMMHHHHHM, REFRESHING!!')

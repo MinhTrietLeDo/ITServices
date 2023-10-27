@@ -24,6 +24,7 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import store from '../../config/store';
+import { fetchWithTimeout } from '../../config/handle';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -61,117 +62,122 @@ const LoginHook = () => {
     setShowPassword(!showPassword);
   };
 
-  const authenticateUser = () => {
-    console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAA', username, password);
-    setLoading(true);
-    console.log('LOADING STATE:', loading);
-    let credentials = genBase64();
-    var myHeaders = new Headers();
-    myHeaders.append('Accept', 'application/json');
-    myHeaders.append('Content-Type', 'application/json');
-    myHeaders.append('Authorization', 'Basic ' + credentials);
-    myHeaders.append('App-Token', App_Token);
-    //console.log('1231231231231313123')
-    fetch(API_URL + '/initSession', {
-      method: 'GET',
-      headers: myHeaders,
-      cors: true,
-    })
-      .then(rawData => rawData.json())
-      .then(async data => {
-        console.log('async data', data);
-        if (
-          typeof data === 'object' &&
-          typeof data.session_token === 'string'
-        ) {
-          console.log(
-            'KLJHSDKLJHLKJSHDLKJHSDLKHJSDIOLUWYEPOI',
-            data.session_token,
-          );
-          try {
-            let { session_token } = data;
-            await AsyncStorage.setItem('username', username);
-            await AsyncStorage.setItem('password', password);
-            dispatch(setSessionToken({ session_token }));
-            let objHeader = {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              session_token: session_token,
-              'App-Token': App_Token,
-            };
-
-            let result = await fetch(
-              API_URL + '/getFullSession/?session_token=' + session_token,
-              {
-                headers: objHeader,
-              },
+  const authenticateUser = async () => {
+    try {
+      console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAA', username, password);
+      setLoading(true);
+      console.log('LOADING STATE:', loading);
+      let credentials = genBase64();
+      var myHeaders = new Headers();
+      myHeaders.append('Accept', 'application/json');
+      myHeaders.append('Content-Type', 'application/json');
+      myHeaders.append('Authorization', 'Basic ' + credentials);
+      myHeaders.append('App-Token', App_Token);
+      //console.log('1231231231231313123')
+      const respone = await fetchWithTimeout(API_URL + '/initSession', {
+        method: 'GET',
+        headers: myHeaders,
+        cors: true,
+        timeout: 5000
+      })
+        .then(rawData => rawData.json())
+        .then(async data => {
+          console.log('async data', data);
+          if (
+            typeof data === 'object' &&
+            typeof data.session_token === 'string'
+          ) {
+            console.log(
+              'KLJHSDKLJHLKJSHDLKJHSDLKHJSDIOLUWYEPOI',
+              data.session_token,
             );
-            let profileData = await result.json();
-            let resultProfile = await fetch(
-              API_URL + '/User/' +
-              profileData.session.glpiID +
-              '?session_token=' +
-              session_token,
-              {
-                headers: objHeader,
-              },
-            );
+            try {
+              let { session_token } = data;
+              await AsyncStorage.setItem('username', username);
+              await AsyncStorage.setItem('password', password);
+              dispatch(setSessionToken({ session_token }));
+              let objHeader = {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                session_token: session_token,
+                'App-Token': App_Token,
+              };
 
-            let resultProfileCvt = await resultProfile.json();
-            if (!!profileData) {
-              dispatch(
-                setUserObject({
-                  userGLPI: profileData.session,
-                  userProfile: resultProfileCvt,
-                }),
-              );
-              //console.log('123333343234:', setUserObject({userGLPI}))
-            } else {
-              console.log('dslkdfjs;lkdfjas;dfklj');
-              Alert.alert('Error', 'Cannot communicate with the server', [
+              let result = await fetch(
+                API_URL + '/getFullSession/?session_token=' + session_token,
                 {
-                  text: 'Cancel',
-                  onPress: () => console.log('Cancel Pressed'),
-                  style: 'cancel',
+                  headers: objHeader,
                 },
-                { text: 'OK', onPress: () => console.log('OK Pressed') },
-              ]);
+              );
+              let profileData = await result.json();
+              let resultProfile = await fetch(
+                API_URL + '/User/' +
+                profileData.session.glpiID +
+                '?session_token=' +
+                session_token,
+                {
+                  headers: objHeader,
+                },
+              );
+
+              let resultProfileCvt = await resultProfile.json();
+              if (!!profileData) {
+                dispatch(
+                  setUserObject({
+                    userGLPI: profileData.session,
+                    userProfile: resultProfileCvt,
+                  }),
+                );
+                //console.log('123333343234:', setUserObject({userGLPI}))
+              } else {
+                console.log('dslkdfjs;lkdfjas;dfklj');
+                Alert.alert('Error', 'Cannot communicate with the server', [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ]);
+              }
+            } catch (error) {
+              console.error(error);
+              throw new Error(error);
             }
-          } catch (error) {
-            console.error(error);
-            throw new Error(error);
+          } else {
+            console.error(data);
+            Alert.alert('Error', 'Wrong Username or Password!', [
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+              },
+              { text: 'OK', onPress: () => console.log('OK Pressed') },
+            ]);
           }
-        } else {
-          console.error(data);
-          Alert.alert('Error', 'Wrong Username or Password!', [
-            {
-              text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
-            },
-            { text: 'OK', onPress: () => console.log('OK Pressed') },
-          ]);
-        }
-      })
-      .catch(error => {
-        console.error('AHJGSDJKHGD', error);
-        Alert.alert(
-          'Error',
-          'Network request failed. Cannot communicate with the server',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
-            },
-            { text: 'OK', onPress: () => console.log('OK Pressed') },
-          ],
-        );
-      })
-      .then(() => {
-        // this.setState({ loading: false });
-        setLoading(false);
-      });
+        })
+        .catch(error => {
+          console.error('AHJGSDJKHGD', error);
+          Alert.alert(
+            'Error',
+            'Network request failed. Cannot communicate with the server',
+            [
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+              },
+              { text: 'OK', onPress: () => console.log('OK Pressed') },
+            ],
+          );
+        })
+        .then(() => {
+          // this.setState({ loading: false });
+          setLoading(false);
+        });
+    } catch (error) {
+      console.log(error.name === 'AbortError');
+    }
   };
 
   return (
