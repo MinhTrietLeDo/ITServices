@@ -45,6 +45,7 @@ const TicketScreen = ({navigation}) => {
   const token = useSelector(state => state.user.token.session_token);
   const [refreshing, setRefreshing] = useState(false);
   const TicketData = useSelector(state => state.ticket.ticketArray);
+  const lID = useSelector(state => state.user.userObj.glpiID)
 
   const route = useRoute();
   const {ticketURL} = route.params;
@@ -73,7 +74,7 @@ const TicketScreen = ({navigation}) => {
     };
 
     let request = await Promise.all([
-      await fetch(API_URL + ticketURL + '&session_token=' + token, {
+      await fetch(API_URL + ticketURL + lID + '&session_token=' + token, {
         headers: objHeader,
       }).then(el => el.json()),
     ]);
