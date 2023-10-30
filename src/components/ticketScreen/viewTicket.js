@@ -25,6 +25,8 @@ import { RefreshControl } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectUserListDropDown from './functionScreen/ticketFunctions';
 import { getRequester, getTechnician } from '../../redux/actions';
+import SelectDropdown from 'react-native-select-dropdown';
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const ViewTicket = ({ navigation }) => {
   const dispatch = useDispatch()
@@ -54,11 +56,14 @@ const ViewTicket = ({ navigation }) => {
   const technicianArray = useSelector(state => state.technician.technicianArray)
   const [techName, setTechName] = useState([])
 
+  const [technicianList, setTechnicianList] = useState([])
+  const [editMode, setEditMode] = useState(false)
+
   useEffect(() => {
     console.log('Ticket Array:', TicketArray)
     getUsername().catch(console.error);
+    getTechList().catch(console.error)
     splitArray()
-    return () => backHandler.remove();
   }, []);
 
   /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
@@ -139,6 +144,42 @@ const ViewTicket = ({ navigation }) => {
   };
   /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
 
+  /////////////==== LẤY THÔNG TIN TECHNICIAN ====/////////////
+  const getTechList = async () => {
+    const URL = "/search/User/?sort=34&expand_dropdowns=true&criteria[0][itemtype]=User&criteria[0][field]=20&criteria[0][searchtype]=contains&criteria[0][value]=Super-Admin&forcedisplay[0]=9&forcedisplay[1]=34"
+    let objHeader = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'App-Token': App_Token,
+    };
+    let request = await Promise.all([
+      await fetch(API_URL + URL + '&session_token=' + token, {
+        headers: objHeader,
+      }).then(el => el.json()),
+    ]);
+    if (typeof request[0].data !== 'undefined') {
+      const arr = request[0].data
+      const techname = arr.map(arr => {
+        let fullName = (arr['34'] + ' ' + arr['9'])
+        return fullName
+      })
+      console.log(arr)
+      setTechnicianList(techname)
+      setLoading(false);
+    } else {
+      Alert.alert('Error', 'Please try again later', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ]);
+      setLoading(false);
+    }
+  }
+  /////////////==== LẤY THÔNG TIN TECHNICIAN ====/////////////
+
   const splitArray = () => {
     const splitTicket = TicketArray.map(el => {
       if (el['2'] === id) {
@@ -175,36 +216,18 @@ const ViewTicket = ({ navigation }) => {
     })
   }
 
-  const backButton = () => {
-    navigation.goBack()
-    return true;
-  };
-
-  const backHandler = BackHandler.addEventListener(
-    'hardwareBackPress',
-    backButton,
-  );
-
   updateTicket = async () => {
     console.log('updating..');
-    // navigation.goBack()
-  };
-
-  assignBtn = async () => {
-    console.log('CHỌN NGƯỜI AAA');
-    // Alert.alert('Cập nhật lại ticket?', 'Bạn có muốn cập nhật ticket?', [
-    //   {
-    //     text: 'Cancel',
-    //     onPress: () => console.log('Cancel Pressed'),
-    //     style: 'cancel',
-    //   },
-    //   { text: 'OK', onPress: () => updateTicket() },
-    // ]);
-    setModalVisible(!modalVisible)
+    setEditMode(false)
   };
 
   editBtn = () => {
-    console.log('UPDATE/FINISH TICKET');
+    setEditMode(true)
+    console.log(editMode)
+    console.log('Tech Array', technicianList)
+  };
+
+  updateBtn = () => {
     Alert.alert('Cập nhật lại ticket?', 'Bạn có muốn cập nhật ticket?', [
       {
         text: 'Cancel',
@@ -213,7 +236,7 @@ const ViewTicket = ({ navigation }) => {
       },
       { text: 'OK', onPress: () => updateTicket() },
     ]);
-  };
+  }
 
   if (loading) {
     return (
@@ -409,8 +432,10 @@ const ViewTicket = ({ navigation }) => {
                   {reqLocation}
                 </Text>
               </View>
-              {status === 2 || status === 3 || status === 4 ? (
-                <View style={styles.row}>
+              {status === 2 || status === 3 || status === 4 || status === 5 || status === 6 ? (
+                <View
+                  style={styles.row}
+                >
                   <Text
                     style={{
                       fontSize: windowWidth * 0.05,
@@ -418,35 +443,45 @@ const ViewTicket = ({ navigation }) => {
                     }}>
                     Người được gán:
                   </Text>
-                  <Text
+                  {editMode === true ? (
+                    <SelectDropdown
+                      data={technicianList}
+                      onSelect={(selectedItem, index) => {
+                        console.log(selectedItem, index)
+                        // dispatch(setTechnician(selectedItem))
+                      }}
+                      defaultButtonText={techName}
+                      buttonTextAfterSelection={(selectedItem, index) => {
+                        // text represented after item is selected
+                        // if data array is an array of objects then return selectedItem.property to render after item is selected
+                        return selectedItem
+                      }}
+                      rowTextForSelection={(item, index) => {
+                        // text represented for each item in dropdown
+                        // if data array is an array of objects then return item.property to represent item in dropdown
+                        return item
+                      }}
+                      buttonStyle={styles.dropdown1BtnStyle}
+                      buttonTextStyle={styles.dropdown1BtnTxtStyle}
+                      renderDropdownIcon={isOpened => {
+                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={(windowHeight + windowWidth) * 0.012} />;
+                      }}
+                      dropdownIconPosition={'right'}
+                      dropdownStyle={styles.dropdown1DropdownStyle}
+                      rowStyle={styles.dropdown1RowStyle}
+                      rowTextStyle={styles.dropdown1RowTxtStyle}
+                    // defaultValue={techName}
+                    />
+                  ) : (<Text
                     style={{
                       fontSize: windowWidth * 0.045,
                       fontWeight: 400,
                       marginLeft: windowWidth * 0.01,
                     }}>
                     {techName}
-                  </Text>
-                </View>
-              ) : status === 5 || status === 6 ? (
-                <View style={styles.row}>
-                  <Text
-                    style={{
-                      fontSize: windowWidth * 0.05,
-                      fontWeight: 700,
-                    }}>
-                    Người đã xử lý:
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: windowWidth * 0.045,
-                      fontWeight: 400,
-                      marginLeft: windowWidth * 0.01,
-                    }}>
-                    {techName}
-                  </Text>
+                  </Text>)}
                 </View>
               ) : null}
-
             </View>
             {/* </ScrollView> */}
           </View>
@@ -456,13 +491,18 @@ const ViewTicket = ({ navigation }) => {
               onPress={() => navigation.goBack()}>
               Quay Về
             </Button>
-            {status === 1 ? (
+            {/* {status === 1 ? (
               <Button style={{ width: windowWidth * 0.3 }} onPress={() => setModalVisible(true)}>Phân Công</Button>
             ) : status === 2 || status === 3 || status === 4 ? (
               <Button style={{ width: windowWidth * 0.3 }} onPress={() => editBtn()}>Hoàn Thành</Button>
-            ) : null}
+            ) : null} */}
+            {editMode === true ? (
+              <Button style={{ width: windowWidth * 0.3 }} onPress={() => updateBtn()}>Cập nhật</Button>
+            ) : (
+              <Button style={{ width: windowWidth * 0.3 }} onPress={() => editBtn()} >Chỉnh sửa</Button>
+            )}
           </View>
-        </SafeAreaView>
+        </SafeAreaView >
       );
     }
 
@@ -521,6 +561,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: (windowHeight + windowWidth) * 0.4,
   },
+  dropdown1DropdownStyle: {
+    backgroundColor: '#EFEFEF'
+  },
+  dropdown1RowStyle: {
+    backgroundColor: '#EFEFEF',
+    borderBottomColor: '#C5C5C5'
+  },
+  dropdown1RowTxtStyle: {
+    color: '#444',
+    textAlign: 'center',
+    fontFamily: 'WorkSans',
+    fontSize: windowWidth * 0.045,
+  },
+  dropdown1BtnStyle: {
+    // marginLeft: (windowHeight + windowWidth) * 0.5,
+    borderRadius: (windowHeight + windowWidth) * 0.005,
+    borderWidth: windowWidth * 0.003,
+    borderColor: '#444',
+    maxWidth: windowWidth * 0.4,
+    maxHeight: windowHeight * 0.045
+  },
+  dropdown1BtnTxtStyle: { color: '#444', textAlign: 'left', },
 });
 
 export default ViewTicket;

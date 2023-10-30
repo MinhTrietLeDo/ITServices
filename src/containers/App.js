@@ -11,6 +11,7 @@ import { getNoti, hanldeNoti, requestUserPermission } from '../config/notificati
 import ViewTicket from '../components/ticketScreen/viewTicket';
 import NotiScreen from '../components/notification/notiScreen';
 import UserInfo from '../components/userScreen/userInfo';
+import EditScreen from '../components/ticketScreen/functionScreen/editScreen';
 
 const Stack = createStackNavigator()
 
@@ -71,6 +72,14 @@ const RootStack = () => {
           <Stack.Screen
             component={UserInfo}
             name="UserInfo"
+            options={{
+              headerBackVisible: false,
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            component={EditScreen}
+            name="EditScreen"
             options={{
               headerBackVisible: false,
               headerShown: false,
