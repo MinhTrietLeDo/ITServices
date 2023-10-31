@@ -545,7 +545,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    marginTop: (windowHeight + windowWidth) * 0.01,
+    marginTop: (windowHeight + windowWidth) * 0.012,
     alignItems: 'center',
   },
   centeredView: {
@@ -575,7 +575,7 @@ const styles = StyleSheet.create({
     fontSize: windowWidth * 0.045,
   },
   dropdown1BtnStyle: {
-    // marginLeft: (windowHeight + windowWidth) * 0.5,
+    marginRight: windowWidth* 0.02,
     borderRadius: (windowHeight + windowWidth) * 0.005,
     borderWidth: windowWidth * 0.003,
     borderColor: '#444',

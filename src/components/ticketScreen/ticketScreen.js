@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   ActivityIndicator,
   View,
@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import {API_URL, App_Token} from '../../config/config';
+import { API_URL, App_Token } from '../../config/config';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {
@@ -29,18 +29,18 @@ import {
   Icon,
   ArrowUpIcon,
 } from 'native-base';
-import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
+import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
 import {
   HandeStatusColor,
   HandeUrgencyColor,
   HandleBadgeStatus,
   HandleUrgency,
 } from '../../config/handle';
-import {useDispatch, useSelector} from 'react-redux';
-import {setTicket, setRequester} from '../../redux/actions';
-import {useRoute} from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTicket, setRequester } from '../../redux/actions';
+import { useRoute } from '@react-navigation/native';
 
-const TicketScreen = ({navigation}) => {
+const TicketScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const token = useSelector(state => state.user.token.session_token);
   const [refreshing, setRefreshing] = useState(false);
@@ -48,7 +48,7 @@ const TicketScreen = ({navigation}) => {
   const lID = useSelector(state => state.user.userObj.glpiID)
 
   const route = useRoute();
-  const {ticketURL} = route.params;
+  const { ticketURL } = route.params;
   const [ticketList, setTicketList] = useState([]);
   const dispatch = useDispatch();
 
@@ -74,7 +74,8 @@ const TicketScreen = ({navigation}) => {
     };
 
     let request = await Promise.all([
-      await fetch(API_URL + ticketURL + lID + '&session_token=' + token, {
+      // await fetch(API_URL + ticketURL + lID + '&session_token=' + token, {
+      await fetch(API_URL + ticketURL + '&session_token=' + token, {
         headers: objHeader,
       }).then(el => el.json()),
     ]);
@@ -92,7 +93,7 @@ const TicketScreen = ({navigation}) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]);
       setLoading(false);
     }
@@ -164,32 +165,32 @@ const TicketScreen = ({navigation}) => {
                           }}>
                           {ticketTitle} #{ticketID}
                         </Text>
-                        <Text style={{fontSize: windowWidth * 0.04}}>
+                        <Text style={{ fontSize: windowWidth * 0.04 }}>
                           Ngày tạo: {ticketDate}
                         </Text>
                         <HStack
                           alignSelf={'center'}
                           space={windowWidth * 0.02}
-                          // marginTop={(windowWidth + windowHeight) * 0.01}
+                        // marginTop={(windowWidth + windowHeight) * 0.01}
                         >
                           <Badge
-                            _text={{fontSize: windowWidth * 0.037}}
+                            _text={{ fontSize: windowWidth * 0.037 }}
                             variant="solid"
                             //colorScheme={HandeUrgencyColor({ urgency })}
                             style={{
-                              backgroundColor: HandeUrgencyColor({urgency}),
+                              backgroundColor: HandeUrgencyColor({ urgency }),
                             }}
                             rounded={windowWidth * 0.01}>
-                            {HandleUrgency({urgency})}
+                            {HandleUrgency({ urgency })}
                           </Badge>
                           <Badge
-                            _text={{fontSize: windowWidth * 0.037}}
+                            _text={{ fontSize: windowWidth * 0.037 }}
                             variant="solid"
                             style={{
-                              backgroundColor: HandeStatusColor({status}),
+                              backgroundColor: HandeStatusColor({ status }),
                             }}
                             rounded={windowWidth * 0.01}>
-                            {HandleBadgeStatus({status})}
+                            {HandleBadgeStatus({ status })}
                           </Badge>
                         </HStack>
                       </View>
