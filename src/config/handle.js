@@ -1,3 +1,5 @@
+import { Alert, CloseIcon, HStack, IconButton, Text, VStack } from "native-base"
+
 //handle mức độ ưu tiên của ticket
 export const HandleUrgency = (urgency) => {
     switch (urgency.urgency) {

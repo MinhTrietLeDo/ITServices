@@ -20,6 +20,7 @@ import {
   HandeUrgencyColor,
   HandleBadgeStatus,
   HandleUrgency,
+  fetchWithTimeout,
 } from '../../config/handle';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,7 +42,6 @@ const ViewTicket = ({ navigation }) => {
   const technicianID = route.params?.technicianID
   const lastUpdate = route.params?.lastUpdate
   const token = useSelector(state => state.user.token.session_token);
-  const TicketArray = useSelector(state => state.ticket.ticketArray)
 
   const [loading, setLoading] = useState(true);
 
@@ -56,10 +56,8 @@ const ViewTicket = ({ navigation }) => {
   const [editMode, setEditMode] = useState(false)
 
   useEffect(() => {
-    console.log('Ticket Array:', TicketArray)
     getUsername().catch(console.error);
     getTechList().catch(console.error)
-    // splitArray()
   }, []);
 
   /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
@@ -73,56 +71,26 @@ const ViewTicket = ({ navigation }) => {
       'App-Token': App_Token,
     };
 
-    let requesterInfo = await Promise.all([
-      await fetch(API_URL + URL1 + userID + URL2 + '&session_token=' + token, {
+    try {
+      const requesterInfo = await fetchWithTimeout(API_URL + URL1 + userID + URL2 + '&session_token=' + token, {
         headers: objHeader,
-      }).then(el => el.json()),
-    ]);
-    if (typeof requesterInfo[0].data !== 'undefined') {
-      console.log('a:', requesterInfo[0].data)
-      let reqFullName = requesterInfo[0].data.map(arr => {
-        let rFullName = (arr['34'] + ' ' + arr['9'])
-        setReqName(rFullName)
-        let rLocation = arr['3']
-        if (rLocation === null) {
-          setReqLocation('Chưa cập nhật')
-        }
-        else { setReqLocation(rLocation) }
-        return ([rFullName, rLocation])
-      })
-      console.log('EEEEE', reqFullName)
-      // dispatch(getRequester(reqFullName))
-      setLoading(false);
-    } else {
-      Alert.alert('Error', 'Please try again later', [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
-      ]);
-      setLoading(false);
-    }
-    console.log(requesterInfo[0].data)
-    if (technicianID === null) {
-      console.log('skip, tech')
-      setTechName('Chưa cập nhật')
-    } else {
-      let techinianInfo = await Promise.all([
-        await fetch(API_URL + URL1 + technicianID + URL2 + '&session_token=' + token, {
-          headers: objHeader,
-        }).then(el => el.json()),
-      ]);
-      if (typeof techinianInfo[0].data !== 'undefined') {
-        console.log(techinianInfo[0].data)
-        let techFullName = techinianInfo[0].data.map(arr => {
-          let tFullName = (arr['34'] + ' ' + arr['9'])
-          setTechName(tFullName)
-          return tFullName
+        timeout: 5000
+      }).then(el => el.json())
+
+      if (typeof requesterInfo.data !== 'undefined') {
+        console.log('a:', requesterInfo.data)
+        let reqFullName = requesterInfo.data.map(arr => {
+          let rFullName = (arr['34'] + ' ' + arr['9'])
+          setReqName(rFullName)
+          let rLocation = arr['3']
+          if (rLocation === null) {
+            setReqLocation('Chưa cập nhật')
+          }
+          else { setReqLocation(rLocation) }
+          return ([rFullName, rLocation])
         })
-        // console.log('ABC', techFullName)
-        dispatch(getTechnician(techFullName))
+        console.log('EEEEE', reqFullName)
+        // dispatch(getRequester(reqFullName))
         setLoading(false);
       } else {
         Alert.alert('Error', 'Please try again later', [
@@ -135,8 +103,50 @@ const ViewTicket = ({ navigation }) => {
         ]);
         setLoading(false);
       }
-    }
+      console.log(requesterInfo.data)
+      if (technicianID === null) {
+        console.log('skip, tech')
+        setTechName('Chưa cập nhật')
+      } else {
 
+        const techinianInfo = await fetchWithTimeout(API_URL + URL1 + technicianID + URL2 + '&session_token=' + token, {
+          headers: objHeader,
+          timeout: 5000
+        }).then(el => el.json())
+
+        if (typeof techinianInfo.data !== 'undefined') {
+          console.log(techinianInfo.data)
+          let techFullName = techinianInfo.data.map(arr => {
+            let tFullName = (arr['34'] + ' ' + arr['9'])
+            setTechName(tFullName)
+            return tFullName
+          })
+          // console.log('ABC', techFullName)
+          dispatch(getTechnician(techFullName))
+          setLoading(false);
+        } else {
+          Alert.alert('Error', 'Please try again later', [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ]);
+          setLoading(false);
+        }
+      }
+    } catch (error) {
+      setLoading(false);
+      Alert.alert('Error', 'Cannot connect to the server', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ]);
+    }
   };
   /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
 
@@ -148,22 +158,36 @@ const ViewTicket = ({ navigation }) => {
       'Content-Type': 'application/json',
       'App-Token': App_Token,
     };
-    let request = await Promise.all([
-      await fetch(API_URL + URL + '&session_token=' + token, {
+
+    try {
+      const responeTech = await fetchWithTimeout(API_URL + URL + '&session_token=' + token, {
         headers: objHeader,
-      }).then(el => el.json()),
-    ]);
-    if (typeof request[0].data !== 'undefined') {
-      const arr = request[0].data
-      const techname = arr.map(arr => {
-        let fullName = (arr['34'] + ' ' + arr['9'])
-        return fullName
-      })
-      console.log(arr)
-      setTechnicianList(techname)
+        timeout: 5000
+      }).then(el => el.json())
+      console.log("AAAAAAAAAAAAAAAAAAAA", responeTech.data)
+      if (typeof responeTech.data !== 'undefined') {
+        const arr = responeTech.data
+        const techname = arr.map(arr => {
+          let fullName = (arr['34'] + ' ' + arr['9'])
+          return fullName
+        })
+        console.log(arr)
+        setTechnicianList(techname)
+        setLoading(false);
+      } else {
+        Alert.alert('Error', 'Please try again later', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ]);
+        setLoading(false);
+      }
+    } catch (error) {
       setLoading(false);
-    } else {
-      Alert.alert('Error', 'Please try again later', [
+      Alert.alert('Error', 'Cannot connect to the server', [
         {
           text: 'Cancel',
           onPress: () => console.log('Cancel Pressed'),
@@ -171,10 +195,36 @@ const ViewTicket = ({ navigation }) => {
         },
         { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]);
-      setLoading(false);
     }
   }
   /////////////==== LẤY THÔNG TIN TECHNICIAN ====/////////////
+
+  const getCertainTicket = async () => {
+    const URL = ''
+    let objHeader = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'App-Token': App_Token,
+    };
+    try {
+      const respone = await fetchWithTimeout(API_URL + URL + '&session_token=' + token, {
+        headers: objHeader,
+        timeout: 5000
+      }).then(arr => arr.json())
+      console.log(respone)
+    } catch (error) {
+      setLoading(false);
+      Alert.alert('Error', 'Cannot connect to the server', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ]);
+    }
+
+  }
 
   updateTicket = async () => {
     console.log('updating..');

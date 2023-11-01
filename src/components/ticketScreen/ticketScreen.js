@@ -35,6 +35,7 @@ import {
   HandeUrgencyColor,
   HandleBadgeStatus,
   HandleUrgency,
+  fetchWithTimeout,
 } from '../../config/handle';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTicket, setRequester } from '../../redux/actions';
@@ -45,7 +46,6 @@ const TicketScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const token = useSelector(state => state.user.token.session_token);
   const [refreshing, setRefreshing] = useState(false);
-  const TicketData = useSelector(state => state.ticket.ticketArray);
   const lID = useSelector(state => state.user.userObj.glpiID)
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
@@ -76,20 +76,33 @@ const TicketScreen = ({ navigation }) => {
       'App-Token': App_Token,
     };
 
-    let request = await Promise.all([
-      // await fetch(API_URL + ticketURL + lID + '&session_token=' + token, {
-      await fetch(API_URL + ticketURL + '&session_token=' + token, {
+    try {
+      //const request = await fetchWithTimeout(API_URL + ticketURL + lID + '&session_token=' + token,
+      const request = await fetchWithTimeout(API_URL + ticketURL + '&session_token=' + token, {
         headers: objHeader,
-      }).then(el => el.json()),
-    ]);
-    if (typeof request[0].data !== 'undefined') {
-      console.log('JKHKJAHSAKJHOIQW', request[0].data);
-      const rawData = request[0].data;
-      setTicketList(rawData);
+        timeout: 5000,
+      }).then(el => el.json())
+      if (typeof request.data !== 'undefined') {
+        console.log('JKHKJAHSAKJHOIQW', request.data);
+        const rawData = request.data;
+        setTicketList(rawData);
+        setLoading(false);
+      } else {
+        Alert.alert('Error', 'Please try again later', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ]);
+        setLoading(false);
+        setLoading(false);
+        setLoading(false);
+      }
+    } catch (error) {
       setLoading(false);
-      dispatch(setTicket(rawData));
-    } else {
-      Alert.alert('Error', 'Please try again later', [
+      Alert.alert('Error', 'Cannot connect to the server', [
         {
           text: 'Cancel',
           onPress: () => console.log('Cancel Pressed'),
@@ -97,8 +110,11 @@ const TicketScreen = ({ navigation }) => {
         },
         { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]);
-      setLoading(false);
     }
+
+    // let request = await Promise.all([
+    // await fetch(API_URL + ticketURL + lID + '&session_token=' + token, {
+
   };
 
   if (loading) {
@@ -163,7 +179,7 @@ const TicketScreen = ({ navigation }) => {
                           status: status,
                           title: ticketTitle,
                           userID: userRequestID,
-                          technicianID:technicianID,
+                          technicianID: technicianID,
                           lastUpdate: lastUpdate
                         })
                       }>
