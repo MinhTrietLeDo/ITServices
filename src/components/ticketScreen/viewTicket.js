@@ -32,28 +32,24 @@ const ViewTicket = ({ navigation }) => {
   const dispatch = useDispatch()
   const route = useRoute();
   const id = route.params?.id;
+  const description = route.params?.description;
+  const urgency = route.params?.urgency;
+  const date = route.params?.date;
+  const status = route.params?.status;
+  const title = route.params?.title;
   const userID = route.params?.userID;
   const technicianID = route.params?.technicianID
+  const lastUpdate = route.params?.lastUpdate
   const token = useSelector(state => state.user.token.session_token);
   const TicketArray = useSelector(state => state.ticket.ticketArray)
 
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
 
   const [modalVisible, setModalVisible] = useState(false)
 
-  const [title, setTicketTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [urgency, setUrgency] = useState('')
-  const [date, setDate] = useState('')
-  const [status, setStatus] = useState('')
-  const [lastUpdate, setLastUpdate] = useState('')
-
-  const requesterArray = useSelector(state => state.requester.requesterArray)
   const [reqName, setReqName] = useState('')
   const [reqLocation, setReqLocation] = useState('')
 
-  const technicianArray = useSelector(state => state.technician.technicianArray)
   const [techName, setTechName] = useState([])
 
   const [technicianList, setTechnicianList] = useState([])
@@ -63,7 +59,7 @@ const ViewTicket = ({ navigation }) => {
     console.log('Ticket Array:', TicketArray)
     getUsername().catch(console.error);
     getTechList().catch(console.error)
-    splitArray()
+    // splitArray()
   }, []);
 
   /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
@@ -179,42 +175,6 @@ const ViewTicket = ({ navigation }) => {
     }
   }
   /////////////==== LẤY THÔNG TIN TECHNICIAN ====/////////////
-
-  const splitArray = () => {
-    const splitTicket = TicketArray.map(el => {
-      if (el['2'] === id) {
-        const rawDate = el['15'].split(' ');
-        const ticketDate = rawDate[0]
-          .split('-')
-          .reverse()
-          .toString()
-          .replace(/,/g, '-')
-          .concat(' ' + rawDate[1]);
-        const ticketTitle = el['1'];
-        const rawlastUpdate = el['19'].split(' ');
-        const lastUpdate = rawlastUpdate[0].split('-')
-          .reverse()
-          .toString()
-          .replace(/,/g, '-')
-          .concat(' ' + rawDate[1]);
-        const urgency = el['3'];
-        const status = el['12'];
-        const getRawDescription = el['21'].split('&#60;p&#62;');
-        const description = getRawDescription[1]
-          .split('&#60;/p&#62;')
-          .toString()
-          .replace(/,/g, '');
-        return (
-          setTicketTitle(ticketTitle),
-          setDate(ticketDate),
-          setDescription(description),
-          setLastUpdate(lastUpdate),
-          setUrgency(urgency),
-          setStatus(status)
-        )
-      }
-    })
-  }
 
   updateTicket = async () => {
     console.log('updating..');
@@ -575,7 +535,7 @@ const styles = StyleSheet.create({
     fontSize: windowWidth * 0.045,
   },
   dropdown1BtnStyle: {
-    marginRight: windowWidth* 0.02,
+    marginRight: windowWidth * 0.02,
     borderRadius: (windowHeight + windowWidth) * 0.005,
     borderWidth: windowWidth * 0.003,
     borderColor: '#444',

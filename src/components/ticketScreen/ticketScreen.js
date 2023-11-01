@@ -130,11 +130,17 @@ const TicketScreen = ({ navigation }) => {
                 .replace(/,/g, '-')
                 .concat(' ' + rawDate[1]);
               let ticketTitle = el['1'];
+              let lastUpdate = el['19'];
               let ticketID = el['2'];
               let urgency = el['3'];
               let status = el['12'];
               let userRequestID = el['4'];
-              let technicianID = el['5'];
+              let getRawDescription = el['21'].split('&#60;p&#62;');
+              let description = getRawDescription[1]
+                .split('&#60;/p&#62;')
+                .toString()
+                .replace(/,/g, '');
+              let technicianID = el['5']
               return (
                 <Center key={ticketID}>
                   <VStack
@@ -151,8 +157,14 @@ const TicketScreen = ({ navigation }) => {
                       onPress={() =>
                         navigation.navigate('ViewTicket', {
                           id: ticketID,
+                          description: description,
+                          urgency: urgency,
+                          date: ticketDate,
+                          status: status,
+                          title: ticketTitle,
                           userID: userRequestID,
-                          technicianID: technicianID,
+                          technicianID:technicianID,
+                          lastUpdate: lastUpdate
                         })
                       }>
                       <View
