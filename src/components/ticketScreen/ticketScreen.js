@@ -39,6 +39,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { setTicket, setRequester } from '../../redux/actions';
 import { useRoute } from '@react-navigation/native';
+import SearchBar from './functionScreen/searchInput';
 
 const TicketScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
@@ -46,6 +47,8 @@ const TicketScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const TicketData = useSelector(state => state.ticket.ticketArray);
   const lID = useSelector(state => state.user.userObj.glpiID)
+  const [searchPhrase, setSearchPhrase] = useState("");
+  const [clicked, setClicked] = useState(false);
 
   const route = useRoute();
   const { ticketURL } = route.params;
@@ -79,7 +82,6 @@ const TicketScreen = ({ navigation }) => {
         headers: objHeader,
       }).then(el => el.json()),
     ]);
-
     if (typeof request[0].data !== 'undefined') {
       console.log('JKHKJAHSAKJHOIQW', request[0].data);
       const rawData = request[0].data;
@@ -109,6 +111,12 @@ const TicketScreen = ({ navigation }) => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.TicketList}>
+          <SearchBar
+            searchPhrase={searchPhrase}
+            setSearchPhrase={setSearchPhrase}
+            clicked={clicked}
+            setClicked={setClicked}
+          />
           <ScrollView
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

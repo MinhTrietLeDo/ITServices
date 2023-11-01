@@ -3,11 +3,12 @@ import { Input } from 'native-base'
 import { windowHeight, windowWidth } from '../../../assets/res/courseStyle'
 import { App_Token, API_URL } from '../../../config/config'
 import { useDispatch, useSelector } from 'react-redux'
-import { View, StyleSheet, TextInput, Button } from 'react-native'
+import { View, StyleSheet, TextInput, Keyboard } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import Entypo from 'react-native-vector-icons/Entypo'
+import { Button } from 'native-base'
 
-const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setCLicked }) => {
+const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
     return (
         <View style={styles.container}>
             <View
@@ -20,9 +21,9 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setCLicked }) => {
                 {/* search Icon */}
                 <Feather
                     name="search"
-                    size={20}
+                    size={(windowWidth + windowHeight) * 0.017}
                     color="black"
-                    style={{ marginLeft: 1 }}
+                    style={{ marginLeft: windowWidth * 0.02 }}
                 />
                 {/* Input field */}
                 <TextInput
@@ -36,21 +37,26 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setCLicked }) => {
                 />
                 {/* cross Icon, depending on whether the search bar is clicked or not */}
                 {clicked && (
-                    <Entypo name="cross" size={20} color="black" style={{ padding: 1 }} onPress={() => {
-                        setSearchPhrase("")
-                    }} />
+                    <Entypo
+                        name="cross"
+                        size={(windowWidth + windowHeight) * 0.017}
+                        color="black"
+                        style={{ marginRight: windowWidth * 0.015 }}
+                        onPress={() => {
+                            setSearchPhrase("")
+                        }} />
                 )}
             </View>
             {/* cancel button, depending on whether the search bar is clicked or not */}
             {clicked && (
                 <View>
                     <Button
-                        title="Cancel"
+                        style={{marginLeft: 10}}
                         onPress={() => {
                             Keyboard.dismiss();
                             setClicked(false);
                         }}
-                    ></Button>
+                    >Cancel</Button>
                 </View>
             )}
         </View>
@@ -61,33 +67,35 @@ export default SearchBar;
 // styles
 const styles = StyleSheet.create({
     container: {
-        margin: 15,
-        justifyContent: "flex-start",
+        margin: (windowWidth + windowHeight) * 0.005,
+        justifyContent: 'space-around',
         alignItems: "center",
         flexDirection: "row",
-        width: "90%",
-
+        maxWidth: windowWidth*0.9,
+        alignSelf: 'center'
     },
     searchBar__unclicked: {
-        padding: 10,
+        padding: (windowWidth + windowHeight) * 0.003,
         flexDirection: "row",
-        width: "95%",
+        width: windowWidth*0.9,
         backgroundColor: "#d9dbda",
-        borderRadius: 15,
+        borderRadius: (windowWidth + windowHeight) * 0.01,
         alignItems: "center",
+        alignContent: 'center',
+        alignSelf: 'center'
     },
     searchBar__clicked: {
-        padding: 10,
+        padding: (windowWidth + windowHeight) * 0.003,
         flexDirection: "row",
-        width: "80%",
+        width: windowWidth*0.7,
         backgroundColor: "#d9dbda",
-        borderRadius: 15,
+        borderRadius: (windowWidth + windowHeight) * 0.01,
         alignItems: "center",
         justifyContent: "space-evenly",
     },
     input: {
-        fontSize: 20,
-        marginLeft: 10,
+        fontSize: (windowWidth + windowHeight) * 0.017,
+        marginLeft: (windowWidth + windowHeight) * 0.01,
         width: "90%",
     },
 });
