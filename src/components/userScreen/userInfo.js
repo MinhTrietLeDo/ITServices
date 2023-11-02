@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Text, Button, Avatar, Input } from 'native-base';
+import React, {useEffect, useState} from 'react';
+import {Text, Button, Avatar, Input} from 'native-base';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,15 +8,14 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import { API_URL, App_Token } from '../../config/config';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRoute } from '@react-navigation/native';
-import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
+import {API_URL, App_Token} from '../../config/config';
+import {useDispatch, useSelector} from 'react-redux';
+import {useRoute} from '@react-navigation/native';
+import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 
-const UserInfo = ({ navigation }) => {
+const UserInfo = ({navigation}) => {
   const token = useSelector(state => state.user.token.session_token);
-  const dispatch = useDispatch();
   const route = useRoute();
 
   const userID = route.params?.userID;
@@ -28,7 +27,7 @@ const UserInfo = ({ navigation }) => {
   const [userCreateDate, setUserCreateDate] = useState('');
   const [userAvatar, setUserAvatar] = useState('');
   const [userLastLogin, setUserLastLogin] = useState('');
-  const [comment, setComment] = useState('')
+  const [comment, setComment] = useState('');
 
   useEffect(() => {
     getUserData().catch(console.error);
@@ -65,7 +64,7 @@ const UserInfo = ({ navigation }) => {
         let phoneNumber = arr['6'];
         let createDate = arr['62'];
         let lastLogin = arr['14'];
-        let usrcomment = arr['16']
+        let usrcomment = arr['16'];
         setUserName(rFullName);
         if (rLocation === null) {
           setUserLocation('Chưa cập nhật');
@@ -104,7 +103,7 @@ const UserInfo = ({ navigation }) => {
           phoneNumber,
           createDate,
           lastLogin,
-          comment
+          comment,
         ];
       });
       // console.log('EEEEE', userProfile)
@@ -116,7 +115,7 @@ const UserInfo = ({ navigation }) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
       setLoading(false);
     }
@@ -149,7 +148,7 @@ const UserInfo = ({ navigation }) => {
               onPress: () => console.log('Cancel Pressed'),
               style: 'cancel',
             },
-            { text: 'OK', onPress: () => console.log('OK Pressed') },
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
           ]);
           setLoading(false);
         }
@@ -163,7 +162,7 @@ const UserInfo = ({ navigation }) => {
             onPress: () => console.log('Cancel Pressed'),
             style: 'cancel',
           },
-          { text: 'OK', onPress: () => console.log('OK Pressed') },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
         ]);
         setLoading(false);
       });
@@ -179,7 +178,7 @@ const UserInfo = ({ navigation }) => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.card}>
-          <View style={{ margin: (windowHeight + windowWidth) * 0.01 }}>
+          <View style={{margin: (windowHeight + windowWidth) * 0.01}}>
             <Text style={styles.headerText}>THÔNG TIN NGƯỜI DÙNG</Text>
           </View>
           <View style={styles.header}>
@@ -215,18 +214,22 @@ const UserInfo = ({ navigation }) => {
               <Text style={styles.textTitle}>Last login:</Text>
               <Text style={styles.textInfo}> {userLastLogin}</Text>
             </View>
-            <View style={{
-              marginTop: (windowHeight + windowWidth) * 0.01,
-              // alignItems: 'center',
-            }}>
+            <View
+              style={{
+                marginTop: (windowHeight + windowWidth) * 0.01,
+                // alignItems: 'center',
+              }}>
               <Text style={styles.textTitle}>Comment:</Text>
               <View style={styles.smollcard}>
                 <ScrollView>
-                  <Text style={{
-                    fontSize: windowWidth * 0.045,
-                    fontWeight: 500,
-                    paddingTop: (windowHeight + windowWidth) * 0.01,
-                  }}>{comment}</Text>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.045,
+                      fontWeight: 500,
+                      paddingTop: (windowHeight + windowWidth) * 0.01,
+                    }}>
+                    {comment}
+                  </Text>
                 </ScrollView>
               </View>
             </View>
@@ -234,7 +237,7 @@ const UserInfo = ({ navigation }) => {
         </View>
         <View style={styles.Button}>
           <Button
-            style={{ width: windowWidth * 0.3 }}
+            style={{width: windowWidth * 0.3}}
             onPress={() => navigation.goBack()}>
             Quay Về
           </Button>
@@ -308,7 +311,7 @@ const styles = StyleSheet.create({
   },
   comment: {
     height: windowHeight * 0.1,
-    borderColor: '#444'
+    borderColor: '#444',
   },
   smollcard: {
     borderRadius: (windowWidth + windowHeight) * 0.01,

@@ -78,7 +78,7 @@ const SelectUserListDropDown = ({ data }) => {
                     data={technicianList}
                     onSelect={(selectedItem, index) => {
                         console.log(selectedItem, index)
-                        dispatch(setTechnician(selectedItem))
+                        // dispatch(setTechnician(selectedItem))
                     }}
                     defaultButtonText='Select'
                     buttonTextAfterSelection={(selectedItem, index) => {

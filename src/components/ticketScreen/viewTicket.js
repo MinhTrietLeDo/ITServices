@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Badge, Button, ScrollView, Text } from 'native-base';
-import { createNavigationContainerRef, useRoute } from '@react-navigation/native';
-import { API_URL, App_Token } from '../../config/config';
-import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
+import React, {useState, useEffect, useCallback} from 'react';
+import {Badge, Button, ScrollView, Text} from 'native-base';
+import {createNavigationContainerRef, useRoute} from '@react-navigation/native';
+import {API_URL, App_Token} from '../../config/config';
+import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   Alert,
@@ -13,7 +13,7 @@ import {
   SafeAreaView,
   Modal,
   Pressable,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import {
   HandeStatusColor,
@@ -22,48 +22,52 @@ import {
   HandleUrgency,
   fetchWithTimeout,
 } from '../../config/handle';
-import { RefreshControl } from 'react-native-gesture-handler';
-import { useDispatch, useSelector } from 'react-redux';
+import {RefreshControl} from 'react-native-gesture-handler';
+import {useDispatch, useSelector} from 'react-redux';
 import SelectUserListDropDown from './functionScreen/ticketFunctions';
-import { getRequester, getTechnician } from '../../redux/actions';
 import SelectDropdown from 'react-native-select-dropdown';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const ViewTicket = ({ navigation }) => {
-  const dispatch = useDispatch()
+const ViewTicket = ({navigation}) => {
+  const dispatch = useDispatch();
   const route = useRoute();
   const id = route.params?.id;
-  const description = route.params?.description;
   const urgency = route.params?.urgency;
-  const date = route.params?.date;
   const status = route.params?.status;
-  const title = route.params?.title;
   const userID = route.params?.userID;
-  const technicianID = route.params?.technicianID
-  const lastUpdate = route.params?.lastUpdate
+  const technicianID = route.params?.technicianID;
   const token = useSelector(state => state.user.token.session_token);
 
   const [loading, setLoading] = useState(true);
 
-  const [modalVisible, setModalVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const [reqName, setReqName] = useState('')
-  const [reqLocation, setReqLocation] = useState('')
+  const [reqName, setReqName] = useState('');
+  const [reqLocation, setReqLocation] = useState('');
 
-  const [techName, setTechName] = useState([])
+  const [techName, setTechName] = useState([]);
 
-  const [technicianList, setTechnicianList] = useState([])
-  const [editMode, setEditMode] = useState(false)
+  const [technicianList, setTechnicianList] = useState([]);
+  const [editMode, setEditMode] = useState(false);
+
+  const [ticketName, setTicketName] = useState('');
+  const [ticketStatus, setTicketStatus] = useState('');
+  const [ticketDate, setTicketDate] = useState('');
+  const [ticketLUpdate, setTicketLUpdate] = useState('');
+  const [ticketPriority, setTicketPriority] = useState('');
+  const [ticketDescription, setTicketDescription] = useState('');
 
   useEffect(() => {
     getUsername().catch(console.error);
-    getTechList().catch(console.error)
+    getTechList().catch(console.error);
+    getCertainTicket().catch(console.error);
   }, []);
 
   /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
   const getUsername = async () => {
-    const URL1 = '/search/User/?sort=34&criteria[0][itemtype]=User&criteria[0][field]=2&criteria[0][searchtype]=contains&criteria[0][value]='
-    const URL2 = '&forcedisplay[0]=9&forcedisplay[1]=34&forcedisplay[2]=3'
+    const URL1 =
+      '/search/User/?sort=34&criteria[0][itemtype]=User&criteria[0][field]=2&criteria[0][searchtype]=contains&criteria[0][value]=';
+    const URL2 = '&forcedisplay[0]=9&forcedisplay[1]=34&forcedisplay[2]=3';
 
     let objHeader = {
       Accept: 'application/json',
@@ -72,26 +76,27 @@ const ViewTicket = ({ navigation }) => {
     };
 
     try {
-      const requesterInfo = await fetchWithTimeout(API_URL + URL1 + userID + URL2 + '&session_token=' + token, {
-        headers: objHeader,
-        timeout: 5000
-      }).then(el => el.json())
+      const requesterInfo = await fetchWithTimeout(
+        API_URL + URL1 + userID + URL2 + '&session_token=' + token,
+        {
+          headers: objHeader,
+          timeout: 5000,
+        },
+      ).then(el => el.json());
 
       if (typeof requesterInfo.data !== 'undefined') {
-        console.log('a:', requesterInfo.data)
         let reqFullName = requesterInfo.data.map(arr => {
-          let rFullName = (arr['34'] + ' ' + arr['9'])
-          setReqName(rFullName)
-          let rLocation = arr['3']
+          let rFullName = arr['34'] + ' ' + arr['9'];
+          setReqName(rFullName);
+          let rLocation = arr['3'];
           if (rLocation === null) {
-            setReqLocation('Chưa cập nhật')
+            setReqLocation('Chưa cập nhật');
+          } else {
+            setReqLocation(rLocation);
           }
-          else { setReqLocation(rLocation) }
-          return ([rFullName, rLocation])
-        })
-        console.log('EEEEE', reqFullName)
-        // dispatch(getRequester(reqFullName))
-        setLoading(false);
+          return [rFullName, rLocation];
+        });
+        // setLoading(false);
       } else {
         Alert.alert('Error', 'Please try again later', [
           {
@@ -99,31 +104,30 @@ const ViewTicket = ({ navigation }) => {
             onPress: () => console.log('Cancel Pressed'),
             style: 'cancel',
           },
-          { text: 'OK', onPress: () => console.log('OK Pressed') },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
         ]);
         setLoading(false);
       }
-      console.log(requesterInfo.data)
       if (technicianID === null) {
-        console.log('skip, tech')
-        setTechName('Chưa cập nhật')
+        console.log('skip, tech');
+        setTechName('Chưa cập nhật');
       } else {
-
-        const techinianInfo = await fetchWithTimeout(API_URL + URL1 + technicianID + URL2 + '&session_token=' + token, {
-          headers: objHeader,
-          timeout: 5000
-        }).then(el => el.json())
+        const techinianInfo = await fetchWithTimeout(
+          API_URL + URL1 + technicianID + URL2 + '&session_token=' + token,
+          {
+            headers: objHeader,
+            timeout: 5000,
+          },
+        ).then(el => el.json());
 
         if (typeof techinianInfo.data !== 'undefined') {
-          console.log(techinianInfo.data)
           let techFullName = techinianInfo.data.map(arr => {
-            let tFullName = (arr['34'] + ' ' + arr['9'])
-            setTechName(tFullName)
-            return tFullName
-          })
+            let tFullName = arr['34'] + ' ' + arr['9'];
+            setTechName(tFullName);
+            return tFullName;
+          });
           // console.log('ABC', techFullName)
-          dispatch(getTechnician(techFullName))
-          setLoading(false);
+          // setLoading(false);
         } else {
           Alert.alert('Error', 'Please try again later', [
             {
@@ -131,7 +135,7 @@ const ViewTicket = ({ navigation }) => {
               onPress: () => console.log('Cancel Pressed'),
               style: 'cancel',
             },
-            { text: 'OK', onPress: () => console.log('OK Pressed') },
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
           ]);
           setLoading(false);
         }
@@ -144,7 +148,7 @@ const ViewTicket = ({ navigation }) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     }
   };
@@ -152,7 +156,8 @@ const ViewTicket = ({ navigation }) => {
 
   /////////////==== LẤY THÔNG TIN TECHNICIAN ====/////////////
   const getTechList = async () => {
-    const URL = "/search/User/?sort=34&expand_dropdowns=true&criteria[0][itemtype]=User&criteria[0][field]=20&criteria[0][searchtype]=contains&criteria[0][value]=Super-Admin&forcedisplay[0]=9&forcedisplay[1]=34"
+    const URL =
+      '/search/User/?sort=34&expand_dropdowns=true&criteria[0][itemtype]=User&criteria[0][field]=20&criteria[0][searchtype]=contains&criteria[0][value]=Super-Admin&forcedisplay[0]=9&forcedisplay[1]=34';
     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -160,20 +165,21 @@ const ViewTicket = ({ navigation }) => {
     };
 
     try {
-      const responeTech = await fetchWithTimeout(API_URL + URL + '&session_token=' + token, {
-        headers: objHeader,
-        timeout: 5000
-      }).then(el => el.json())
-      console.log("AAAAAAAAAAAAAAAAAAAA", responeTech.data)
+      const responeTech = await fetchWithTimeout(
+        API_URL + URL + '&session_token=' + token,
+        {
+          headers: objHeader,
+          timeout: 5000,
+        },
+      ).then(el => el.json());
       if (typeof responeTech.data !== 'undefined') {
-        const arr = responeTech.data
+        const arr = responeTech.data;
         const techname = arr.map(arr => {
-          let fullName = (arr['34'] + ' ' + arr['9'])
-          return fullName
-        })
-        console.log(arr)
-        setTechnicianList(techname)
-        setLoading(false);
+          let fullName = arr['34'] + ' ' + arr['9'];
+          return fullName;
+        });
+        setTechnicianList(techname);
+        // setLoading(false);
       } else {
         Alert.alert('Error', 'Please try again later', [
           {
@@ -181,7 +187,7 @@ const ViewTicket = ({ navigation }) => {
             onPress: () => console.log('Cancel Pressed'),
             style: 'cancel',
           },
-          { text: 'OK', onPress: () => console.log('OK Pressed') },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
         ]);
         setLoading(false);
       }
@@ -193,26 +199,62 @@ const ViewTicket = ({ navigation }) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     }
-  }
+  };
   /////////////==== LẤY THÔNG TIN TECHNICIAN ====/////////////
 
   const getCertainTicket = async () => {
-    const URL = ''
+    const URL = '/Ticket/';
     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       'App-Token': App_Token,
     };
     try {
-      const respone = await fetchWithTimeout(API_URL + URL + '&session_token=' + token, {
-        headers: objHeader,
-        timeout: 5000
-      }).then(arr => arr.json())
-      console.log(respone)
+      const respone = await fetchWithTimeout(
+        API_URL + URL + id + '?session_token=' + token,
+        {
+          headers: objHeader,
+          timeout: 5000,
+        },
+      ).then(arr => arr.json());
+      if (typeof respone !== 'undefined') {
+        console.log(respone);
+        // let ticketData = respone.map(arr => {
+        let ticketName = respone['name'];
+        let rawDescription = respone['content'].split('&#60;p&#62;');
+        let ticketDescription = rawDescription[1]
+          .split('&#60;/p&#62;')
+          .toString()
+          .replace(/,/g, '');
+        let ticketDate = respone['date'];
+        let ticketLUpdate = respone['date_mod'];
+        // let ticketStatus1 = respone['status'];
+        // let ticketUrgency = respone['priority'];
+        setTicketName(ticketName);
+        setTicketDate(ticketDate);
+        setTicketDescription(ticketDescription);
+        setTicketLUpdate(ticketLUpdate);
+        // setTicketStatus(ticketStatus1);
+        // setTicketPriority(ticketUrgency);
+        console.log(ticketStatus, ticketPriority);
+        // });
+        setLoading(false);
+      } else {
+        Alert.alert('Error', 'Please try again later', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+        setLoading(false);
+      }
     } catch (error) {
+      console.error(error);
       setLoading(false);
       Alert.alert('Error', 'Cannot connect to the server', [
         {
@@ -220,21 +262,20 @@ const ViewTicket = ({ navigation }) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     }
-
-  }
+  };
 
   updateTicket = async () => {
     console.log('updating..');
-    setEditMode(false)
+    setEditMode(false);
   };
 
   editBtn = () => {
-    setEditMode(true)
-    console.log(editMode)
-    console.log('Tech Array', technicianList)
+    setEditMode(true);
+    console.log(editMode);
+    console.log('Tech Array', technicianList);
   };
 
   updateBtn = () => {
@@ -244,9 +285,9 @@ const ViewTicket = ({ navigation }) => {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      { text: 'OK', onPress: () => updateTicket() },
+      {text: 'OK', onPress: () => updateTicket()},
     ]);
-  }
+  };
 
   if (loading) {
     return (
@@ -268,28 +309,38 @@ const ViewTicket = ({ navigation }) => {
                 onPress: () => console.log('Cancel Pressed'),
                 style: 'cancel',
               },
-              { text: 'OK', onPress: () => setModalVisible(!modalVisible) },
+              {text: 'OK', onPress: () => setModalVisible(!modalVisible)},
             ]);
           }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={{
-                fontSize: windowWidth * 0.055,
-                fontWeight: 600,
-                textAlign: 'center',
-                alignItems: 'center',
-              }}>Chọn Người Xử Lý:</Text>
+              <Text
+                style={{
+                  fontSize: windowWidth * 0.055,
+                  fontWeight: 600,
+                  textAlign: 'center',
+                  alignItems: 'center',
+                }}>
+                Chọn Người Xử Lý:
+              </Text>
               <SelectUserListDropDown />
               <View style={styles.Button2}>
-                <Button style={{ width: windowWidth * 0.2 }} onPress={() => assignBtn()}>Cancel</Button>
-                <Button style={{ width: windowWidth * 0.2 }} onPress={() => assignBtn()}>OK</Button>
+                <Button
+                  style={{width: windowWidth * 0.2}}
+                  onPress={() => assignBtn()}>
+                  Cancel
+                </Button>
+                <Button
+                  style={{width: windowWidth * 0.2}}
+                  onPress={() => assignBtn()}>
+                  OK
+                </Button>
               </View>
             </View>
           </View>
         </Modal>
-      )
-    }
-    else {
+      );
+    } else {
       return (
         <SafeAreaView style={styles.container}>
           <View style={styles.card}>
@@ -305,7 +356,7 @@ const ViewTicket = ({ navigation }) => {
                   textAlign: 'center',
                   alignItems: 'center',
                 }}>
-                {title} #{id}
+                {ticketName} #{id}
               </Text>
             </View>
             <View
@@ -328,7 +379,7 @@ const ViewTicket = ({ navigation }) => {
                   style={{
                     fontSize: windowWidth * 0.045,
                   }}>
-                  {description}
+                  {ticketDescription}
                 </Text>
               </ScrollView>
               <View style={styles.row}>
@@ -340,14 +391,14 @@ const ViewTicket = ({ navigation }) => {
                   Tình trạng:
                 </Text>
                 <Badge
-                  _text={{ fontSize: windowWidth * 0.03 }}
+                  _text={{fontSize: windowWidth * 0.03}}
                   variant="solid"
                   style={{
-                    backgroundColor: HandeStatusColor({ status }),
+                    backgroundColor: HandeStatusColor({status}),
                     marginLeft: (windowHeight + windowWidth) * 0.01,
                   }}
                   rounded={windowWidth * 0.01}>
-                  {HandleBadgeStatus({ status })}
+                  {HandleBadgeStatus({status})}
                 </Badge>
               </View>
               <View style={styles.row}>
@@ -364,7 +415,7 @@ const ViewTicket = ({ navigation }) => {
                     fontWeight: 400,
                     marginLeft: windowWidth * 0.01,
                   }}>
-                  {date}
+                  {ticketDate}
                 </Text>
               </View>
               <View style={styles.row}>
@@ -381,7 +432,7 @@ const ViewTicket = ({ navigation }) => {
                     fontWeight: 400,
                     marginLeft: windowWidth * 0.01,
                   }}>
-                  {lastUpdate}
+                  {ticketLUpdate}
                 </Text>
               </View>
               <View style={styles.row}>
@@ -393,14 +444,14 @@ const ViewTicket = ({ navigation }) => {
                   Mức Độ Ưu Tiên:
                 </Text>
                 <Badge
-                  _text={{ fontSize: windowWidth * 0.037 }}
+                  _text={{fontSize: windowWidth * 0.037}}
                   variant="solid"
                   style={{
-                    backgroundColor: HandeUrgencyColor({ urgency }),
+                    backgroundColor: HandeUrgencyColor({urgency}),
                     marginLeft: (windowHeight + windowWidth) * 0.01,
                   }}
                   rounded={windowWidth * 0.01}>
-                  {HandleUrgency({ urgency })}
+                  {HandleUrgency({urgency})}
                 </Badge>
               </View>
               <View style={styles.row}>
@@ -412,9 +463,11 @@ const ViewTicket = ({ navigation }) => {
                   Người Yêu Cầu:
                 </Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('UserInfo', {
-                    userID: userID
-                  })}>
+                  onPress={() =>
+                    navigation.navigate('UserInfo', {
+                      userID: userID,
+                    })
+                  }>
                   <Text
                     style={{
                       fontSize: windowWidth * 0.045,
@@ -442,10 +495,12 @@ const ViewTicket = ({ navigation }) => {
                   {reqLocation}
                 </Text>
               </View>
-              {status === 2 || status === 3 || status === 4 || status === 5 || status === 6 ? (
-                <View
-                  style={styles.row}
-                >
+              {status === 2 ||
+              status === 3 ||
+              status === 4 ||
+              status === 5 ||
+              status === 6 ? (
+                <View style={styles.row}>
                   <Text
                     style={{
                       fontSize: windowWidth * 0.05,
@@ -457,39 +512,46 @@ const ViewTicket = ({ navigation }) => {
                     <SelectDropdown
                       data={technicianList}
                       onSelect={(selectedItem, index) => {
-                        console.log(selectedItem, index)
-                        // dispatch(setTechnician(selectedItem))
+                        console.log(selectedItem, index);
                       }}
                       defaultButtonText={techName}
                       buttonTextAfterSelection={(selectedItem, index) => {
                         // text represented after item is selected
                         // if data array is an array of objects then return selectedItem.property to render after item is selected
-                        return selectedItem
+                        return selectedItem;
                       }}
                       rowTextForSelection={(item, index) => {
                         // text represented for each item in dropdown
                         // if data array is an array of objects then return item.property to represent item in dropdown
-                        return item
+                        return item;
                       }}
                       buttonStyle={styles.dropdown1BtnStyle}
                       buttonTextStyle={styles.dropdown1BtnTxtStyle}
                       renderDropdownIcon={isOpened => {
-                        return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={(windowHeight + windowWidth) * 0.012} />;
+                        return (
+                          <FontAwesome
+                            name={isOpened ? 'chevron-up' : 'chevron-down'}
+                            color={'#444'}
+                            size={(windowHeight + windowWidth) * 0.012}
+                          />
+                        );
                       }}
                       dropdownIconPosition={'right'}
                       dropdownStyle={styles.dropdown1DropdownStyle}
                       rowStyle={styles.dropdown1RowStyle}
                       rowTextStyle={styles.dropdown1RowTxtStyle}
-                    // defaultValue={techName}
+                      // defaultValue={techName}
                     />
-                  ) : (<Text
-                    style={{
-                      fontSize: windowWidth * 0.045,
-                      fontWeight: 400,
-                      marginLeft: windowWidth * 0.01,
-                    }}>
-                    {techName}
-                  </Text>)}
+                  ) : (
+                    <Text
+                      style={{
+                        fontSize: windowWidth * 0.045,
+                        fontWeight: 400,
+                        marginLeft: windowWidth * 0.01,
+                      }}>
+                      {techName}
+                    </Text>
+                  )}
                 </View>
               ) : null}
             </View>
@@ -497,7 +559,7 @@ const ViewTicket = ({ navigation }) => {
           </View>
           <View style={styles.Button}>
             <Button
-              style={{ width: windowWidth * 0.3 }}
+              style={{width: windowWidth * 0.3}}
               onPress={() => navigation.goBack()}>
               Quay Về
             </Button>
@@ -507,15 +569,22 @@ const ViewTicket = ({ navigation }) => {
               <Button style={{ width: windowWidth * 0.3 }} onPress={() => editBtn()}>Hoàn Thành</Button>
             ) : null} */}
             {editMode === true ? (
-              <Button style={{ width: windowWidth * 0.3 }} onPress={() => updateBtn()}>Cập nhật</Button>
+              <Button
+                style={{width: windowWidth * 0.3}}
+                onPress={() => updateBtn()}>
+                Cập nhật
+              </Button>
             ) : (
-              <Button style={{ width: windowWidth * 0.3 }} onPress={() => editBtn()} >Chỉnh sửa</Button>
+              <Button
+                style={{width: windowWidth * 0.3}}
+                onPress={() => editBtn()}>
+                Chỉnh sửa
+              </Button>
             )}
           </View>
-        </SafeAreaView >
+        </SafeAreaView>
       );
     }
-
   }
 };
 
@@ -572,11 +641,11 @@ const styles = StyleSheet.create({
     elevation: (windowHeight + windowWidth) * 0.4,
   },
   dropdown1DropdownStyle: {
-    backgroundColor: '#EFEFEF'
+    backgroundColor: '#EFEFEF',
   },
   dropdown1RowStyle: {
     backgroundColor: '#EFEFEF',
-    borderBottomColor: '#C5C5C5'
+    borderBottomColor: '#C5C5C5',
   },
   dropdown1RowTxtStyle: {
     color: '#444',
@@ -590,9 +659,9 @@ const styles = StyleSheet.create({
     borderWidth: windowWidth * 0.003,
     borderColor: '#444',
     maxWidth: windowWidth * 0.4,
-    maxHeight: windowHeight * 0.045
+    maxHeight: windowHeight * 0.045,
   },
-  dropdown1BtnTxtStyle: { color: '#444', textAlign: 'left', },
+  dropdown1BtnTxtStyle: {color: '#444', textAlign: 'left'},
 });
 
 export default ViewTicket;
