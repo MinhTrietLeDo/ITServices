@@ -1,38 +1,40 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { Provider, useSelector } from 'react-redux';
+import {NavigationContainer} from '@react-navigation/native';
+import {Provider, useSelector} from 'react-redux';
 import store from '../config/store';
-import { NativeBaseProvider, StatusBar } from 'native-base';
-import { createStackNavigator } from '@react-navigation/stack';
-import { MyDrawer } from './navigations/drawerNavigation';
+import {NativeBaseProvider, StatusBar} from 'native-base';
+import {createStackNavigator} from '@react-navigation/stack';
+import {MyDrawer} from './navigations/drawerNavigation';
 import theme from '../assets/res/theme';
 import loginHook from '../components/loginScreen/loginHook';
-import { getNoti, hanldeNoti, requestUserPermission } from '../config/notification';
+import {
+  getNoti,
+  hanldeNoti,
+  requestUserPermission,
+} from '../config/notification';
 import ViewTicket from '../components/ticketScreen/viewTicket';
 import NotiScreen from '../components/notification/notiScreen';
 import UserInfo from '../components/userScreen/userInfo';
 import EditScreen from '../components/ticketScreen/functionScreen/editScreen';
 
-const Stack = createStackNavigator()
+const Stack = createStackNavigator();
 
 const RootStack = () => {
-
   React.useEffect(() => {
-    hanldeNoti().catch(console.error)
-  }, [])
+    hanldeNoti().catch(console.error);
+  }, []);
 
-  const isLogin = useSelector(state => state.user.isLoginedIn)
-  console.log('Check login state:', isLogin)
+  const isLogin = useSelector(state => state.user.isLoginedIn);
+  console.log('Check login state:', isLogin);
   return (
     <NavigationContainer>
-
       <Stack.Navigator>
         {isLogin === false ? (
           // Check Login Stack
           <Stack.Group>
             {/* Auth Group */}
             <Stack.Screen
-              name='Login'
+              name="Login"
               component={loginHook}
               options={{
                 headerBackVisible: false,
@@ -52,7 +54,7 @@ const RootStack = () => {
             />
           </Stack.Group>
         )}
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Group screenOptions={{presentation: 'modal'}}>
           <Stack.Screen
             component={ViewTicket}
             name="ViewTicket"
@@ -88,8 +90,8 @@ const RootStack = () => {
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
-  )
-}
+  );
+};
 
 const App = () => {
   return (
@@ -99,6 +101,6 @@ const App = () => {
       </Provider>
     </NativeBaseProvider>
   );
-}
+};
 
-export default App
+export default App;

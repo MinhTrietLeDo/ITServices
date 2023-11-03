@@ -1,30 +1,30 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   createDrawerNavigator,
   DrawerItem,
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import { NotiButton } from '../../components/Btn/headerBtn';
-import { NotiBtn } from '../../config/handle';
+import {NotiButton} from '../../components/Btn/headerBtn';
+import {NotiBtn} from '../../config/handle';
 import TicketTab from './ticketBottomTab';
-import { useDispatch, useSelector } from 'react-redux';
-import { logOutUser } from '../../redux/actions';
-import { Text, Avatar, Divider, Button } from 'native-base';
-import { StyleSheet, View, SafeAreaView, Alert } from 'react-native';
-import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
+import {useDispatch, useSelector} from 'react-redux';
+import {logOutUser} from '../../redux/actions';
+import {Text, Avatar, Divider, Button} from 'native-base';
+import {StyleSheet, View, SafeAreaView, Alert} from 'react-native';
+import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SettingScreen from '../../components/setting/setting';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import DashboardTab from './dashboardBottomTab';
-import { API_URL, App_Token } from '../../config/config';
+import {API_URL, App_Token} from '../../config/config';
 
 const Drawer = createDrawerNavigator();
 
-const CustomDrawer = (props) => {
+const CustomDrawer = props => {
   const dispatch = useDispatch();
   const username = useSelector(state => state.user.userObj.glpifriendlyname);
-  const token = useSelector(state => state.user.token.session_token)
+  const token = useSelector(state => state.user.token.session_token);
 
   const logOut = async () => {
     let objHeader = {
@@ -38,7 +38,7 @@ const CustomDrawer = (props) => {
       }).then(el => el.json()),
     ]);
     if (typeof killSession !== undefined) {
-      dispatch(logOutUser()) //xóa token cũ => chuyển token về rỗng => về màn hình login
+      dispatch(logOutUser()); //xóa token cũ => chuyển token về rỗng => về màn hình login
     } else {
       Alert.alert('Error', 'Please try again later', [
         {
@@ -46,10 +46,10 @@ const CustomDrawer = (props) => {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     }
-  }
+  };
 
   const askLogOut = () => {
     Alert.alert('Warning', 'Bạn có muốn đăng xuất?', [
@@ -58,7 +58,7 @@ const CustomDrawer = (props) => {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      { text: 'OK', onPress: () => logOut().catch(console.error) },
+      {text: 'OK', onPress: () => logOut().catch(console.error)},
     ]);
   };
 
@@ -66,7 +66,7 @@ const CustomDrawer = (props) => {
     <DrawerContentScrollView {...props}>
       <SafeAreaView style={styles.container}>
         <View style={styles.topContainer}>
-          <View style={{ margin: (windowHeight + windowWidth) * 0.015 }}>
+          <View style={{margin: (windowHeight + windowWidth) * 0.015}}>
             <Text
               style={{
                 fontSize: windowWidth * 0.052,
@@ -96,7 +96,7 @@ const CustomDrawer = (props) => {
           <DrawerItem
             label="Logout"
             onPress={() => askLogOut()}
-            icon={({ color, size }) => (
+            icon={({color, size}) => (
               <MaterialCommunityIcons
                 name="exit-to-app"
                 color={color}
@@ -125,11 +125,7 @@ const MyDrawer = () => {
               fontFamily: 'WorkSans',
             },
             headerTitleAlign: 'center',
-            headerRight: () => (
-              <NotiButton
-                onPress={() => NotiBtn()}
-              />
-            ),
+            headerRight: () => <NotiButton onPress={() => NotiBtn()} />,
             drawerIcon: () => (
               <MaterialCommunityIcons
                 name="monitor-dashboard"
@@ -148,11 +144,7 @@ const MyDrawer = () => {
               fontFamily: 'WorkSans',
             },
             headerTitleAlign: 'center',
-            headerRight: () => (
-              <NotiButton
-                onPress={() => NotiBtn()}
-              />
-            ),
+            headerRight: () => <NotiButton onPress={() => NotiBtn()} />,
             drawerIcon: () => (
               <MaterialCommunityIcons
                 name="ticket-confirmation"
@@ -171,11 +163,7 @@ const MyDrawer = () => {
               fontFamily: 'WorkSans',
             },
             headerTitleAlign: 'center',
-            headerRight: () => (
-              <NotiButton
-                onPress={() => NotiBtn()}
-              />
-            ),
+            headerRight: () => <NotiButton onPress={() => NotiBtn()} />,
             drawerIcon: () => (
               <Ionicons
                 name="settings"
@@ -217,7 +205,7 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.15,
     borderRadius: (windowWidth + windowHeight) * 0.5,
     width: windowWidth * 0.282,
-    resizeMode: 'cover'
+    resizeMode: 'cover',
   },
   split: {
     borderWidth: (windowHeight + windowWidth) * 0.0005,
@@ -236,4 +224,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { MyDrawer };
+export {MyDrawer};

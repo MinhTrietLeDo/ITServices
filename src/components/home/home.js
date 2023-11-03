@@ -1,25 +1,19 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   RefreshControl,
   SafeAreaView,
   StyleSheet,
   BackHandler,
-  Alert
+  Alert,
 } from 'react-native';
-import {
-  Text,
-  Center,
-  Avatar,
-  Heading,
-  ScrollView
-} from 'native-base'
-import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
-import { useDispatch } from 'react-redux';
+import {Text, Center, Avatar, Heading, ScrollView} from 'native-base';
+import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
+import {useDispatch} from 'react-redux';
 
-const Home = ({ navigation }) => {
+const Home = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
-  const dispatch= useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // const backAction = () => {
@@ -30,23 +24,20 @@ const Home = ({ navigation }) => {
     //       style: 'cancel',
     //     },
     //     { text: 'YES', onPress: () => {
-    //       BackHandler.exitApp() 
+    //       BackHandler.exitApp()
     //     }},
     //   ]);
     //   return true;
     // };
-
     // const backHandler = BackHandler.addEventListener(
     //   'hardwareBackPress',
     //   backAction,
     // );
-
     // return () => backHandler.remove();
-  }, [])
-
+  }, []);
 
   const onRefresh = useCallback(() => {
-    console.log('MMMMMMMMMMHHHHHM, REFRESHING!!')
+    console.log('MMMMMMMMMMHHHHHM, REFRESHING!!');
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
@@ -58,13 +49,18 @@ const Home = ({ navigation }) => {
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
+        }>
         <View>
           <View>
             <Text>HOME</Text>
           </View>
-          <View style={{ justifyContent: 'center', alignItems: 'center', alignSelf: 'center', marginLeft: '10%' }}>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
+              marginLeft: '10%',
+            }}>
             {/* <Heading fontSize={30} bold>{this.props.userObj.glpifirstname + ' ' + this.props.userObj.glpirealname}</Heading> */}
             {/* <Text note>Last login in: {llfdata}</Text> */}
           </View>
@@ -81,6 +77,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
   },
-})
+});
 
 export default Home;

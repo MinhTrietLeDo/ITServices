@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React, {useEffect, useState} from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import ViewTicket from '../../components/ticketScreen/viewTicket';
-import { windowHeight, windowWidth } from '../../assets/res/courseStyle';
+import {windowHeight, windowWidth} from '../../assets/res/courseStyle';
 import TicketScreen from '../../components/ticketScreen/ticketScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
 const TicketTab = () => {
-  const userID = useSelector(state => state.user.userObj.glpiID)
+  const userID = useSelector(state => state.user.userObj.glpiID);
 
   useEffect(() => {
-    console.log(userID)
-  }, [])
+    console.log(userID);
+  }, []);
 
   const newTicket =
     '/search/Ticket/?order=DESC&criteria[0][itemtype]=Ticket&criteria[0][field]=12&criteria[0][searchtype]=contains&criteria[0][value]=1&forcedisplay[0]=1&forcedisplay[1]=2&forcedisplay[2]=3&forcedisplay[3]=12&forcedisplay[4]=15&forcedisplay[5]=19&forcedisplay[6]=21&forcedisplay[7]=4&forcedisplay[8]=5&sort=2&';
@@ -34,7 +34,7 @@ const TicketTab = () => {
             fontSize: (windowHeight + windowWidth) * 0.012,
           },
           headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons name="new-box" color={color} size={size} />
           ),
         }}
@@ -53,7 +53,7 @@ const TicketTab = () => {
             fontSize: (windowHeight + windowWidth) * 0.012,
           },
           headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons
               name="progress-upload"
               color={color}
@@ -61,7 +61,7 @@ const TicketTab = () => {
             />
           ),
         }}
-        initialParams={{ ticketURL: pendingTicket }}
+        initialParams={{ticketURL: pendingTicket}}
       />
       <Tab.Screen
         name="Đã Xử Lý"
@@ -74,11 +74,11 @@ const TicketTab = () => {
             fontSize: (windowHeight + windowWidth) * 0.012,
           },
           headerTitleAlign: 'center',
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({color, size}) => (
             <MaterialCommunityIcons name="check" color={color} size={size} />
           ),
         }}
-        initialParams={{ ticketURL: closedTicket }}
+        initialParams={{ticketURL: closedTicket}}
       />
     </Tab.Navigator>
   );

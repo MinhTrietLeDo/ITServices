@@ -1,7 +1,7 @@
-import { I18nManager, StyleSheet, Platform } from 'react-native'
+import {I18nManager, StyleSheet, Platform} from 'react-native';
 
 const dynamicStyles = (theme, colorScheme) => {
-  const colorSet = theme.colors[colorScheme]
+  const colorSet = theme.colors[colorScheme];
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -104,9 +104,9 @@ const dynamicStyles = (theme, colorScheme) => {
       height: 25,
       marginTop: Platform.OS === 'ios' ? 50 : 20,
       marginLeft: 10,
-      transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }],
+      transform: [{scaleX: I18nManager.isRTL ? -1 : 1}],
     },
-  })
-}
+  });
+};
 
-export default dynamicStyles
+export default dynamicStyles;

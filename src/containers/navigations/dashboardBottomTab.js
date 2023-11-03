@@ -10,7 +10,6 @@ import SettingScreen from '../../components/setting/setting';
 const Tab = createBottomTabNavigator();
 
 const DashboardTab = () => {
-
   return (
     <Tab.Navigator>
       <Tab.Group>
@@ -26,11 +25,7 @@ const DashboardTab = () => {
             },
             headerTitleAlign: 'center',
             tabBarIcon: ({color, size}) => (
-              <MaterialCommunityIcons
-                name="home"
-                color={color}
-                size={size}
-              />
+              <MaterialCommunityIcons name="home" color={color} size={size} />
             ),
           }}
         />

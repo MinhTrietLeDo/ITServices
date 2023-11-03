@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Dimensions } from 'react-native';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import {Alert, StyleSheet, Dimensions} from 'react-native';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Base64 } from '../../config/base64';
-import { API_URL, App_Token } from '../../config/config';
-import { setUserObject, setSessionToken } from '../../redux/actions';
+import {Base64} from '../../config/base64';
+import {API_URL, App_Token} from '../../config/config';
+import {setUserObject, setSessionToken} from '../../redux/actions';
 import {
   Input,
   Icon,
@@ -24,7 +24,7 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import store from '../../config/store';
-import { fetchWithTimeout } from '../../config/handle';
+import {fetchWithTimeout} from '../../config/handle';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -78,7 +78,7 @@ const LoginHook = () => {
         method: 'GET',
         headers: myHeaders,
         cors: true,
-        timeout: 5000
+        timeout: 5000,
       })
         .then(rawData => rawData.json())
         .then(async data => {
@@ -92,10 +92,10 @@ const LoginHook = () => {
               data.session_token,
             );
             try {
-              let { session_token } = data;
+              let {session_token} = data;
               await AsyncStorage.setItem('username', username);
               await AsyncStorage.setItem('password', password);
-              dispatch(setSessionToken({ session_token }));
+              dispatch(setSessionToken({session_token}));
               let objHeader = {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -111,10 +111,11 @@ const LoginHook = () => {
               );
               let profileData = await result.json();
               let resultProfile = await fetch(
-                API_URL + '/User/' +
-                profileData.session.glpiID +
-                '?session_token=' +
-                session_token,
+                API_URL +
+                  '/User/' +
+                  profileData.session.glpiID +
+                  '?session_token=' +
+                  session_token,
                 {
                   headers: objHeader,
                 },
@@ -137,7 +138,7 @@ const LoginHook = () => {
                     onPress: () => console.log('Cancel Pressed'),
                     style: 'cancel',
                   },
-                  { text: 'OK', onPress: () => console.log('OK Pressed') },
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
                 ]);
               }
             } catch (error) {
@@ -152,7 +153,7 @@ const LoginHook = () => {
                 onPress: () => console.log('Cancel Pressed'),
                 style: 'cancel',
               },
-              { text: 'OK', onPress: () => console.log('OK Pressed') },
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
             ]);
           }
         })
@@ -167,7 +168,7 @@ const LoginHook = () => {
                 onPress: () => console.log('Cancel Pressed'),
                 style: 'cancel',
               },
-              { text: 'OK', onPress: () => console.log('OK Pressed') },
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
             ],
           );
         })
@@ -186,7 +187,7 @@ const LoginHook = () => {
         <Box alignItems="center" w="100%">
           <View style={styles.LogoandHeaders}>
             <Image
-              style={{ width: 0.72 * windowWidth, height: 0.22 * windowHeight }}
+              style={{width: 0.72 * windowWidth, height: 0.22 * windowHeight}}
               isRequired
               source={require('../../assets/img/TDT_logo.png')}
               alt="Logo"
@@ -234,7 +235,7 @@ const LoginHook = () => {
                     size={0.06 * windowWidth}
                     mr={windowWidth * 0.02}
                     color="muted.400"
-                  // style={{marginRight: windowWidth*0.02}}
+                    // style={{marginRight: windowWidth*0.02}}
                   />
                 }
                 InputLeftElement={
