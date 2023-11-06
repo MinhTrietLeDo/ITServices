@@ -49,6 +49,7 @@ const ViewTicket = ({navigation}) => {
 
   const [technicianList, setTechnicianList] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const [supportType, setSupportType] = useState('');
 
   const [ticketName, setTicketName] = useState('');
   const [ticketStatus, setTicketStatus] = useState('');
@@ -56,11 +57,13 @@ const ViewTicket = ({navigation}) => {
   const [ticketLUpdate, setTicketLUpdate] = useState('');
   const [ticketPriority, setTicketPriority] = useState('');
   const [ticketDescription, setTicketDescription] = useState('');
+  const [ticketSupportType, setTicketSupportType] = useState('');
 
   useEffect(() => {
     getUsername().catch(console.error);
     getTechList().catch(console.error);
     getCertainTicket().catch(console.error);
+    getSupportType().catch(console.error);
   }, []);
 
   /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
@@ -231,12 +234,14 @@ const ViewTicket = ({navigation}) => {
           .replace(/,/g, '');
         let ticketDate = respone['date'];
         let ticketLUpdate = respone['date_mod'];
+        let ticketType = respone['type'];
         // let ticketStatus1 = respone['status'];
         // let ticketUrgency = respone['priority'];
         setTicketName(ticketName);
         setTicketDate(ticketDate);
         setTicketDescription(ticketDescription);
         setTicketLUpdate(ticketLUpdate);
+        setTicketSupportType(ticketType);
         // setTicketStatus(ticketStatus1);
         // setTicketPriority(ticketUrgency);
         console.log(ticketStatus, ticketPriority);
@@ -267,9 +272,59 @@ const ViewTicket = ({navigation}) => {
     }
   };
 
+  const getSupportType = async () => {
+    const URL = '/RequestType/';
+    let objHeader = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'App-Token': App_Token,
+    };
+
+    try {
+      const respone123 = await fetchWithTimeout(
+        API_URL + URL + ticketSupportType + '?session_token=' + token,
+        {
+          headers: objHeader,
+          timeout: 5000,
+        },
+      ).then(arr => arr.json());
+      console.log('87263482736423423', respone123);
+    } catch (error) {}
+  };
+
   updateTicket = async () => {
     console.log('updating..');
-    setEditMode(false);
+    // setEditMode(false);
+    const URL = '/Ticket/';
+    let objHeader = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'App-Token': App_Token,
+    };
+    let body={
+      
+    }
+    try {
+      const respone = await fetchWithTimeout(
+        API_URL + URL + id + '?session_token=' + token,
+        {
+          headers: objHeader,
+          timeout: 5000,
+          body: body
+        },
+      ).then(arr => arr.json());
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+      Alert.alert('Error', 'Cannot connect to the server', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+    }
   };
 
   editBtn = () => {
@@ -400,6 +455,21 @@ const ViewTicket = ({navigation}) => {
                   rounded={windowWidth * 0.01}>
                   {HandleBadgeStatus({status})}
                 </Badge>
+              </View>
+              <View style={styles.row}>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.05,
+                    fontWeight: 700,
+                  }}>
+                  Support type:
+                </Text>
+                <Text
+                  style={{
+                    fontSize: windowWidth * 0.045,
+                    fontWeight: 400,
+                    marginLeft: windowWidth * 0.01,
+                  }}></Text>
               </View>
               <View style={styles.row}>
                 <Text
