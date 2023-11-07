@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {Badge, Button, ScrollView, Text} from 'native-base';
 import {createNavigationContainerRef, useRoute} from '@react-navigation/native';
 import {API_URL, App_Token} from '../../config/config';
@@ -49,7 +49,6 @@ const ViewTicket = ({navigation}) => {
 
   const [technicianList, setTechnicianList] = useState([]);
   const [editMode, setEditMode] = useState(false);
-  const [supportType, setSupportType] = useState('');
 
   const [ticketName, setTicketName] = useState('');
   const [ticketStatus, setTicketStatus] = useState('');
@@ -59,11 +58,20 @@ const ViewTicket = ({navigation}) => {
   const [ticketDescription, setTicketDescription] = useState('');
   const [ticketSupportType, setTicketSupportType] = useState('');
 
+  const [techTemp, setTechTemp] = useState();
+  const techDropdownRef = useRef();
+
+  const [ticketTechID, setTicketTechID] = useState(technicianID);
+
   useEffect(() => {
+    getCertainTicket().catch(console.error);
     getUsername().catch(console.error);
     getTechList().catch(console.error);
-    getCertainTicket().catch(console.error);
     getSupportType().catch(console.error);
+
+    // updateTicket().catch(console.error)
+
+    console.log(technicianID)
   }, []);
 
   /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
@@ -111,7 +119,7 @@ const ViewTicket = ({navigation}) => {
         ]);
         setLoading(false);
       }
-      if (technicianID === null) {
+      if (ticketTechID === null) {
         console.log('skip, tech');
         setTechName('Chưa cập nhật');
       } else {
@@ -160,7 +168,7 @@ const ViewTicket = ({navigation}) => {
   /////////////==== LẤY THÔNG TIN TECHNICIAN ====/////////////
   const getTechList = async () => {
     const URL =
-      '/search/User/?sort=34&expand_dropdowns=true&criteria[0][itemtype]=User&criteria[0][field]=20&criteria[0][searchtype]=contains&criteria[0][value]=Super-Admin&forcedisplay[0]=9&forcedisplay[1]=34';
+      '/search/User/?sort=34&expand_dropdowns=true&criteria[0][itemtype]=User&criteria[0][field]=20&criteria[0][searchtype]=contains&criteria[0][value]=Super-Admin&forcedisplay[0]=9&forcedisplay[1]=34&forcedisplay[2]=2';
     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -179,8 +187,10 @@ const ViewTicket = ({navigation}) => {
         const arr = responeTech.data;
         const techname = arr.map(arr => {
           let fullName = arr['34'] + ' ' + arr['9'];
-          return fullName;
+          let techID = arr['2'];
+          return {fullName, techID};
         });
+        console.log('test', techname);
         setTechnicianList(techname);
         // setLoading(false);
       } else {
@@ -225,7 +235,6 @@ const ViewTicket = ({navigation}) => {
       ).then(arr => arr.json());
       if (typeof respone !== 'undefined') {
         console.log(respone);
-        // let ticketData = respone.map(arr => {
         let ticketName = respone['name'];
         let rawDescription = respone['content'].split('&#60;p&#62;');
         let ticketDescription = rawDescription[1]
@@ -235,17 +244,14 @@ const ViewTicket = ({navigation}) => {
         let ticketDate = respone['date'];
         let ticketLUpdate = respone['date_mod'];
         let ticketType = respone['type'];
-        // let ticketStatus1 = respone['status'];
-        // let ticketUrgency = respone['priority'];
+        let ticketTechID = respone['users_id_recipient'];
         setTicketName(ticketName);
         setTicketDate(ticketDate);
         setTicketDescription(ticketDescription);
         setTicketLUpdate(ticketLUpdate);
         setTicketSupportType(ticketType);
-        // setTicketStatus(ticketStatus1);
-        // setTicketPriority(ticketUrgency);
+        setTicketTechID(ticketTechID);
         console.log(ticketStatus, ticketPriority);
-        // });
         setLoading(false);
       } else {
         Alert.alert('Error', 'Please try again later', [
@@ -301,21 +307,47 @@ const ViewTicket = ({navigation}) => {
       'Content-Type': 'application/json',
       'App-Token': App_Token,
     };
-    let body={
-      
-    }
+
+    let body = JSON.stringify({
+      input: {
+        tickets_id: id,
+        // name: 'q2123qưe123',
+        // type: '1',
+        // use_notification: '1',
+        // urgency: 3,
+      },
+    });
+
     try {
       const respone = await fetchWithTimeout(
         API_URL + URL + id + '?session_token=' + token,
         {
           headers: objHeader,
           timeout: 5000,
-          body: body
+          body: body,
+          method: 'PATCH',
         },
       ).then(arr => arr.json());
+      console.log(respone);
+      if (respone !== 'undefine') {
+        setLoading(false);
+        setEditMode(false);
+      } else {
+        setLoading(false);
+        setEditMode(false);
+        Alert.alert('Error', 'Cannot connect to the server', [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+      }
     } catch (error) {
       console.error(error);
       setLoading(false);
+      setEditMode(false);
       Alert.alert('Error', 'Cannot connect to the server', [
         {
           text: 'Cancel',
@@ -583,17 +615,13 @@ const ViewTicket = ({navigation}) => {
                       data={technicianList}
                       onSelect={(selectedItem, index) => {
                         console.log(selectedItem, index);
+                        // techDropdownRef.current.reset();
+                        // setTechTemp();
+                        // setTechTemp(selectedItem.techID);
                       }}
                       defaultButtonText={techName}
                       buttonTextAfterSelection={(selectedItem, index) => {
-                        // text represented after item is selected
-                        // if data array is an array of objects then return selectedItem.property to render after item is selected
-                        return selectedItem;
-                      }}
-                      rowTextForSelection={(item, index) => {
-                        // text represented for each item in dropdown
-                        // if data array is an array of objects then return item.property to represent item in dropdown
-                        return item;
+                        return selectedItem.fullName;
                       }}
                       buttonStyle={styles.dropdown1BtnStyle}
                       buttonTextStyle={styles.dropdown1BtnTxtStyle}
@@ -605,6 +633,9 @@ const ViewTicket = ({navigation}) => {
                             size={(windowHeight + windowWidth) * 0.012}
                           />
                         );
+                      }}
+                      rowTextForSelection={(item, index) => {
+                        return item.fullName;
                       }}
                       dropdownIconPosition={'right'}
                       dropdownStyle={styles.dropdown1DropdownStyle}
