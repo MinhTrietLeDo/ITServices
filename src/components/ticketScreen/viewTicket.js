@@ -51,27 +51,21 @@ const ViewTicket = ({navigation}) => {
   const [editMode, setEditMode] = useState(false);
 
   const [ticketName, setTicketName] = useState('');
-  const [ticketStatus, setTicketStatus] = useState('');
   const [ticketDate, setTicketDate] = useState('');
   const [ticketLUpdate, setTicketLUpdate] = useState('');
-  const [ticketPriority, setTicketPriority] = useState('');
   const [ticketDescription, setTicketDescription] = useState('');
-  const [ticketSupportType, setTicketSupportType] = useState('');
 
-  const [techTemp, setTechTemp] = useState();
-  const techDropdownRef = useRef();
-
-  const [ticketTechID, setTicketTechID] = useState(technicianID);
+  const [changeTechID, setChangeTechID] = useState('');
 
   useEffect(() => {
     getCertainTicket().catch(console.error);
     getUsername().catch(console.error);
     getTechList().catch(console.error);
-    getSupportType().catch(console.error);
+    getTickerUser().catch(console.error);
 
     // updateTicket().catch(console.error)
 
-    console.log(technicianID)
+    console.log(technicianID);
   }, []);
 
   /////////////==== LẤY THÔNG TIN/USERNAME ====/////////////
@@ -119,7 +113,7 @@ const ViewTicket = ({navigation}) => {
         ]);
         setLoading(false);
       }
-      if (ticketTechID === null) {
+      if (technicianID === null) {
         console.log('skip, tech');
         setTechName('Chưa cập nhật');
       } else {
@@ -243,15 +237,10 @@ const ViewTicket = ({navigation}) => {
           .replace(/,/g, '');
         let ticketDate = respone['date'];
         let ticketLUpdate = respone['date_mod'];
-        let ticketType = respone['type'];
-        let ticketTechID = respone['users_id_recipient'];
         setTicketName(ticketName);
         setTicketDate(ticketDate);
         setTicketDescription(ticketDescription);
         setTicketLUpdate(ticketLUpdate);
-        setTicketSupportType(ticketType);
-        setTicketTechID(ticketTechID);
-        console.log(ticketStatus, ticketPriority);
         setLoading(false);
       } else {
         Alert.alert('Error', 'Please try again later', [
@@ -278,8 +267,8 @@ const ViewTicket = ({navigation}) => {
     }
   };
 
-  const getSupportType = async () => {
-    const URL = '/RequestType/';
+  const getTickerUser = async () => {
+    const URL = '/Ticket/';
     let objHeader = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -288,19 +277,37 @@ const ViewTicket = ({navigation}) => {
 
     try {
       const respone123 = await fetchWithTimeout(
-        API_URL + URL + ticketSupportType + '?session_token=' + token,
+        API_URL + URL + id + '/Ticket_User/?session_token=' + token,
         {
           headers: objHeader,
           timeout: 5000,
         },
       ).then(arr => arr.json());
       console.log('87263482736423423', respone123);
-    } catch (error) {}
+      if (typeof respone123 !== 'undefined') {
+        if (respone123[1].type == 2) {
+          console.log('1313');
+          setChangeTechID(respone123[1].type);
+        } else if (typeof respone123[1].type == 'undefined') {
+          console.log('không có technician');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      Alert.alert('Error', 'Cannot connect to the server', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+    }
   };
 
   updateTicket = async () => {
     console.log('updating..');
-    // setEditMode(false);
     const URL = '/Ticket/';
     let objHeader = {
       Accept: 'application/json',
@@ -310,7 +317,7 @@ const ViewTicket = ({navigation}) => {
 
     let body = JSON.stringify({
       input: {
-        tickets_id: id,
+        // tickets_id: id,
         // name: 'q2123qưe123',
         // type: '1',
         // use_notification: '1',
@@ -320,7 +327,7 @@ const ViewTicket = ({navigation}) => {
 
     try {
       const respone = await fetchWithTimeout(
-        API_URL + URL + id + '?session_token=' + token,
+        API_URL + URL + id + '/Ticket_User/?session_token=' + token,
         {
           headers: objHeader,
           timeout: 5000,
