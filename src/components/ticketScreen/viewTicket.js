@@ -57,6 +57,8 @@ const ViewTicket = ({navigation}) => {
 
   const [changeTechID, setChangeTechID] = useState('');
 
+  const [techArrTest, setTechArrTest] = useState([]);
+
   useEffect(() => {
     getCertainTicket().catch(console.error);
     getUsername().catch(console.error);
@@ -285,12 +287,15 @@ const ViewTicket = ({navigation}) => {
       ).then(arr => arr.json());
       console.log('87263482736423423', respone123);
       if (typeof respone123 !== 'undefined') {
-        if (respone123[1].type == 2) {
-          console.log('1313');
-          setChangeTechID(respone123[1].type);
-        } else if (typeof respone123[1].type == 'undefined') {
-          console.log('không có technician');
-        }
+        // if (respone123[1].type == 2) {
+        //   console.log('1313');
+        //   setChangeTechID(respone123[1].type);
+        // } else if (typeof respone123[1].type == 'undefined') {
+        //   console.log('không có technician');
+        // }
+        // let arrrr = respone123.map(arr => {
+        //   let name = arr['']
+        // });
       }
     } catch (error) {
       console.log(error);
