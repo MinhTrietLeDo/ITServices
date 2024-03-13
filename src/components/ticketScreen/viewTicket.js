@@ -23,6 +23,7 @@ import {
   fetchWithTimeout,
 } from '../../config/handle';
 import {RefreshControl} from 'react-native-gesture-handler';
+import {Rating} from 'react-native-ratings';
 import {useDispatch, useSelector} from 'react-redux';
 import SelectUserListDropDown from './functionScreen/ticketFunctions';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -506,7 +507,7 @@ const ViewTicket = ({navigation}) => {
                       fontSize: windowWidth * 0.05,
                       fontWeight: 700,
                     }}>
-                    Người được gán:
+                    Người xử lý:
                   </Text>
                   {editMode === true ? (
                     <SelectDropdown
@@ -552,6 +553,23 @@ const ViewTicket = ({navigation}) => {
                       {techName}
                     </Text>
                   )}
+                </View>
+              ) : null}
+              {status === 6 ? (
+                <View style={styles.row}>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.05,
+                      fontWeight: 700,
+                    }}>
+                    Đánh giá:
+                  </Text>
+                  <Rating
+                    imageSize={25}
+                    startingValue={2}
+                    size={10}
+                    readonly={true}
+                  />
                 </View>
               ) : null}
             </View>
