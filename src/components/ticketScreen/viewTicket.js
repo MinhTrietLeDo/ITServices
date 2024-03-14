@@ -565,10 +565,15 @@ const ViewTicket = ({navigation}) => {
                     Đánh giá:
                   </Text>
                   <Rating
+                    type="custom"
+                    fractions={false}
+                    startingValue={3.6}
+                    readonly
                     imageSize={25}
-                    startingValue={2}
-                    size={10}
-                    readonly={true}
+                    style={{
+                      paddingLeft: windowWidth * 0.02,
+                    }}
+                    tintColor="#f2f2f2"
                   />
                 </View>
               ) : null}
