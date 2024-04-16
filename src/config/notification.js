@@ -1,6 +1,6 @@
 import messaging from '@react-native-firebase/messaging';
-import { PermissionsAndroid } from 'react-native';
-import notifee from '@notifee/react-native'
+import {PermissionsAndroid} from 'react-native';
+import notifee from '@notifee/react-native';
 
 const requestUserPermission = async () => {
   /**
@@ -10,14 +10,13 @@ const requestUserPermission = async () => {
    */
   PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
   const authStatus = await messaging().requestPermission();
-  await notifee.requestPermission()
+  await notifee.requestPermission();
   console.log('Authorization status(authStatus):', authStatus);
   return (
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
     authStatus === messaging.AuthorizationStatus.PROVISIONAL
   );
 };
-
 
 export const hanldeNoti = async () => {
   if (requestUserPermission()) {
@@ -44,12 +43,12 @@ export const hanldeNoti = async () => {
       if (remoteMessage) {
         console.log(
           'getInitialNotification:' +
-          'Notification caused app to open from quit state',
+            'Notification caused app to open from quit state',
         );
         console.log(remoteMessage);
         alert(
           'getInitialNotification: Notification caused app to' +
-          ' open from quit state',
+            ' open from quit state',
         );
       }
     });
@@ -65,12 +64,12 @@ export const hanldeNoti = async () => {
     if (remoteMessage) {
       console.log(
         'onNotificationOpenedApp: ' +
-        'Notification caused app to open from background state',
+          'Notification caused app to open from background state',
       );
       console.log(remoteMessage);
       alert(
         'onNotificationOpenedApp: Notification caused app to' +
-        ' open from background state',
+          ' open from background state',
       );
     }
   });
@@ -91,30 +90,28 @@ export const hanldeNoti = async () => {
    * is called with a `RemoteMessage`. Returns an unsubscribe
    * function to stop listening for new messages.
    */
-  const unsubscribe = messaging().onMessage(
-    async remoteMessage => {
-      alert('A new FCM message arrived!');
-      console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
-      // notifee.displayNotification(JSON.parse(remoteMessage.data.notifee));
-    }
-  );
+  const unsubscribe = messaging().onMessage(async remoteMessage => {
+    alert('A new FCM message arrived!');
+    console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    // notifee.displayNotification(JSON.parse(remoteMessage.data.notifee));
+  });
 
   /**
    * Apps can subscribe to a topic, which allows the FCM
    * server to send targeted messages to only those devices
    * subscribed to that topic.
    */
-  //   messaging()
-  //     .subscribeToTopic(TOPIC)
-  //     .then(() => {
-  //       console.log(`Topic: ${TOPIC} Suscribed`);
-  //     });
+  messaging()
+    .subscribeToTopic('ticket')
+    .then(() => {
+      console.log(`Topic: Ticket Suscribed`);
+    });
 
   return () => {
     unsubscribe;
     /**
      * Unsubscribe the device from a topic.
      */
-    // messaging().unsubscribeFromTopic(TOPIC);
+    messaging().unsubscribeFromTopic(TOPIC);
   };
 };

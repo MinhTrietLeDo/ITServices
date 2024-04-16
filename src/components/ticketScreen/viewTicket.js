@@ -23,6 +23,7 @@ import {
   fetchWithTimeout,
 } from '../../config/handle';
 import {RefreshControl} from 'react-native-gesture-handler';
+import {Rating} from 'react-native-ratings';
 import {useDispatch, useSelector} from 'react-redux';
 import SelectUserListDropDown from './functionScreen/ticketFunctions';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -39,25 +40,27 @@ const ViewTicket = ({navigation}) => {
   const token = useSelector(state => state.user.token.session_token);
 
   const [loading, setLoading] = useState(true);
-
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [reqName, setReqName] = useState('');
-  const [reqLocation, setReqLocation] = useState('');
-
+  // Ticket assigned user
   const [techName, setTechName] = useState([]);
 
   const [technicianList, setTechnicianList] = useState([]);
   const [editMode, setEditMode] = useState(false);
 
-  const [ticketName, setTicketName] = useState('');
-  const [ticketDate, setTicketDate] = useState('');
-  const [ticketLUpdate, setTicketLUpdate] = useState('');
-  const [ticketDescription, setTicketDescription] = useState('');
-
-  const [changeTechID, setChangeTechID] = useState('');
-
-  const [techArrTest, setTechArrTest] = useState([]);
+    // Ticket basic information
+    const [reqName, setReqName] = useState(''); //requested user
+    const [reqLocation, setReqLocation] = useState(''); //location
+    const [ticketName, setTicketName] = useState(''); //name of ticket
+    const [ticketStatus, setTicketStatus] = useState(''); //status
+    const [ticketDate, setTicketDate] = useState(''); //request date
+    const [ticketLUpdate, setTicketLUpdate] = useState(''); //last update
+    const [ticketPriority, setTicketPriority] = useState('');
+    const [ticketDescription, setTicketDescription] = useState('');
+  
+    // Rating
+    const [ticketRating, setTicketRating] = useState();
+    const [ticketComment, setTicketComment] = useState('');
 
   useEffect(() => {
     getCertainTicket().catch(console.error);
@@ -388,6 +391,30 @@ const ViewTicket = ({navigation}) => {
     ]);
   };
 
+  ///////////=============== GET TICKET RATING INFO ===============///////////
+  const getRatingInfo = async data => {
+    const URL = '/Ticket/';
+    let objHeader = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'App-Token': App_Token,
+    };
+    try {
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+      Alert.alert('Error', 'Cannot connect to the server', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+    }
+  };
+  ///////////=============== GET TICKET RATING INFO ===============///////////
+
   if (loading) {
     return (
       <View style={[styles.container, styles.horizontal]}>
@@ -620,7 +647,7 @@ const ViewTicket = ({navigation}) => {
                       fontSize: windowWidth * 0.05,
                       fontWeight: 700,
                     }}>
-                    Người được gán:
+                    Người xử lý:
                   </Text>
                   {editMode === true ? (
                     <SelectDropdown
@@ -665,6 +692,28 @@ const ViewTicket = ({navigation}) => {
                       {techName}
                     </Text>
                   )}
+                </View>
+              ) : null}
+              {status === 6 ? (
+                <View style={styles.row}>
+                  <Text
+                    style={{
+                      fontSize: windowWidth * 0.05,
+                      fontWeight: 700,
+                    }}>
+                    Đánh giá:
+                  </Text>
+                  <Rating
+                    type="custom"
+                    fractions={false}
+                    startingValue={3.6}
+                    readonly
+                    imageSize={25}
+                    style={{
+                      paddingLeft: windowWidth * 0.02,
+                    }}
+                    tintColor="#f2f2f2"
+                  />
                 </View>
               ) : null}
             </View>
