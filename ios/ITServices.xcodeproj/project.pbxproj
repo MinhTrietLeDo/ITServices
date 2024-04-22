@@ -20,11 +20,11 @@
 		6D86709809A14398A7A9E405 /* WorkSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3DFA18D67FDF44EFAEFE834D /* WorkSans-SemiBold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8666053E5EB9BE883A885F62 /* libPods-ITServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C899557D61790C2C5DBFFEE4 /* libPods-ITServices.a */; };
-		8803E5B82BCCB0BA00CBFB94 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8803E5B72BCCB0B900CBFB94 /* GoogleService-Info.plist */; };
-		8803E5B92BCCB0BA00CBFB94 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8803E5B72BCCB0B900CBFB94 /* GoogleService-Info.plist */; };
 		88A055270F6841F8B22EA0C8 /* WorkSans-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21259D90E5AC466D9E8E898F /* WorkSans-ThinItalic.ttf */; };
 		88AA14AF2AB149E50052B8A9 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 88AA14AE2AB149E50052B8A9 /* Fonts */; };
 		88AA14B02AB149E50052B8A9 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 88AA14AE2AB149E50052B8A9 /* Fonts */; };
+		88C355E92BD5F8D70042334D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 88C355E82BD5F8D70042334D /* GoogleService-Info.plist */; };
+		88C355EA2BD5F8D70042334D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 88C355E82BD5F8D70042334D /* GoogleService-Info.plist */; };
 		8C0EE60124ED477CA88985F3 /* WorkSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA91B2D1031848E694A5A277 /* WorkSans-ExtraBold.ttf */; };
 		9736F70ABF0540FFAB036193 /* WorkSans-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 43819ACC3ED04CFE9F8D5385 /* WorkSans-ExtraLightItalic.ttf */; };
 		BEB415089F44473680C25900 /* WorkSans-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 204AF833AA444DAFB605981C /* WorkSans-Thin.ttf */; };
@@ -73,9 +73,9 @@
 		7696B505C25640118F008750 /* WorkSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-Regular.ttf"; path = "../src/assets/fonts/WorkSans-Regular.ttf"; sourceTree = "<group>"; };
 		7EB26341D2D66A8B8A8B6215 /* Pods-ITServices.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITServices.release.xcconfig"; path = "Target Support Files/Pods-ITServices/Pods-ITServices.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ITServices/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8803E5B72BCCB0B900CBFB94 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8828E51C2AD3B96D007678F5 /* ITServices.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ITServices.entitlements; path = ITServices/ITServices.entitlements; sourceTree = "<group>"; };
 		88AA14AE2AB149E50052B8A9 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = "../node_modules/react-native-vector-icons/Fonts"; sourceTree = "<group>"; };
+		88C355E82BD5F8D70042334D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../src/config/google_files_backup/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9ED7CD1062983F7DBCA35DBD /* Pods-ITServices-ITServicesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITServices-ITServicesTests.release.xcconfig"; path = "Target Support Files/Pods-ITServices-ITServicesTests/Pods-ITServices-ITServicesTests.release.xcconfig"; sourceTree = "<group>"; };
 		B8D282A2EBBD4E609B7E9E1B /* WorkSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-Bold.ttf"; path = "../src/assets/fonts/WorkSans-Bold.ttf"; sourceTree = "<group>"; };
 		C62AF2462218443393C47B98 /* WorkSans-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "WorkSans-BlackItalic.ttf"; path = "../src/assets/fonts/WorkSans-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -185,7 +185,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				8803E5B72BCCB0B900CBFB94 /* GoogleService-Info.plist */,
+				88C355E82BD5F8D70042334D /* GoogleService-Info.plist */,
 				88AA14AE2AB149E50052B8A9 /* Fonts */,
 				13B07FAE1A68108700A75B9A /* ITServices */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -309,7 +309,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88AA14B02AB149E50052B8A9 /* Fonts in Resources */,
-				8803E5B92BCCB0BA00CBFB94 /* GoogleService-Info.plist in Resources */,
+				88C355EA2BD5F8D70042334D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,7 +336,7 @@
 				11AB791E23634E4E9613D0CE /* WorkSans-Regular.ttf in Resources */,
 				6D86709809A14398A7A9E405 /* WorkSans-SemiBold.ttf in Resources */,
 				20C3D91D48DF45A88E663F19 /* WorkSans-SemiBoldItalic.ttf in Resources */,
-				8803E5B82BCCB0BA00CBFB94 /* GoogleService-Info.plist in Resources */,
+				88C355E92BD5F8D70042334D /* GoogleService-Info.plist in Resources */,
 				BEB415089F44473680C25900 /* WorkSans-Thin.ttf in Resources */,
 				88A055270F6841F8B22EA0C8 /* WorkSans-ThinItalic.ttf in Resources */,
 			);
