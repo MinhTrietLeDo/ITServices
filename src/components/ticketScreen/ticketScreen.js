@@ -137,12 +137,12 @@ const TicketScreen = ({navigation}) => {
       return (
         <SafeAreaView style={styles.container}>
           <View style={styles.TicketList}>
-            <SearchBar
+            {/* <SearchBar
               searchPhrase={searchPhrase}
               setSearchPhrase={setSearchPhrase}
               clicked={clicked}
               setClicked={setClicked}
-            />
+            /> */}
             <ScrollView
               refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

@@ -115,7 +115,7 @@ const MyDrawer = () => {
     <Drawer.Navigator
       drawerContent={props => <CustomDrawer {...props} screenOptions={{}} />}>
       <Drawer.Group>
-        <Drawer.Screen
+        {/* <Drawer.Screen
           component={DashboardTab}
           name="Dashboard"
           options={{
@@ -133,7 +133,7 @@ const MyDrawer = () => {
               />
             ),
           }}
-        />
+        /> */}
         <Drawer.Screen
           component={TicketTab}
           name="Ticket"
@@ -153,7 +153,7 @@ const MyDrawer = () => {
             ),
           }}
         />
-        <Drawer.Screen
+        {/* <Drawer.Screen
           component={SettingScreen}
           name="Setting"
           options={{
@@ -171,7 +171,7 @@ const MyDrawer = () => {
               />
             ),
           }}
-        />
+        /> */}
       </Drawer.Group>
     </Drawer.Navigator>
   );
